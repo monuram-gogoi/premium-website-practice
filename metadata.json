@@ -1,0 +1,6 @@
+{
+  "name": "eCommerce Web Application",
+  "description": "A feature-rich, senior-architected eCommerce web application with a WooCommerce-level admin panel, built using React, Tailwind CSS, Supabase, and Razorpay.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
