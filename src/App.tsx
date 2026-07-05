@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import StoreFront from './pages/StoreFront';
 import ProductDetail from './pages/ProductDetail';
@@ -17,7 +18,34 @@ import { Product, CartItem, Profile, Order } from './types';
 import { dbService } from './services/db';
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<{ page: string; productId?: string }>({ page: 'store' });
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [currentView, _setCurrentView] = useState<{ page: string; productId?: string }>({ page: 'store' });
+
+  const setCurrentView = (view: { page: string; productId?: string }) => {
+    _setCurrentView(view);
+    if (view.page === 'store') {
+      navigate('/');
+    } else if (view.page === 'cart') {
+      navigate('/cart');
+    } else if (view.page === 'checkout') {
+      navigate('/checkout');
+    } else if (view.page === 'dashboard') {
+      navigate('/profile');
+    } else if (view.page === 'login') {
+      navigate('/login');
+    } else if (view.page === 'admin') {
+      navigate('/admin');
+    } else if (view.page === 'admin-login') {
+      navigate('/admin/login');
+    } else if (view.page === 'detail' && view.productId) {
+      navigate(`/products/${view.productId}`);
+    } else if (view.page === 'order-success') {
+      navigate('/order-success');
+    } else if (view.page === 'order-failure') {
+      navigate('/order-failure');
+    }
+  };
   const [currentUser, setCurrentUser] = useState<Profile | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -64,68 +92,69 @@ export default function App() {
     initApp();
   }, []);
 
-  // Unified path-based router and state synchronizer
+  // Sync view state based on actual URL path location
   useEffect(() => {
-    const handleRouting = () => {
-      const path = window.location.pathname;
-      const isAdminUser = currentUser?.role === 'admin';
-
-      if (path === '/admin') {
-        if (isAdminUser) {
-          setCurrentView({ page: 'admin' });
-        } else {
-          window.history.replaceState(null, '', '/admin/login');
-          setCurrentView({ page: 'admin-login' });
-        }
-      } else if (path === '/admin/login') {
-        if (isAdminUser) {
-          window.history.replaceState(null, '', '/admin');
-          setCurrentView({ page: 'admin' });
-        } else {
-          setCurrentView({ page: 'admin-login' });
-        }
-      } else {
-        // If they navigate via back/forward button to non-admin path, clear admin view
-        if (currentView.page === 'admin' || currentView.page === 'admin-login') {
-          setCurrentView({ page: 'store' });
-        }
-      }
-    };
-
-    handleRouting();
-
-    window.addEventListener('popstate', handleRouting);
-    return () => {
-      window.removeEventListener('popstate', handleRouting);
-    };
-  }, [currentUser]);
-
-  // Sync window.location when currentView.page changes
-  useEffect(() => {
-    const path = window.location.pathname;
+    const path = location.pathname;
     const isAdminUser = currentUser?.role === 'admin';
+    const productMatch = path.match(/^\/products\/([^/]+)$/);
 
-    if (currentView.page === 'admin') {
+    if (path === '/') {
+      if (currentView.page !== 'store') {
+        _setCurrentView({ page: 'store' });
+      }
+    } else if (path === '/cart') {
+      if (currentView.page !== 'cart') {
+        _setCurrentView({ page: 'cart' });
+      }
+    } else if (path === '/checkout') {
+      if (currentView.page !== 'checkout') {
+        _setCurrentView({ page: 'checkout' });
+      }
+    } else if (path === '/profile') {
+      if (currentView.page !== 'dashboard') {
+        _setCurrentView({ page: 'dashboard' });
+      }
+    } else if (path === '/login') {
+      if (currentView.page !== 'login') {
+        _setCurrentView({ page: 'login' });
+      }
+    } else if (path === '/admin') {
       if (isAdminUser) {
-        if (path !== '/admin') {
-          window.history.pushState(null, '', '/admin');
+        if (currentView.page !== 'admin') {
+          _setCurrentView({ page: 'admin' });
         }
       } else {
-        // Redirection to login if not authorized
-        window.history.pushState(null, '', '/admin/login');
-        setCurrentView({ page: 'admin-login' });
+        navigate('/admin/login', { replace: true });
       }
-    } else if (currentView.page === 'admin-login') {
-      if (path !== '/admin/login') {
-        window.history.pushState(null, '', '/admin/login');
+    } else if (path === '/admin/login') {
+      if (isAdminUser) {
+        navigate('/admin', { replace: true });
+      } else {
+        if (currentView.page !== 'admin-login') {
+          _setCurrentView({ page: 'admin-login' });
+        }
+      }
+    } else if (productMatch) {
+      const productId = productMatch[1];
+      if (currentView.page !== 'detail' || currentView.productId !== productId) {
+        _setCurrentView({ page: 'detail', productId });
+      }
+    } else if (path === '/order-success') {
+      if (currentView.page !== 'order-success') {
+        _setCurrentView({ page: 'order-success' });
+      }
+    } else if (path === '/order-failure') {
+      if (currentView.page !== 'order-failure') {
+        _setCurrentView({ page: 'order-failure' });
       }
     } else {
-      // Non-admin views should clear the admin address bar path
-      if (path === '/admin' || path === '/admin/login') {
-        window.history.pushState(null, '', '/');
+      // Catch-all: Route unrecognized paths back to store
+      if (currentView.page !== 'store') {
+        _setCurrentView({ page: 'store' });
+        navigate('/', { replace: true });
       }
     }
-  }, [currentView.page, currentUser]);
+  }, [location.pathname, currentUser]);
 
   // Sync cart state with local storage
   const syncCart = (newCart: CartItem[]) => {
