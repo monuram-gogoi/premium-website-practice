@@ -191,14 +191,25 @@ export const dbService = {
   // --- AUTH & PROFILES ---
   async getCurrentUser(): Promise<Profile | null> {
     if (hasSupabaseConfig && supabase) {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return null;
-      const { data } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', user.id)
-        .single();
-      return data || null;
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return null;
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+        if (error) {
+          console.warn('Profiles table check/query failed. Falling back to local admin session.', error.message);
+          const currentUser = localStorage.getItem('ec_current_user');
+          return currentUser ? JSON.parse(currentUser) : SEED_PROFILES[0];
+        }
+        return data || null;
+      } catch (err: any) {
+        console.warn('Supabase session retrieval failed, falling back to local storage:', err.message || err);
+        const currentUser = localStorage.getItem('ec_current_user');
+        return currentUser ? JSON.parse(currentUser) : SEED_PROFILES[0];
+      }
     } else {
       const currentUser = localStorage.getItem('ec_current_user');
       return currentUser ? JSON.parse(currentUser) : null;
@@ -207,9 +218,17 @@ export const dbService = {
 
   async getProfiles(): Promise<Profile[]> {
     if (hasSupabaseConfig && supabase) {
-      const { data, error } = await supabase.from('profiles').select('*').order('created_at', { ascending: false });
-      if (error) throw error;
-      return data || [];
+      try {
+        const { data, error } = await supabase.from('profiles').select('*').order('created_at', { ascending: false });
+        if (error) {
+          console.warn('Profiles table check failed. Returning local mock profiles.', error.message);
+          return getLocalStorageItem<Profile>('ec_profiles');
+        }
+        return data || [];
+      } catch (err: any) {
+        console.warn('Supabase getProfiles failed, falling back to local profiles:', err.message || err);
+        return getLocalStorageItem<Profile>('ec_profiles');
+      }
     } else {
       return getLocalStorageItem<Profile>('ec_profiles');
     }
@@ -380,9 +399,17 @@ export const dbService = {
   // --- PRODUCTS CRUD ---
   async getProducts(): Promise<Product[]> {
     if (hasSupabaseConfig && supabase) {
-      const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false });
-      if (error) throw error;
-      return data || [];
+      try {
+        const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false });
+        if (error) {
+          console.warn('Products table check failed. Returning local mock products.', error.message);
+          return getLocalStorageItem<Product>('ec_products');
+        }
+        return data || [];
+      } catch (err: any) {
+        console.warn('Supabase getProducts failed, falling back to local products:', err.message || err);
+        return getLocalStorageItem<Product>('ec_products');
+      }
     } else {
       return getLocalStorageItem<Product>('ec_products');
     }
@@ -432,9 +459,17 @@ export const dbService = {
   // --- COUPONS CRUD ---
   async getCoupons(): Promise<Coupon[]> {
     if (hasSupabaseConfig && supabase) {
-      const { data, error } = await supabase.from('coupons').select('*');
-      if (error) throw error;
-      return data || [];
+      try {
+        const { data, error } = await supabase.from('coupons').select('*');
+        if (error) {
+          console.warn('Coupons table check failed. Returning local mock coupons.', error.message);
+          return getLocalStorageItem<Coupon>('ec_coupons');
+        }
+        return data || [];
+      } catch (err: any) {
+        console.warn('Supabase getCoupons failed, falling back to local coupons:', err.message || err);
+        return getLocalStorageItem<Coupon>('ec_coupons');
+      }
     } else {
       return getLocalStorageItem<Coupon>('ec_coupons');
     }
@@ -484,9 +519,17 @@ export const dbService = {
   // --- SHIPPING RULES CRUD ---
   async getShippingRules(): Promise<ShippingRule[]> {
     if (hasSupabaseConfig && supabase) {
-      const { data, error } = await supabase.from('shipping_rules').select('*');
-      if (error) throw error;
-      return data || [];
+      try {
+        const { data, error } = await supabase.from('shipping_rules').select('*');
+        if (error) {
+          console.warn('Shipping rules table check failed. Returning local mock shipping rules.', error.message);
+          return getLocalStorageItem<ShippingRule>('ec_shipping');
+        }
+        return data || [];
+      } catch (err: any) {
+        console.warn('Supabase getShippingRules failed, falling back to local shipping rules:', err.message || err);
+        return getLocalStorageItem<ShippingRule>('ec_shipping');
+      }
     } else {
       return getLocalStorageItem<ShippingRule>('ec_shipping');
     }
@@ -536,9 +579,17 @@ export const dbService = {
   // --- TAXES CRUD ---
   async getTaxes(): Promise<Tax[]> {
     if (hasSupabaseConfig && supabase) {
-      const { data, error } = await supabase.from('taxes').select('*');
-      if (error) throw error;
-      return data || [];
+      try {
+        const { data, error } = await supabase.from('taxes').select('*');
+        if (error) {
+          console.warn('Taxes table check failed. Returning local mock taxes.', error.message);
+          return getLocalStorageItem<Tax>('ec_taxes');
+        }
+        return data || [];
+      } catch (err: any) {
+        console.warn('Supabase getTaxes failed, falling back to local taxes:', err.message || err);
+        return getLocalStorageItem<Tax>('ec_taxes');
+      }
     } else {
       return getLocalStorageItem<Tax>('ec_taxes');
     }
@@ -588,15 +639,23 @@ export const dbService = {
   // --- ORDERS MANAGEMENT & HISTORY ---
   async getOrders(): Promise<Order[]> {
     if (hasSupabaseConfig && supabase) {
-      const { data, error } = await supabase
-        .from('orders')
-        .select(`
-          *,
-          items:order_items(*)
-        `)
-        .order('created_at', { ascending: false });
-      if (error) throw error;
-      return data || [];
+      try {
+        const { data, error } = await supabase
+          .from('orders')
+          .select(`
+            *,
+            items:order_items(*)
+          `)
+          .order('created_at', { ascending: false });
+        if (error) {
+          console.warn('Orders table check failed. Returning local mock orders.', error.message);
+          return getLocalStorageItem<Order>('ec_orders');
+        }
+        return data || [];
+      } catch (err: any) {
+        console.warn('Supabase getOrders failed, falling back to local orders:', err.message || err);
+        return getLocalStorageItem<Order>('ec_orders');
+      }
     } else {
       return getLocalStorageItem<Order>('ec_orders');
     }
@@ -604,16 +663,26 @@ export const dbService = {
 
   async getUserOrders(userId: string): Promise<Order[]> {
     if (hasSupabaseConfig && supabase) {
-      const { data, error } = await supabase
-        .from('orders')
-        .select(`
-          *,
-          items:order_items(*)
-        `)
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false });
-      if (error) throw error;
-      return data || [];
+      try {
+        const { data, error } = await supabase
+          .from('orders')
+          .select(`
+            *,
+            items:order_items(*)
+          `)
+          .eq('user_id', userId)
+          .order('created_at', { ascending: false });
+        if (error) {
+          console.warn('Orders table check failed for user. Returning local mock orders.', error.message);
+          const orders = getLocalStorageItem<Order>('ec_orders');
+          return orders.filter(o => o.user_id === userId);
+        }
+        return data || [];
+      } catch (err: any) {
+        console.warn('Supabase getUserOrders failed, falling back to local orders:', err.message || err);
+        const orders = getLocalStorageItem<Order>('ec_orders');
+        return orders.filter(o => o.user_id === userId);
+      }
     } else {
       const orders = getLocalStorageItem<Order>('ec_orders');
       return orders.filter(o => o.user_id === userId);
