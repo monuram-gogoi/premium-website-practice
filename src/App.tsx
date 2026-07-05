@@ -13,7 +13,8 @@ import AdminLogin from './pages/admin/AdminLogin';
 import Login from './pages/Login';
 import { Analytics } from "@vercel/analytics/react";
 import RouteFix from './components/RouteFix';
-import { ProtectedAdminRoute, PublicAdminRoute } from './components/AdminRoutes';
+import ProtectedAdminRoute from './components/ProtectedAdminRoute';
+import PublicAdminRoute from './components/PublicAdminRoute';
 
 import { Product, CartItem, Profile, Order } from './types';
 import { dbService } from './services/db';
