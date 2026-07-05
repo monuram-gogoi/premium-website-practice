@@ -24,7 +24,18 @@ interface PromoCarouselProps {
 export default function PromoCarousel({ onCategorySelect }: PromoCarouselProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [imageFailures, setImageFailures] = useState<Record<number, boolean>>({});
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const getSlideImage = (slide: PromoSlide) => {
+    if (imageFailures[slide.id]) {
+      return slide.image;
+    }
+    if (slide.id === 1) return '/images/promo_watch.png';
+    if (slide.id === 2) return '/images/promo_headphones.png';
+    if (slide.id === 3) return '/images/promo_bag.png';
+    return slide.image;
+  };
 
   const slides: PromoSlide[] = [
     {
@@ -165,9 +176,13 @@ export default function PromoCarousel({ onCategorySelect }: PromoCarouselProps) 
             {/* Ambient Lighting Background Circle Behind the Image */}
             <div className="absolute inset-0 rounded-full bg-slate-900/50 scale-105 filter blur-md"></div>
             <img
-              src={activeSlide.image}
+              src={getSlideImage(activeSlide)}
+              onError={() => {
+                setImageFailures(prev => ({ ...prev, [activeSlide.id]: true }));
+              }}
               alt={activeSlide.title}
               className="w-full h-full object-contain drop-shadow-[0_25px_50px_rgba(0,0,0,0.9)] transition-transform duration-[1000ms] group-hover:scale-105"
+              referrerPolicy="no-referrer"
             />
           </div>
 

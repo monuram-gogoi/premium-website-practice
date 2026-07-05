@@ -19,6 +19,7 @@ export default function StoreFront({
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [sortBy, setSortBy] = useState('featured');
+  const [heroHeadphonesSrc, setHeroHeadphonesSrc] = useState('/images/hero_headphones.png');
 
   // Categories extraction
   const categories = useMemo(() => {
@@ -177,9 +178,15 @@ export default function StoreFront({
             {/* Soft Ambient shadow under headphones to match exactly the premium 3D look */}
             <div className="absolute -bottom-8 left-[10%] right-[10%] h-8 bg-slate-950/5 blur-2xl rounded-full"></div>
             <img
-              src="https://images.unsplash.com/photo-1613040809024-b4ef7ba99bc3?w=1000&auto=format&fit=crop&q=80"
+              src={heroHeadphonesSrc}
+              onError={() => {
+                if (heroHeadphonesSrc !== 'https://images.unsplash.com/photo-1613040809024-b4ef7ba99bc3?w=1000&auto=format&fit=crop&q=80') {
+                  setHeroHeadphonesSrc('https://images.unsplash.com/photo-1613040809024-b4ef7ba99bc3?w=1000&auto=format&fit=crop&q=80');
+                }
+              }}
               alt="Experience Pure Sound Premium Headphones"
               className="w-full h-full object-contain drop-shadow-[0_20px_40px_rgba(15,23,42,0.1)] hover:scale-105 transition-transform duration-[800ms]"
+              referrerPolicy="no-referrer"
             />
           </div>
         </div>
