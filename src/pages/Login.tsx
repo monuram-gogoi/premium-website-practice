@@ -6,13 +6,19 @@ import { dbService } from '../services/db';
 interface LoginProps {
   onLoginSuccess: (profile: Profile) => void;
   setCurrentView: (view: { page: string; productId?: string }) => void;
+  initialSignUp?: boolean;
 }
 
 export default function Login({
   onLoginSuccess,
-  setCurrentView
+  setCurrentView,
+  initialSignUp = false
 }: LoginProps) {
-  const [isSignUp, setIsSignUp] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(initialSignUp);
+
+  React.useEffect(() => {
+    setIsSignUp(initialSignUp);
+  }, [initialSignUp]);
   const [email, setEmail] = useState('');
   const [fullName, setFullName] = useState('');
   const [selectedRole, setSelectedRole] = useState<'admin' | 'customer'>('admin'); // default admin for easy testing!

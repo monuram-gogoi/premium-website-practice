@@ -22,9 +22,9 @@ import { dbService } from './services/db';
 export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [currentView, _setCurrentView] = useState<{ page: string; productId?: string }>({ page: 'store' });
+  const [currentView, _setCurrentView] = useState<{ page: string; productId?: string; tab?: 'orders' | 'profile' }>({ page: 'store' });
 
-  const setCurrentView = (view: { page: string; productId?: string }) => {
+  const setCurrentView = (view: { page: string; productId?: string; tab?: 'orders' | 'profile' }) => {
     _setCurrentView(view);
     if (view.page === 'store') {
       navigate('/');
@@ -33,9 +33,15 @@ export default function App() {
     } else if (view.page === 'checkout') {
       navigate('/checkout');
     } else if (view.page === 'dashboard') {
-      navigate('/profile');
+      if (view.tab === 'profile') {
+        navigate('/profile/edit');
+      } else {
+        navigate('/profile');
+      }
     } else if (view.page === 'login') {
-      navigate('/');
+      navigate('/login');
+    } else if (view.page === 'signup') {
+      navigate('/signup');
     } else if (view.page === 'admin') {
       navigate('/admin');
     } else if (view.page === 'admin-login') {
@@ -111,12 +117,25 @@ export default function App() {
       if (currentView.page !== 'checkout') {
         _setCurrentView({ page: 'checkout' });
       }
-    } else if (path === '/profile') {
-      if (currentView.page !== 'dashboard') {
-        _setCurrentView({ page: 'dashboard' });
+    } else if (path === '/profile' || path === '/profile/edit') {
+      const storedUserString = localStorage.getItem('ec_current_user');
+      const hasSession = currentUser || storedUserString;
+      if (!hasSession) {
+        navigate('/login', { replace: true });
+      } else {
+        const targetTab = path === '/profile/edit' ? 'profile' : 'orders';
+        if (currentView.page !== 'dashboard' || currentView.tab !== targetTab) {
+          _setCurrentView({ page: 'dashboard', tab: targetTab });
+        }
       }
-    } else if (path === '/login') {
-      navigate('/', { replace: true });
+    } else if (path === '/login' || path === '/signup') {
+      const storedUserString = localStorage.getItem('ec_current_user');
+      const hasSession = currentUser || storedUserString;
+      if (hasSession) {
+        navigate('/', { replace: true });
+      } else if (currentView.page !== 'login') {
+        _setCurrentView({ page: 'login' });
+      }
     } else if (path === '/admin' || (path.startsWith('/admin/') && path !== '/admin/login')) {
       if (currentView.page !== 'admin') {
         _setCurrentView({ page: 'admin' });
@@ -145,7 +164,7 @@ export default function App() {
         navigate('/', { replace: true });
       }
     }
-  }, [location.pathname]);
+  }, [location.pathname, currentUser]);
 
   // Sync cart state with local storage
   const syncCart = (newCart: CartItem[]) => {
@@ -209,10 +228,17 @@ export default function App() {
   };
 
   const handleLogout = async () => {
+    const wasAdmin = currentUser?.role === 'admin' || currentView.page === 'admin';
     await dbService.signOut();
+    localStorage.removeItem('ec_current_user');
     setCurrentUser(null);
-    setCurrentView({ page: 'admin-login' });
-    triggerToast('Logged out of secure session.', 'info');
+    if (wasAdmin) {
+      setCurrentView({ page: 'admin-login' });
+      triggerToast('Admin logged out successfully.', 'info');
+    } else {
+      setCurrentView({ page: 'store' });
+      triggerToast('Logged out successfully.', 'success');
+    }
   };
 
   const handleRoleToggle = async () => {
@@ -342,6 +368,7 @@ export default function App() {
             currentUser={currentUser}
             onProfileUpdate={handleProfileUpdate}
             setCurrentView={setCurrentView}
+            initialTab={currentView.tab || 'orders'}
           />
         )}
 
@@ -374,6 +401,7 @@ export default function App() {
               refreshProductsList();
             }}
             setCurrentView={setCurrentView}
+            initialSignUp={location.pathname === '/signup'}
           />
         )}
 

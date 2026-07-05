@@ -6,15 +6,21 @@ import { dbService } from '../services/db';
 interface UserDashboardProps {
   currentUser: Profile | null;
   onProfileUpdate: (updated: Profile) => void;
-  setCurrentView: (view: { page: string; productId?: string }) => void;
+  setCurrentView: (view: { page: string; productId?: string; tab?: 'orders' | 'profile' }) => void;
+  initialTab?: 'orders' | 'profile';
 }
 
 export default function UserDashboard({
   currentUser,
   onProfileUpdate,
-  setCurrentView
+  setCurrentView,
+  initialTab = 'orders'
 }: UserDashboardProps) {
-  const [activeSubTab, setActiveSubTab] = useState<'orders' | 'profile' | 'addresses'>('orders');
+  const [activeSubTab, setActiveSubTab] = useState<'orders' | 'profile' | 'addresses'>(initialTab);
+
+  useEffect(() => {
+    setActiveSubTab(initialTab);
+  }, [initialTab]);
   const [orders, setOrders] = useState<Order[]>([]);
   const [loadingOrders, setLoadingOrders] = useState(false);
 

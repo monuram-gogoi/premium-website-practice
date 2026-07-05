@@ -64,10 +64,8 @@ export default function AdminLogin({ onLoginSuccess, setCurrentView }: AdminLogi
       }
 
       setSuccess('Admin session authorized! Loading console...');
-      setTimeout(() => {
-        onLoginSuccess(profile);
-        setCurrentView({ page: 'admin' });
-      }, 1000);
+      onLoginSuccess(profile);
+      setCurrentView({ page: 'admin' });
     } catch (err: any) {
       setError(err.message || 'Authentication rejected. Unauthorized access.');
     } finally {
