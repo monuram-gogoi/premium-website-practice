@@ -19,7 +19,7 @@ export default function StoreFront({
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [sortBy, setSortBy] = useState('featured');
-  const [heroHeadphonesSrc, setHeroHeadphonesSrc] = useState('/images/hero_headphones.png');
+  const [heroHeadphonesSrc, setHeroHeadphonesSrc] = useState('public/images/ChatGPT Image Jul 6, 2026, 01_16_41 AM.png');
 
   // Categories extraction
   const categories = useMemo(() => {
