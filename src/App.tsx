@@ -35,7 +35,7 @@ export default function App() {
     } else if (view.page === 'dashboard') {
       navigate('/profile');
     } else if (view.page === 'login') {
-      navigate('/login');
+      navigate('/');
     } else if (view.page === 'admin') {
       navigate('/admin');
     } else if (view.page === 'admin-login') {
@@ -116,9 +116,7 @@ export default function App() {
         _setCurrentView({ page: 'dashboard' });
       }
     } else if (path === '/login') {
-      if (currentView.page !== 'login') {
-        _setCurrentView({ page: 'login' });
-      }
+      navigate('/', { replace: true });
     } else if (path === '/admin' || (path.startsWith('/admin/') && path !== '/admin/login')) {
       if (currentView.page !== 'admin') {
         _setCurrentView({ page: 'admin' });
@@ -213,7 +211,7 @@ export default function App() {
   const handleLogout = async () => {
     await dbService.signOut();
     setCurrentUser(null);
-    setCurrentView({ page: 'store' });
+    setCurrentView({ page: 'admin-login' });
     triggerToast('Logged out of secure session.', 'info');
   };
 
@@ -352,6 +350,7 @@ export default function App() {
             <AdminDashboard
               currentUser={currentUser}
               setCurrentView={setCurrentView}
+              onLogout={handleLogout}
             />
           </ProtectedAdminRoute>
         )}

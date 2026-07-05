@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   Package, ShoppingCart, Percent, Truck, PercentSquare, Eye, Edit2, Trash2, 
-  Plus, Save, Users, RefreshCw, Layers, CheckCircle2, AlertCircle, Coins 
+  Plus, Save, Users, RefreshCw, Layers, CheckCircle2, AlertCircle, Coins, LogOut 
 } from 'lucide-react';
 import { Product, Coupon, ShippingRule, Tax, Order, Profile } from '../../types';
 import { dbService } from '../../services/db';
@@ -10,13 +10,15 @@ import { dbService } from '../../services/db';
 interface AdminDashboardProps {
   currentUser: Profile | null;
   setCurrentView: (view: { page: string; productId?: string }) => void;
+  onLogout: () => void;
 }
 
 type AdminTab = 'products' | 'orders' | 'coupons' | 'shipping' | 'taxes' | 'users';
 
 export default function AdminDashboard({
   currentUser,
-  setCurrentView
+  setCurrentView,
+  onLogout
 }: AdminDashboardProps) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -329,6 +331,15 @@ export default function AdminDashboard({
             title="Reload database lists"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+          </button>
+
+          <button
+            onClick={onLogout}
+            className="flex items-center space-x-1.5 px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-lg transition-all text-xs font-semibold cursor-pointer"
+            title="Securely Sign Out"
+          >
+            <LogOut className="w-4 h-4" />
+            <span>Sign Out</span>
           </button>
         </div>
       </div>

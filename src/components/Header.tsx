@@ -1,4 +1,4 @@
-import { ShoppingBag, User, LogOut, ArrowRight } from 'lucide-react';
+import { ShoppingBag } from 'lucide-react';
 import { Profile, CartItem } from '../types';
 
 interface HeaderProps {
@@ -43,14 +43,6 @@ export default function Header({
             </div>
           </div>
 
-          {/* Quick Sandbox Warning Indicator */}
-          {!currentUser && (
-            <div className="hidden md:flex items-center space-x-2 px-3 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-medium border border-amber-200">
-              <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
-              <span>Demo Mode: Click Login to start testing</span>
-            </div>
-          )}
-
           {/* Navigation Controls */}
           <div className="flex items-center space-x-4">
             
@@ -78,37 +70,6 @@ export default function Header({
                 </span>
               )}
             </button>
-
-            {/* User Access Controls */}
-            {currentUser ? (
-              <div className="flex items-center space-x-2 border-l border-slate-100 pl-4">
-                <button
-                  onClick={() => setCurrentView({ page: 'dashboard' })}
-                  className="flex items-center space-x-1 px-3 py-1.5 rounded-lg text-sm font-medium text-slate-700 hover:text-indigo-600 hover:bg-slate-50 transition-colors"
-                >
-                  <User className="w-4 h-4 text-slate-400" />
-                  <span className="hidden md:inline max-w-[100px] truncate">
-                    {currentUser.full_name || currentUser.email}
-                  </span>
-                </button>
-
-                <button
-                  onClick={onLogout}
-                  title="Sign Out"
-                  className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
-                >
-                  <LogOut className="w-4 h-4" />
-                </button>
-              </div>
-            ) : (
-              <button
-                onClick={() => setCurrentView({ page: 'login' })}
-                className="flex items-center space-x-1.5 px-4 py-1.5 rounded-lg text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 shadow-md shadow-indigo-100 transition-all"
-              >
-                <span>Login</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            )}
 
           </div>
         </div>

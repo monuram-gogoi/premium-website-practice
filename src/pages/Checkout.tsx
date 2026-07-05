@@ -27,14 +27,30 @@ export default function Checkout({
   onClearCart,
   onSetLastOrder
 }: CheckoutProps) {
+  const fallbackCustomer: Profile = {
+    id: 'user-customer',
+    email: 'guest@example.com',
+    role: 'customer',
+    full_name: 'Guest Customer',
+    phone: '',
+    address: '',
+    city: '',
+    state: '',
+    zip: '',
+    country: 'India',
+    created_at: new Date().toISOString()
+  };
+
+  const activeUser = currentUser || fallbackCustomer;
+
   const [address, setAddress] = useState({
-    full_name: currentUser?.full_name || '',
-    phone: currentUser?.phone || '',
-    address: currentUser?.address || '',
-    city: currentUser?.city || '',
-    state: currentUser?.state || '',
-    zip: currentUser?.zip || '',
-    country: currentUser?.country || 'India'
+    full_name: activeUser.full_name || '',
+    phone: activeUser.phone || '',
+    address: activeUser.address || '',
+    city: activeUser.city || '',
+    state: activeUser.state || '',
+    zip: activeUser.zip || '',
+    country: activeUser.country || 'India'
   });
 
   const [paymentMethod, setPaymentMethod] = useState<'razorpay' | 'cod'>('razorpay');
@@ -46,16 +62,16 @@ export default function Checkout({
   const [mockPaymentData, setMockPaymentData] = useState<any>(null);
 
   useEffect(() => {
-    // Pre-populate address if currentUser changes
-    if (currentUser) {
+    // Pre-populate address if activeUser changes
+    if (activeUser) {
       setAddress({
-        full_name: currentUser.full_name || '',
-        phone: currentUser.phone || '',
-        address: currentUser.address || '',
-        city: currentUser.city || '',
-        state: currentUser.state || '',
-        zip: currentUser.zip || '',
-        country: currentUser.country || 'India'
+        full_name: activeUser.full_name || '',
+        phone: activeUser.phone || '',
+        address: activeUser.address || '',
+        city: activeUser.city || '',
+        state: activeUser.state || '',
+        zip: activeUser.zip || '',
+        country: activeUser.country || 'India'
       });
     }
   }, [currentUser]);
@@ -76,20 +92,13 @@ export default function Checkout({
       return;
     }
 
-    if (!currentUser) {
-      // Must login to checkout per standard eCommerce design
-      alert('Please Login/Signup to record orders and track dispatch histories.');
-      setCurrentView({ page: 'login' });
-      return;
-    }
-
     setIsProcessing(true);
 
     try {
       if (paymentMethod === 'cod') {
         // Cash on delivery logic
         const order = await dbService.createOrder({
-          user_id: currentUser.id,
+          user_id: activeUser.id,
           status: 'pending',
           total_amount: calcSummary.total,
           subtotal: calcSummary.subtotal,
@@ -150,7 +159,7 @@ export default function Checkout({
                 if (verifyRes.ok) {
                   // Save order in db
                   const order = await dbService.createOrder({
-                    user_id: currentUser.id,
+                    user_id: activeUser.id,
                     status: 'paid',
                     total_amount: calcSummary.total,
                     subtotal: calcSummary.subtotal,
@@ -179,7 +188,7 @@ export default function Checkout({
             },
             prefill: {
               name: address.full_name,
-              email: currentUser.email,
+              email: activeUser.email,
               contact: address.phone
             },
             theme: {
@@ -208,12 +217,12 @@ export default function Checkout({
     setShowMockModal(false);
     setIsProcessing(true);
 
-    if (success && currentUser) {
+    if (success && activeUser) {
       try {
         const mockPaymentId = `pay_${Math.random().toString(36).substr(2, 9)}`;
         
         const order = await dbService.createOrder({
-          user_id: currentUser.id,
+          user_id: activeUser.id,
           status: 'paid',
           total_amount: calcSummary.total,
           subtotal: calcSummary.subtotal,
@@ -268,7 +277,7 @@ export default function Checkout({
             <div className="p-4 bg-slate-50 rounded-2xl space-y-2 text-xs">
               <div className="flex justify-between">
                 <span className="text-slate-400 font-light">Client billing email:</span>
-                <span className="font-semibold text-slate-800">{currentUser?.email}</span>
+                <span className="font-semibold text-slate-800">{activeUser?.email}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-400 font-light">Calculated order amount:</span>
