@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Search, SlidersHorizontal, Plus, ArrowRight, Eye, Star, Clock, Truck, Battery, Volume2, Music, Bluetooth } from 'lucide-react';
+import { Search, SlidersHorizontal, Plus, ArrowRight, Eye, Star, Clock, Truck, Battery, Volume2, Music, Bluetooth, Headphones } from 'lucide-react';
 import { Product, CartItem } from '../types';
 import PromoCarousel from '../components/PromoCarousel';
 
@@ -19,7 +19,8 @@ export default function StoreFront({
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [sortBy, setSortBy] = useState('featured');
-  const [heroHeadphonesSrc, setHeroHeadphonesSrc] = useState('public/images/ChatGPT Image Jul 6, 2026, 01_16_41 AM.png');
+  const [heroHeadphonesSrc, setHeroHeadphonesSrc] = useState('/images/ChatGPT Image Jul 6, 2026, 01_16_41 AM.png');
+  const [imageError, setImageError] = useState(false);
 
   // Categories extraction
   const categories = useMemo(() => {
@@ -177,17 +178,27 @@ export default function StoreFront({
           <div className="relative w-72 h-72 sm:w-96 sm:h-96 md:w-[420px] md:h-[420px] select-none">
             {/* Soft Ambient shadow under headphones to match exactly the premium 3D look */}
             <div className="absolute -bottom-8 left-[10%] right-[10%] h-8 bg-slate-950/5 blur-2xl rounded-full"></div>
-            <img
-              src={heroHeadphonesSrc}
-              onError={() => {
-                if (heroHeadphonesSrc !== 'https://images.unsplash.com/photo-1613040809024-b4ef7ba99bc3?w=1000&auto=format&fit=crop&q=80') {
-                  setHeroHeadphonesSrc('https://images.unsplash.com/photo-1613040809024-b4ef7ba99bc3?w=1000&auto=format&fit=crop&q=80');
-                }
-              }}
-              alt="Experience Pure Sound Premium Headphones"
-              className="w-full h-full object-contain drop-shadow-[0_20px_40px_rgba(15,23,42,0.1)] hover:scale-105 transition-transform duration-[800ms]"
-              referrerPolicy="no-referrer"
-            />
+            {imageError ? (
+              <div className="w-full h-full flex items-center justify-center bg-gradient-to-tr from-indigo-500/10 to-blue-500/10 rounded-3xl border border-slate-200/50 shadow-inner relative group p-8">
+                <div className="relative z-10 flex flex-col items-center justify-center text-indigo-600">
+                  <div className="p-8 rounded-full bg-white shadow-xl border border-indigo-50 text-indigo-600 mb-4 transition-transform duration-500 group-hover:scale-110">
+                    <Headphones className="w-20 h-20 sm:w-28 sm:h-28 stroke-[1.25]" />
+                  </div>
+                  <span className="text-xs font-bold text-indigo-600 tracking-widest uppercase font-mono bg-indigo-50/80 px-3 py-1 rounded-full border border-indigo-100">Pure Sound Engine</span>
+                  <p className="text-[11px] text-slate-400 mt-2 font-light">Pro Series Wireless</p>
+                </div>
+              </div>
+            ) : (
+              <img
+                src={heroHeadphonesSrc}
+                onError={() => {
+                  setImageError(true);
+                }}
+                alt="Experience Pure Sound Premium Headphones"
+                className="w-full h-full object-contain drop-shadow-[0_20px_40px_rgba(15,23,42,0.1)] hover:scale-105 transition-transform duration-[800ms]"
+                referrerPolicy="no-referrer"
+              />
+            )}
           </div>
         </div>
 
@@ -307,7 +318,7 @@ export default function StoreFront({
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 lg:gap-8">
           {filteredProducts.map((product) => {
             const inCartQty = getCartQuantity(product.id);
             const isOutOfStock = product.stock <= 0;
@@ -330,13 +341,13 @@ export default function StoreFront({
                   />
                   
                   {/* Category Pill */}
-                  <span className="absolute top-3 left-3 px-2 py-0.5 bg-white/95 border border-slate-200 text-[10px] font-bold text-slate-700 rounded-md shadow-xs uppercase tracking-wider font-mono">
+                  <span className="absolute top-2 left-2 sm:top-3 sm:left-3 px-1.5 py-0.5 bg-white/95 border border-slate-200 text-[8px] sm:text-[10px] font-bold text-slate-700 rounded-md shadow-xs uppercase tracking-wider font-mono">
                     {product.category}
                   </span>
 
                   {/* Discount Badge */}
                   {discountPercentage > 0 && (
-                    <span className="absolute top-3 right-3 px-2 py-0.5 bg-rose-600 text-[10px] font-bold text-white rounded-md shadow-xs tracking-wider">
+                    <span className="absolute top-2 right-2 sm:top-3 sm:right-3 px-1.5 py-0.5 bg-rose-600 text-[8px] sm:text-[10px] font-bold text-white rounded-md shadow-xs tracking-wider">
                       -{discountPercentage}%
                     </span>
                   )}
@@ -344,14 +355,14 @@ export default function StoreFront({
                   {/* Out of stock cover */}
                   {isOutOfStock && (
                     <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center">
-                      <span className="px-4 py-1.5 bg-white text-slate-900 font-bold text-xs uppercase tracking-widest rounded-lg shadow-md">
+                      <span className="px-2 py-1 sm:px-4 sm:py-1.5 bg-white text-slate-900 font-bold text-[9px] sm:text-xs uppercase tracking-widest rounded-lg shadow-md">
                         Sold Out
                       </span>
                     </div>
                   )}
 
-                  {/* Quick look action sheet */}
-                  <div className="absolute inset-0 bg-slate-900/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-4">
+                  {/* Quick look action sheet (Desktop only) */}
+                  <div className="hidden sm:flex absolute inset-0 bg-slate-900/10 opacity-0 group-hover:opacity-100 transition-opacity items-end justify-center pb-4">
                     <button 
                       onClick={(e) => {
                         e.stopPropagation();
@@ -366,36 +377,36 @@ export default function StoreFront({
                 </div>
 
                 {/* Card Info Box */}
-                <div className="p-5 flex-1 flex flex-col">
+                <div className="p-3 sm:p-5 flex-1 flex flex-col">
                   {/* Rating / Review placeholder */}
-                  <div className="flex items-center space-x-1 mb-2">
+                  <div className="flex items-center space-x-1 mb-1 sm:mb-2">
                     <div className="flex text-amber-400">
                       {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-3 h-3 fill-current" />
+                        <Star key={i} className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-current" />
                       ))}
                     </div>
-                    <span className="text-[10px] font-bold text-slate-400 font-mono">5.0</span>
+                    <span className="text-[9px] sm:text-[10px] font-bold text-slate-400 font-mono">5.0</span>
                   </div>
 
                   <h3 
                     onClick={() => setCurrentView({ page: 'detail', productId: product.id })}
-                    className="font-display font-bold text-base text-slate-900 hover:text-indigo-600 transition-colors cursor-pointer line-clamp-1"
+                    className="font-display font-bold text-xs sm:text-base text-slate-900 hover:text-indigo-600 transition-colors cursor-pointer line-clamp-1"
                   >
                     {product.name}
                   </h3>
                   
-                  <p className="text-slate-500 text-xs font-light mt-1.5 mb-4 line-clamp-2 leading-relaxed">
+                  <p className="text-slate-500 text-[10px] sm:text-xs font-light mt-1 mb-2 sm:mb-4 line-clamp-1 sm:line-clamp-2 leading-relaxed">
                     {product.description}
                   </p>
 
-                  <div className="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between">
-                    <div>
+                  <div className="mt-auto pt-2 sm:pt-4 border-t border-slate-100 flex flex-col xs:flex-row xs:items-center justify-between gap-1.5 sm:gap-2">
+                    <div className="flex items-baseline space-x-1.5 xs:block">
                       {product.compare_at_price && (
-                        <span className="block text-[11px] text-slate-400 line-through">
+                        <span className="block text-[9px] sm:text-[11px] text-slate-400 line-through">
                           ₹{product.compare_at_price.toLocaleString('en-IN')}
                         </span>
                       )}
-                      <span className="text-base font-extrabold text-slate-900 font-mono">
+                      <span className="text-xs sm:text-base font-extrabold text-slate-900 font-mono">
                         ₹{product.price.toLocaleString('en-IN')}
                       </span>
                     </div>
@@ -403,21 +414,21 @@ export default function StoreFront({
                     {isOutOfStock ? (
                       <button
                         disabled
-                        className="px-3 py-1.5 bg-slate-100 text-slate-400 text-xs font-semibold rounded-lg cursor-not-allowed"
+                        className="w-full xs:w-auto px-2 py-1 sm:px-3 sm:py-1.5 bg-slate-100 text-slate-400 text-[10px] sm:text-xs font-semibold rounded-lg cursor-not-allowed text-center"
                       >
                         Out of Stock
                       </button>
                     ) : (
                       <button
                         onClick={() => onAddToCart(product)}
-                        className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all flex items-center space-x-1 ${
+                        className={`w-full xs:w-auto px-2 py-1 sm:px-3 sm:py-1.5 text-[10px] sm:text-xs font-semibold rounded-lg transition-all flex items-center justify-center space-x-1 ${
                           inCartQty > 0
                             ? 'bg-indigo-50 text-indigo-700 hover:bg-indigo-100/80 border border-indigo-200'
                             : 'bg-slate-900 text-white hover:bg-indigo-600'
                         }`}
                       >
-                        <Plus className="w-3.5 h-3.5" />
-                        <span>{inCartQty > 0 ? `In Cart (${inCartQty})` : 'Add To Cart'}</span>
+                        <Plus className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                        <span>{inCartQty > 0 ? `In Cart (${inCartQty})` : 'Add'}</span>
                       </button>
                     )}
                   </div>

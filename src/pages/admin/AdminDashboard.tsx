@@ -3,8 +3,8 @@ import {
   Package, ShoppingCart, Percent, Truck, PercentSquare, Eye, Edit2, Trash2, 
   Plus, Save, Users, RefreshCw, Layers, CheckCircle2, AlertCircle, Coins 
 } from 'lucide-react';
-import { Product, Coupon, ShippingRule, Tax, Order, Profile } from '../types';
-import { dbService } from '../services/db';
+import { Product, Coupon, ShippingRule, Tax, Order, Profile } from '../../types';
+import { dbService } from '../../services/db';
 
 interface AdminDashboardProps {
   currentUser: Profile | null;

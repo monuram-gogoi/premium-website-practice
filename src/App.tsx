@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Analytics } from '@vercel/analytics/react';
 import Header from './components/Header';
 import StoreFront from './pages/StoreFront';
 import ProductDetail from './pages/ProductDetail';
@@ -8,8 +7,10 @@ import Checkout from './pages/Checkout';
 import OrderSuccess from './pages/OrderSuccess';
 import OrderFailure from './pages/OrderFailure';
 import UserDashboard from './pages/UserDashboard';
-import AdminDashboard from './pages/AdminDashboard';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminLogin from './pages/admin/AdminLogin';
 import Login from './pages/Login';
+import { Analytics } from "@vercel/analytics/react";
 
 import { Product, CartItem, Profile, Order } from './types';
 import { dbService } from './services/db';
@@ -62,17 +63,31 @@ export default function App() {
     initApp();
   }, []);
 
-  // Sync state and path-based routing
+  // Unified path-based router and state synchronizer
   useEffect(() => {
     const handleRouting = () => {
       const path = window.location.pathname;
-      if (path === '/admin/login' || path === '/login' || path === '/dashboard/login') {
-        window.history.replaceState(null, '', '/admin');
-        setCurrentView({ page: 'admin' });
-      } else if (path === '/admin') {
-        setCurrentView({ page: 'admin' });
-      } else if (currentView.page === 'admin') {
-        setCurrentView({ page: 'store' });
+      const isAdminUser = currentUser?.role === 'admin';
+
+      if (path === '/admin') {
+        if (isAdminUser) {
+          setCurrentView({ page: 'admin' });
+        } else {
+          window.history.replaceState(null, '', '/admin/login');
+          setCurrentView({ page: 'admin-login' });
+        }
+      } else if (path === '/admin/login') {
+        if (isAdminUser) {
+          window.history.replaceState(null, '', '/admin');
+          setCurrentView({ page: 'admin' });
+        } else {
+          setCurrentView({ page: 'admin-login' });
+        }
+      } else {
+        // If they navigate via back/forward button to non-admin path, clear admin view
+        if (currentView.page === 'admin' || currentView.page === 'admin-login') {
+          setCurrentView({ page: 'store' });
+        }
       }
     };
 
@@ -82,20 +97,34 @@ export default function App() {
     return () => {
       window.removeEventListener('popstate', handleRouting);
     };
-  }, []);
+  }, [currentUser]);
 
+  // Sync window.location when currentView.page changes
   useEffect(() => {
     const path = window.location.pathname;
+    const isAdminUser = currentUser?.role === 'admin';
+
     if (currentView.page === 'admin') {
-      if (path !== '/admin') {
-        window.history.pushState(null, '', '/admin');
+      if (isAdminUser) {
+        if (path !== '/admin') {
+          window.history.pushState(null, '', '/admin');
+        }
+      } else {
+        // Redirection to login if not authorized
+        window.history.pushState(null, '', '/admin/login');
+        setCurrentView({ page: 'admin-login' });
+      }
+    } else if (currentView.page === 'admin-login') {
+      if (path !== '/admin/login') {
+        window.history.pushState(null, '', '/admin/login');
       }
     } else {
-      if (path === '/admin' || path === '/admin/login' || path === '/login' || path === '/dashboard/login') {
+      // Non-admin views should clear the admin address bar path
+      if (path === '/admin' || path === '/admin/login') {
         window.history.pushState(null, '', '/');
       }
     }
-  }, [currentView.page]);
+  }, [currentView.page, currentUser]);
 
   // Sync cart state with local storage
   const syncCart = (newCart: CartItem[]) => {
@@ -204,6 +233,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col justify-between">
+      <Analytics />
       
       {/* Toast Alert System */}
       {toast && (
@@ -293,36 +323,21 @@ export default function App() {
           />
         )}
 
-        {currentView.page === 'admin' && (
-          currentUser?.role === 'admin' ? (
-            <AdminDashboard
-              currentUser={currentUser}
-              setCurrentView={setCurrentView}
-            />
-          ) : (
-            <div className="py-12 max-w-md mx-auto animate-fade-in">
-              <div className="bg-white border border-slate-200 rounded-xl p-6 sm:p-8 shadow-sm space-y-4">
-                <div className="text-center space-y-2">
-                  <span className="px-2.5 py-0.5 bg-red-50 text-red-700 text-[10px] font-mono font-bold rounded-md uppercase tracking-wider">
-                    Restricted Area
-                  </span>
-                  <h1 className="font-display font-extrabold text-xl text-slate-900 tracking-tight text-center">
-                    Admin Authenticate Required
-                  </h1>
-                  <p className="text-xs text-slate-400 font-light max-w-xs mx-auto leading-relaxed text-center">
-                    Please log in with an authorized administrator account to access the control panel.
-                  </p>
-                </div>
-                <Login
-                  onLoginSuccess={(profile) => {
-                    setCurrentUser(profile);
-                    refreshProductsList();
-                  }}
-                  setCurrentView={setCurrentView}
-                />
-              </div>
-            </div>
-          )
+        {currentView.page === 'admin' && currentUser?.role === 'admin' && (
+          <AdminDashboard
+            currentUser={currentUser}
+            setCurrentView={setCurrentView}
+          />
+        )}
+
+        {currentView.page === 'admin-login' && (
+          <AdminLogin
+            onLoginSuccess={(profile) => {
+              setCurrentUser(profile);
+              refreshProductsList();
+            }}
+            setCurrentView={setCurrentView}
+          />
         )}
 
         {currentView.page === 'login' && (
@@ -381,9 +396,6 @@ export default function App() {
           </div>
         </div>
       </footer>
-
-      {/* Vercel Web Analytics */}
-      <Analytics />
 
     </div>
   );
