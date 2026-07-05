@@ -11,6 +11,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminLogin from './pages/admin/AdminLogin';
 import Login from './pages/Login';
 import { Analytics } from "@vercel/analytics/react";
+import RouteFix from './components/RouteFix';
 
 import { Product, CartItem, Profile, Order } from './types';
 import { dbService } from './services/db';
@@ -233,6 +234,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col justify-between">
+      <RouteFix />
       <Analytics />
       
       {/* Toast Alert System */}
