@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = ((import.meta as any).env?.VITE_SUPABASE_URL as string) || '';
-const supabaseAnonKey = ((import.meta as any).env?.VITE_SUPABASE_ANON_KEY as string) || '';
+//supabase key added here 
+const supabaseUrl ='https://byspunjgnpmrwbcmleuq.supabase.co';
+const supabaseAnonKey ='sb_publishable_JimxbJogPUdLKsnViyr4OA_dFJemvYH';
 
 // Create a safe, optional Supabase client instance.
 // If the key is not defined, we fall back to a local storage mock system so that
