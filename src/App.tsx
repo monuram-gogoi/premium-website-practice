@@ -13,6 +13,7 @@ import AdminLogin from './pages/admin/AdminLogin';
 import Login from './pages/Login';
 import { Analytics } from "@vercel/analytics/react";
 import RouteFix from './components/RouteFix';
+import { ProtectedAdminRoute, PublicAdminRoute } from './components/AdminRoutes';
 
 import { Product, CartItem, Profile, Order } from './types';
 import { dbService } from './services/db';
@@ -95,7 +96,6 @@ export default function App() {
   // Sync view state based on actual URL path location
   useEffect(() => {
     const path = location.pathname;
-    const isAdminUser = currentUser?.role === 'admin';
     const productMatch = path.match(/^\/products\/([^/]+)$/);
 
     if (path === '/') {
@@ -118,21 +118,13 @@ export default function App() {
       if (currentView.page !== 'login') {
         _setCurrentView({ page: 'login' });
       }
-    } else if (path === '/admin') {
-      if (isAdminUser) {
-        if (currentView.page !== 'admin') {
-          _setCurrentView({ page: 'admin' });
-        }
-      } else {
-        navigate('/admin/login', { replace: true });
+    } else if (path === '/admin' || (path.startsWith('/admin/') && path !== '/admin/login')) {
+      if (currentView.page !== 'admin') {
+        _setCurrentView({ page: 'admin' });
       }
     } else if (path === '/admin/login') {
-      if (isAdminUser) {
-        navigate('/admin', { replace: true });
-      } else {
-        if (currentView.page !== 'admin-login') {
-          _setCurrentView({ page: 'admin-login' });
-        }
+      if (currentView.page !== 'admin-login') {
+        _setCurrentView({ page: 'admin-login' });
       }
     } else if (productMatch) {
       const productId = productMatch[1];
@@ -154,7 +146,7 @@ export default function App() {
         navigate('/', { replace: true });
       }
     }
-  }, [location.pathname, currentUser]);
+  }, [location.pathname]);
 
   // Sync cart state with local storage
   const syncCart = (newCart: CartItem[]) => {
@@ -354,21 +346,25 @@ export default function App() {
           />
         )}
 
-        {currentView.page === 'admin' && currentUser?.role === 'admin' && (
-          <AdminDashboard
-            currentUser={currentUser}
-            setCurrentView={setCurrentView}
-          />
+        {currentView.page === 'admin' && (
+          <ProtectedAdminRoute>
+            <AdminDashboard
+              currentUser={currentUser}
+              setCurrentView={setCurrentView}
+            />
+          </ProtectedAdminRoute>
         )}
 
         {currentView.page === 'admin-login' && (
-          <AdminLogin
-            onLoginSuccess={(profile) => {
-              setCurrentUser(profile);
-              refreshProductsList();
-            }}
-            setCurrentView={setCurrentView}
-          />
+          <PublicAdminRoute>
+            <AdminLogin
+              onLoginSuccess={(profile) => {
+                setCurrentUser(profile);
+                refreshProductsList();
+              }}
+              setCurrentView={setCurrentView}
+            />
+          </PublicAdminRoute>
         )}
 
         {currentView.page === 'login' && (

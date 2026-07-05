@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   Package, ShoppingCart, Percent, Truck, PercentSquare, Eye, Edit2, Trash2, 
   Plus, Save, Users, RefreshCw, Layers, CheckCircle2, AlertCircle, Coins 
@@ -17,7 +18,34 @@ export default function AdminDashboard({
   currentUser,
   setCurrentView
 }: AdminDashboardProps) {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState<AdminTab>('products');
+
+  // Sync tab state with URL pathname
+  useEffect(() => {
+    const path = location.pathname;
+    if (path === '/admin/dashboard') {
+      setActiveTab('products');
+    } else if (path === '/admin/products') {
+      setActiveTab('products');
+    } else if (path === '/admin/orders') {
+      setActiveTab('orders');
+    } else if (path === '/admin/coupons') {
+      setActiveTab('coupons');
+    } else if (path === '/admin/shipping') {
+      setActiveTab('shipping');
+    } else if (path === '/admin/categories') {
+      setActiveTab('products');
+    } else if (path === '/admin/settings') {
+      setActiveTab('shipping');
+    } else if (path.startsWith('/admin/')) {
+      const segment = path.split('/')[2];
+      if (['products', 'orders', 'coupons', 'shipping', 'taxes', 'users'].includes(segment)) {
+        setActiveTab(segment as AdminTab);
+      }
+    }
+  }, [location.pathname]);
 
   // Core Data States
   const [products, setProducts] = useState<Product[]>([]);
@@ -333,7 +361,12 @@ export default function AdminDashboard({
           return (
             <button
               key={item.tab}
-              onClick={() => { setActiveTab(item.tab as AdminTab); setActionSuccess(''); setActionError(''); }}
+              onClick={() => { 
+                setActiveTab(item.tab as AdminTab); 
+                setActionSuccess(''); 
+                setActionError(''); 
+                navigate(`/admin/${item.tab}`);
+              }}
               className={`px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap transition-all duration-200 flex items-center space-x-1.5 border ${
                 activeTab === item.tab
                   ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm'
