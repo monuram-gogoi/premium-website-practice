@@ -8,7 +8,7 @@ interface PublicAdminRouteProps {
 
 export default function PublicAdminRoute({ children }: PublicAdminRouteProps) {
   const [isLoading, setIsLoading] = useState(true);
-  const [hasSession, setHasSession] = useState(false);
+  const [hasAdminSession, setHasAdminSession] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,26 +18,50 @@ export default function PublicAdminRoute({ children }: PublicAdminRouteProps) {
       try {
         if (supabase) {
           const { data: { session } } = await supabase.auth.getSession();
-          if (mounted) {
-            if (session) {
-              setHasSession(true);
+          if (!mounted) return;
+
+          if (session) {
+            // Check if user is actually an admin
+            const { data: profile } = await supabase
+              .from('profiles')
+              .select('role')
+              .eq('id', session.user.id)
+              .single();
+
+            if (!mounted) return;
+
+            if (profile && profile.role === 'admin') {
+              setHasAdminSession(true);
               setIsLoading(false);
               navigate('/admin', { replace: true });
             } else {
-              setHasSession(false);
+              setHasAdminSession(false);
               setIsLoading(false);
             }
+          } else {
+            setHasAdminSession(false);
+            setIsLoading(false);
           }
         } else {
           if (mounted) {
-            setHasSession(false);
+            const storedUserString = localStorage.getItem('ec_current_user');
+            if (storedUserString) {
+              const user = JSON.parse(storedUserString);
+              if (user && user.role === 'admin') {
+                setHasAdminSession(true);
+                setIsLoading(false);
+                navigate('/admin', { replace: true });
+                return;
+              }
+            }
+            setHasAdminSession(false);
             setIsLoading(false);
           }
         }
       } catch (err) {
         console.error('Session verification error:', err);
         if (mounted) {
-          setHasSession(false);
+          setHasAdminSession(false);
           setIsLoading(false);
         }
       }
@@ -55,5 +79,5 @@ export default function PublicAdminRoute({ children }: PublicAdminRouteProps) {
     );
   }
 
-  return !hasSession ? <>{children}</> : null;
+  return !hasAdminSession ? <>{children}</> : null;
 }

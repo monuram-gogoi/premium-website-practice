@@ -165,10 +165,6 @@ function initLocalStorageDB() {
   if (!localStorage.getItem('ec_orders')) {
     localStorage.setItem('ec_orders', JSON.stringify([]));
   }
-  if (!localStorage.getItem('ec_current_user')) {
-    // Default to the admin profile for easy out-of-the-box exploration
-    localStorage.setItem('ec_current_user', JSON.stringify(SEED_PROFILES[0]));
-  }
 }
 
 // Call immediately
@@ -280,13 +276,27 @@ export const dbService = {
     }
   },
 
-  async signIn(email: string, password?: string, role: 'admin' | 'customer' = 'customer'): Promise<Profile> {
+  async signIn(emailOrPhone: string, password?: string, role: 'admin' | 'customer' = 'customer'): Promise<Profile> {
     if (hasSupabaseConfig && supabase) {
       if (!password) {
         throw new Error('Password is required for secure authentication.');
       }
+      let loginEmail = emailOrPhone;
+      if (!emailOrPhone.includes('@')) {
+        // Look up profile by phone
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('email')
+          .eq('phone', emailOrPhone)
+          .maybeSingle();
+        if (data?.email) {
+          loginEmail = data.email;
+        } else {
+          throw new Error('No user found with this mobile number. Please sign up or use a registered email.');
+        }
+      }
       const { data, error } = await supabase.auth.signInWithPassword({
-        email,
+        email: loginEmail,
         password,
       });
 
@@ -309,23 +319,36 @@ export const dbService = {
         // Fallback profile if the row wasn't automatically fetched
         return {
           id: data.user.id,
-          email: data.user.email || email,
+          email: data.user.email || loginEmail,
           role: 'customer',
-          full_name: data.user.user_metadata?.full_name || splitEmailName(email),
+          full_name: data.user.user_metadata?.full_name || splitEmailName(loginEmail),
         };
       }
       return profile;
     } else {
       const profiles = getLocalStorageItem<Profile>('ec_profiles');
-      let profile = profiles.find(p => p.email.toLowerCase() === email.toLowerCase());
+      // Normalize comparison by stripping non-digits if looking for phone
+      const isEmail = emailOrPhone.includes('@');
+      let profile = profiles.find(p => {
+        if (isEmail) {
+          return p.email.toLowerCase() === emailOrPhone.toLowerCase();
+        } else {
+          const cleanInput = emailOrPhone.replace(/[^0-9]/g, '');
+          const cleanPhone = p.phone ? p.phone.replace(/[^0-9]/g, '') : '';
+          return cleanPhone && cleanPhone === cleanInput;
+        }
+      });
 
       if (!profile) {
-        // Create auto profile for mock login
+        if (!isEmail) {
+          throw new Error('No account found with this mobile number. Please sign up first.');
+        }
+        // Create auto profile for mock login if email
         profile = {
           id: `user-${Math.random().toString(36).substr(2, 9)}`,
-          email,
+          email: emailOrPhone,
           role,
-          full_name: splitEmailName(email),
+          full_name: splitEmailName(emailOrPhone),
           country: 'India',
           created_at: new Date().toISOString()
         };
@@ -338,7 +361,7 @@ export const dbService = {
     }
   },
 
-  async signUp(email: string, password?: string, fullName: string = '', role: 'admin' | 'customer' = 'customer'): Promise<Profile> {
+  async signUp(email: string, password?: string, fullName: string = '', role: 'admin' | 'customer' = 'customer', phone: string = ''): Promise<Profile> {
     if (hasSupabaseConfig && supabase) {
       if (!password) {
         throw new Error('Password is required for secure sign up.');
@@ -348,12 +371,26 @@ export const dbService = {
         password,
         options: {
           data: {
-            full_name: fullName
+            full_name: fullName,
+            phone: phone
           }
         }
       });
+
       if (error) throw error;
       if (!data.user) throw new Error('Sign up failed');
+
+      // Update phone on profile if trigger didn't catch it
+      if (phone) {
+        try {
+          await supabase
+            .from('profiles')
+            .update({ phone, full_name: fullName })
+            .eq('id', data.user.id);
+        } catch (phoneErr) {
+          console.warn('Failed to update extra metadata on profiles table:', phoneErr);
+        }
+      }
 
       const { data: profile } = await supabase
         .from('profiles')
@@ -365,7 +402,8 @@ export const dbService = {
         id: data.user.id,
         email,
         role: 'customer',
-        full_name: fullName
+        full_name: fullName,
+        phone: phone
       };
     } else {
       const profiles = getLocalStorageItem<Profile>('ec_profiles');
@@ -377,6 +415,7 @@ export const dbService = {
         email,
         role,
         full_name: fullName,
+        phone: phone,
         country: 'India',
         created_at: new Date().toISOString()
       };
@@ -393,6 +432,22 @@ export const dbService = {
       await supabase.auth.signOut();
     } else {
       localStorage.removeItem('ec_current_user');
+    }
+  },
+
+  async resetPassword(email: string): Promise<void> {
+    if (hasSupabaseConfig && supabase) {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin + '/login',
+      });
+      if (error) throw error;
+    } else {
+      // Offline fallback
+      const profiles = getLocalStorageItem<Profile>('ec_profiles');
+      const exists = profiles.some(p => p.email.toLowerCase() === email.toLowerCase());
+      if (!exists) {
+        throw new Error('Email address not found.');
+      }
     }
   },
 

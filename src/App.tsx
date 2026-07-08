@@ -121,7 +121,7 @@ export default function App() {
       const storedUserString = localStorage.getItem('ec_current_user');
       const hasSession = currentUser || storedUserString;
       if (!hasSession) {
-        navigate('/login', { replace: true });
+        navigate('/login', { state: { from: path }, replace: true });
       } else {
         const targetTab = path === '/profile/edit' ? 'profile' : 'orders';
         if (currentView.page !== 'dashboard' || currentView.tab !== targetTab) {
@@ -133,8 +133,11 @@ export default function App() {
       const hasSession = currentUser || storedUserString;
       if (hasSession) {
         navigate('/', { replace: true });
-      } else if (currentView.page !== 'login') {
-        _setCurrentView({ page: 'login' });
+      } else {
+        const targetPage = path === '/signup' ? 'signup' : 'login';
+        if (currentView.page !== targetPage) {
+          _setCurrentView({ page: targetPage });
+        }
       }
     } else if (path === '/admin' || (path.startsWith('/admin/') && path !== '/admin/login')) {
       if (currentView.page !== 'admin') {
@@ -241,19 +244,6 @@ export default function App() {
     }
   };
 
-  const handleRoleToggle = async () => {
-    if (!currentUser) return;
-    const nextRole = currentUser.role === 'admin' ? 'customer' : 'admin';
-    try {
-      await dbService.updateUserRole(currentUser.id, nextRole);
-      const updatedUser = { ...currentUser, role: nextRole };
-      setCurrentUser(updatedUser);
-      triggerToast(`Role updated to ${nextRole.toUpperCase()} instantly.`, 'success');
-    } catch (err) {
-      triggerToast('Failed to switch role.', 'error');
-    }
-  };
-
   const handleProfileUpdate = (updatedProfile: Profile) => {
     setCurrentUser(updatedProfile);
   };
@@ -261,7 +251,7 @@ export default function App() {
   const handleProceedToCheckout = (summary: typeof calcSummary) => {
     if (!currentUser) {
       triggerToast('Please login or register to complete checkout.', 'info');
-      setCurrentView({ page: 'login' });
+      navigate('/login', { state: { from: '/checkout' } });
       return;
     }
     setCalcSummary(summary);
@@ -303,7 +293,6 @@ export default function App() {
         cart={cart}
         currentUser={currentUser}
         onLogout={handleLogout}
-        onRoleToggle={handleRoleToggle}
       />
 
       {/* Main Container Stage */}
@@ -394,14 +383,14 @@ export default function App() {
           </PublicAdminRoute>
         )}
 
-        {currentView.page === 'login' && (
+        {(currentView.page === 'login' || currentView.page === 'signup') && (
           <Login
             onLoginSuccess={(profile) => {
               setCurrentUser(profile);
               refreshProductsList();
             }}
             setCurrentView={setCurrentView}
-            initialSignUp={location.pathname === '/signup'}
+            initialSignUp={currentView.page === 'signup'}
           />
         )}
 
@@ -434,11 +423,11 @@ export default function App() {
               </ul>
             </div>
             <div>
-              <span className="font-display text-xs font-extrabold text-white tracking-widest uppercase block mb-3">Architect Environment</span>
-              <ul className="space-y-1.5 text-xs text-slate-500 font-mono">
-                <li>Host Ingress: Port 3000</li>
-                <li>Engine: React + Express</li>
-                <li>Platform: Cloud Run container</li>
+              <span className="font-display text-xs font-extrabold text-white tracking-widest uppercase block mb-3">Sovereign Concierge</span>
+              <ul className="space-y-1.5 text-xs font-light text-slate-400">
+                <li className="hover:text-white cursor-pointer">Live Chat Support</li>
+                <li className="hover:text-white cursor-pointer">Bespoke Inquiries</li>
+                <li className="hover:text-white cursor-pointer">Order Tracking Help</li>
               </ul>
             </div>
           </div>

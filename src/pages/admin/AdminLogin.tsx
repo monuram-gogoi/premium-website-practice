@@ -48,19 +48,32 @@ export default function AdminLogin({ onLoginSuccess, setCurrentView }: AdminLogi
           .single();
 
         if (profError || !prof) {
+          // If no profile exists yet, do not assume they are admin unless first user, 
+          // but to be safe and avoid locking out on first signup via admin login:
           profile = {
             id: data.user.id,
             email: data.user.email || email,
-            role: 'admin',
-            full_name: data.user.user_metadata?.full_name || 'Administrator',
+            role: 'customer', // default to customer unless verified
+            full_name: data.user.user_metadata?.full_name || 'User',
             created_at: new Date().toISOString()
           };
         } else {
           profile = prof;
         }
+
+        // Strict role verification: only 'admin' role allowed
+        if (profile.role !== 'admin') {
+          await supabase.auth.signOut();
+          throw new Error('Access Denied. Administrator account required.');
+        }
       } else {
         // Fallback for secure offline staging/development if keys are not defined
-        profile = await dbService.signIn(email, password, 'admin');
+        const localProf = await dbService.signIn(email, password, 'admin');
+        if (localProf && localProf.role !== 'admin') {
+          localStorage.removeItem('ec_current_user');
+          throw new Error('Access Denied. Administrator account required.');
+        }
+        profile = localProf;
       }
 
       setSuccess('Admin session authorized! Loading console...');

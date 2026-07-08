@@ -8,30 +8,55 @@ interface ProtectedAdminRouteProps {
 
 export default function ProtectedAdminRoute({ children }: ProtectedAdminRouteProps) {
   const [isLoading, setIsLoading] = useState(true);
-  const [hasSession, setHasSession] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     let mounted = true;
 
-    async function checkSession() {
+    async function checkAdminSession() {
       try {
         if (supabase) {
           const { data: { session } } = await supabase.auth.getSession();
-          if (mounted) {
-            if (session) {
-              setHasSession(true);
+          if (!mounted) return;
+
+          if (session) {
+            // Fetch corresponding profile to verify admin role
+            const { data: profile, error } = await supabase
+              .from('profiles')
+              .select('role')
+              .eq('id', session.user.id)
+              .single();
+
+            if (!mounted) return;
+
+            if (profile && profile.role === 'admin') {
+              setIsAdmin(true);
               setIsLoading(false);
             } else {
-              setHasSession(false);
+              // User has session but is NOT an admin. Redirect to admin login
+              setIsAdmin(false);
               setIsLoading(false);
               navigate('/admin/login', { replace: true });
             }
+          } else {
+            setIsAdmin(false);
+            setIsLoading(false);
+            navigate('/admin/login', { replace: true });
           }
         } else {
-          // Strictly treat as unauthorized if no Supabase instance/config exists
+          // Fallback for offline staging
           if (mounted) {
-            setHasSession(false);
+            const storedUserString = localStorage.getItem('ec_current_user');
+            if (storedUserString) {
+              const user = JSON.parse(storedUserString);
+              if (user && user.role === 'admin') {
+                setIsAdmin(true);
+                setIsLoading(false);
+                return;
+              }
+            }
+            setIsAdmin(false);
             setIsLoading(false);
             navigate('/admin/login', { replace: true });
           }
@@ -39,26 +64,38 @@ export default function ProtectedAdminRoute({ children }: ProtectedAdminRoutePro
       } catch (err) {
         console.error('Session verification error:', err);
         if (mounted) {
-          setHasSession(false);
+          setIsAdmin(false);
           setIsLoading(false);
           navigate('/admin/login', { replace: true });
         }
       }
     }
 
-    checkSession();
+    checkAdminSession();
 
     let unsubscribe: (() => void) | null = null;
     if (supabase) {
       const { data: { subscription } } = supabase.auth.onAuthStateChange(
-        (event, session) => {
-          if (mounted) {
-            if (session) {
-              setHasSession(true);
+        async (event, session) => {
+          if (!mounted) return;
+          if (session) {
+            // Re-verify role on auth change
+            const { data: profile } = await supabase
+              .from('profiles')
+              .select('role')
+              .eq('id', session.user.id)
+              .single();
+
+            if (!mounted) return;
+            if (profile && profile.role === 'admin') {
+              setIsAdmin(true);
             } else {
-              setHasSession(false);
+              setIsAdmin(false);
               navigate('/admin/login', { replace: true });
             }
+          } else {
+            setIsAdmin(false);
+            navigate('/admin/login', { replace: true });
           }
         }
       );
@@ -80,5 +117,5 @@ export default function ProtectedAdminRoute({ children }: ProtectedAdminRoutePro
     );
   }
 
-  return hasSession ? <>{children}</> : null;
+  return isAdmin ? <>{children}</> : null;
 }

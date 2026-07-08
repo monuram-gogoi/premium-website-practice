@@ -8,7 +8,6 @@ interface HeaderProps {
   cart: CartItem[];
   currentUser: Profile | null;
   onLogout: () => void;
-  onRoleToggle: () => void;
 }
 
 export default function Header({
@@ -16,8 +15,7 @@ export default function Header({
   setCurrentView,
   cart,
   currentUser,
-  onLogout,
-  onRoleToggle
+  onLogout
 }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
