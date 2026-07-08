@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Send, Sparkles, ShieldCheck, Mail, MapPin, Phone, HelpCircle } from 'lucide-react';
+import { dbService } from '../services/db';
 
 interface FooterProps {
   setCurrentView: (view: { page: string; tab?: string }) => void;
@@ -8,6 +9,19 @@ interface FooterProps {
 export default function Footer({ setCurrentView }: FooterProps) {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
+  const [settings, setSettings] = useState<any>(null);
+
+  useEffect(() => {
+    async function loadSettings() {
+      try {
+        const s = await dbService.getWebsiteSettings();
+        setSettings(s);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    loadSettings();
+  }, []);
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,15 +48,15 @@ export default function Footer({ setCurrentView }: FooterProps) {
                 <Sparkles className="w-4.5 h-4.5 text-white" />
               </div>
               <span className="font-display font-bold text-xl tracking-wider text-white">
-                OGhaitong
+                {settings?.branding_name || 'OGhaitong'}
               </span>
             </div>
             <p className="text-sm font-light text-slate-400 leading-relaxed max-w-sm">
-              We engineer ultimate consumer technology and designer audio headgear. Crafted to ensure flawless execution, pristine sound, and modern visual aesthetics inspired by futuristic hardware.
+              {settings?.site_description || 'We engineer ultimate consumer technology and designer audio headgear. Crafted to ensure flawless execution, pristine sound, and modern visual aesthetics inspired by futuristic hardware.'}
             </p>
             <div className="flex items-center space-x-2.5 text-xs text-slate-500">
               <ShieldCheck className="w-4.5 h-4.5 text-blue-500" />
-              <span>Registered Trademark &copy; 2026. Certified Authentic.</span>
+              <span>{settings?.footer_text || 'Registered Trademark © 2026 OGhaitong. Certified Authentic.'}</span>
             </div>
           </div>
 
@@ -145,7 +159,7 @@ export default function Footer({ setCurrentView }: FooterProps) {
         {/* Footer Bottom Row */}
         <div className="pt-10 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-slate-500">
           <div className="flex flex-wrap items-center gap-6">
-            <span>&copy; 2026 OGhaitong. All Rights Reserved.</span>
+            <span>&copy; 2026 {settings?.branding_name || 'OGhaitong'}. All Rights Reserved.</span>
             <div className="flex gap-4">
               <span className="hover:text-slate-400 cursor-pointer transition-colors">Privacy Charter</span>
               <span className="hover:text-slate-400 cursor-pointer transition-colors">Terms of Carriage</span>

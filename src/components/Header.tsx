@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ShoppingBag, Menu, X, User, ClipboardList, LogOut, LogIn, UserPlus } from 'lucide-react';
 import { Profile, CartItem } from '../types';
+import { dbService } from '../services/db';
 
 interface HeaderProps {
   currentView: { page: string; productId?: string; tab?: 'orders' | 'profile' };
@@ -19,6 +20,22 @@ export default function Header({
 }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+  const [settings, setSettings] = useState<any>(null);
+
+  useEffect(() => {
+    async function loadSettings() {
+      try {
+        const s = await dbService.getWebsiteSettings();
+        setSettings(s);
+        if (s?.site_title) {
+          document.title = s.site_title;
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    loadSettings();
+  }, [currentView.page]);
 
   return (
     <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-xs">
@@ -35,7 +52,7 @@ export default function Header({
             </div>
             <div>
               <span className="font-display font-bold text-lg tracking-tight text-slate-900 group-hover:text-indigo-600 transition-colors">
-                OGhaitong
+                {settings?.branding_name || 'OGhaitong'}
               </span>
               <span className="block text-[9px] font-mono tracking-widest text-slate-400 uppercase -mt-1">
                 Architect Edition
@@ -157,7 +174,7 @@ export default function Header({
                     </div>
                   ) : (
                     <div>
-                      <p className="text-xs font-bold text-indigo-600">OGhaitong Guest</p>
+                      <p className="text-xs font-bold text-indigo-600">{(settings?.branding_name || 'OGhaitong')} Guest</p>
                       <p className="text-[10px] text-slate-400 font-light">Sign in to manage your orders</p>
                     </div>
                   )}

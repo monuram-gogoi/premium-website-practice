@@ -1,5 +1,15 @@
 import { supabase, hasSupabaseConfig } from '../lib/supabase';
-import { Product, Coupon, ShippingRule, Tax, Order, Profile, CartItem, OrderItem } from '../types';
+import { 
+  Product, Coupon, ShippingRule, Tax, Order, Profile, CartItem, OrderItem,
+  Category, Brand, PromoBanner, Review, WebsiteSettings, FlashSaleConfig, Subscriber, ProductAnalytics 
+} from '../types';
+import { 
+  mockAllProducts as SEED_MOCK_ALL_PRODUCTS, 
+  popularBrands as SEED_MOCK_BRANDS, 
+  customerReviews as SEED_MOCK_REVIEWS, 
+  categoryDataList as SEED_MOCK_CATEGORIES,
+  todaysDeals as SEED_MOCK_TODAYS_DEALS
+} from '../data/mockStoreData';
 
 // ============================================================================
 // MOCK / LOCALSTORAGE PERSISTENT DATABASE ENGINE (FALLBACK)
@@ -148,7 +158,29 @@ function initLocalStorageDB() {
   if (typeof window === 'undefined') return;
 
   if (!localStorage.getItem('ec_products')) {
-    localStorage.setItem('ec_products', JSON.stringify(SEED_PRODUCTS));
+    const seededProducts = SEED_MOCK_ALL_PRODUCTS.map((p, idx) => ({
+      ...p,
+      brand: p.category === 'Smartphones' ? (p.name.includes('iPhone') ? 'Apple' : p.name.includes('Galaxy') ? 'Samsung' : 'OnePlus') :
+             p.category === 'Audio' ? (p.name.includes('Sony') ? 'Sony' : p.name.includes('AirPods') ? 'Apple' : 'JBL') :
+             p.category === 'Laptops' ? (p.name.includes('MacBook') ? 'Apple' : 'Dell') :
+             p.category === 'Gaming' ? (p.name.includes('PlayStation') ? 'Sony' : 'Razer') :
+             p.category === 'Smart Watches' ? (p.name.includes('Apple') ? 'Apple' : 'Samsung') :
+             p.category === 'Cameras' ? (p.name.includes('Fujifilm') ? 'Fujifilm' : 'DJI') : 'Logitech',
+      subcategory: 'Premium',
+      sku: `SKU-${p.category.substring(0, 3).toUpperCase()}-${idx + 100}`,
+      availability: p.stock > 0 ? 'in_stock' : 'out_of_stock',
+      product_status: 'active',
+      featured: idx % 3 === 0,
+      flash_sale: idx % 4 === 0,
+      best_seller_override: idx % 5 === 0,
+      trending_override: idx % 6 === 0,
+      new_arrival: idx % 2 === 0,
+      recommended: idx % 3 === 1,
+      tags: [p.category, 'Premium', 'Summer'],
+      warranty: '1 Year Brand Warranty',
+      return_policy: '14 Days Hassle-Free Return'
+    }));
+    localStorage.setItem('ec_products', JSON.stringify(seededProducts));
   }
   if (!localStorage.getItem('ec_coupons')) {
     localStorage.setItem('ec_coupons', JSON.stringify(SEED_COUPONS));
@@ -164,6 +196,168 @@ function initLocalStorageDB() {
   }
   if (!localStorage.getItem('ec_orders')) {
     localStorage.setItem('ec_orders', JSON.stringify([]));
+  }
+  if (!localStorage.getItem('ec_categories')) {
+    const seededCategories = SEED_MOCK_CATEGORIES.map(c => ({
+      id: c.id,
+      name: c.name,
+      icon: c.icon,
+      image: c.image,
+      enabled: true
+    }));
+    localStorage.setItem('ec_categories', JSON.stringify(seededCategories));
+  }
+  if (!localStorage.getItem('ec_brands')) {
+    const seededBrands = SEED_MOCK_BRANDS.map((b, idx) => ({
+      id: `brand-${idx + 1}`,
+      name: b.name,
+      logo: b.logo,
+      enabled: true,
+      display_order: idx + 1
+    }));
+    localStorage.setItem('ec_brands', JSON.stringify(seededBrands));
+  }
+  if (!localStorage.getItem('ec_banners')) {
+    const seededBanners = [
+      {
+        id: 'banner-1',
+        title: 'Summer Gadgets Fest',
+        subtitle: 'Exclusive Campaign',
+        offer_text: 'Starts at just ₹1,999',
+        image_url: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=1200&auto=format&fit=crop&q=80',
+        cta_text: 'Explore Deals',
+        cta_url: 'All',
+        enabled: true
+      },
+      {
+        id: 'banner-2',
+        title: 'Summer Mega Sale',
+        subtitle: 'Limited Time Offer',
+        offer_text: 'Up to 60% OFF on Premium Electronics',
+        image_url: 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=1200&auto=format&fit=crop&q=80',
+        cta_text: 'Shop Now',
+        cta_url: 'All',
+        enabled: true
+      }
+    ];
+    localStorage.setItem('ec_banners', JSON.stringify(seededBanners));
+  }
+  if (!localStorage.getItem('ec_reviews')) {
+    const seededReviews = SEED_MOCK_REVIEWS.map((r) => ({
+      id: r.id,
+      name: r.name,
+      avatar: r.avatar,
+      rating: r.rating,
+      text: r.text,
+      verified: r.verified,
+      date: r.date,
+      status: 'approved',
+      pinned: true,
+      featured: true
+    }));
+    localStorage.setItem('ec_reviews', JSON.stringify(seededReviews));
+  }
+  if (!localStorage.getItem('ec_website_settings')) {
+    const seededWebsiteSettings = {
+      section_visibility: {
+        announcement_bar: true,
+        promo_carousel: true,
+        flash_sale: true,
+        categories: true,
+        todays_deals: true,
+        new_arrivals: true,
+        best_sellers: true,
+        trending_now: true,
+        promo_banner: true,
+        popular_brands: true,
+        recommended: true,
+        recently_viewed: true,
+        why_shop: true,
+        customer_reviews: true,
+        newsletter: true
+      },
+      section_order: [
+        'promo_carousel',
+        'flash_sale',
+        'categories',
+        'todays_deals',
+        'new_arrivals',
+        'best_sellers',
+        'trending_now',
+        'promo_banner',
+        'popular_brands',
+        'recommended',
+        'recently_viewed',
+        'why_shop',
+        'customer_reviews',
+        'newsletter'
+      ],
+      logo_url: '',
+      favicon_url: '',
+      theme_color: '#2563eb',
+      footer_content: 'Premium high-performance equipment and luxury goods. Senior engineered to ensure seamless scale and elegant utility.',
+      contact_info: {
+        email: 'support@oghaitong.com',
+        phone: '+91 98765 43210',
+        address: '102 Tech Enclave, Bangalore, Karnataka, India'
+      },
+      social_links: {
+        facebook: 'https://facebook.com',
+        instagram: 'https://instagram.com',
+        twitter: 'https://twitter.com',
+        youtube: 'https://youtube.com'
+      },
+      seo_metadata: {
+        title: 'OGhaitong Storefront',
+        description: 'Premium High-Performance Electronics and Gadgets',
+        keywords: 'electronics, gadgets, headphones, smartphones, laptops'
+      },
+      announcement_bar: {
+        text: '⚡ Summer Mega Sale Live: Free International Express Dispatch on All Orders! ⚡',
+        enabled: true
+      },
+      currency: 'INR',
+      shipping_settings: {
+        default_rate: 99,
+        free_threshold: 1999
+      },
+      tax_settings: {
+        default_gst: 18
+      }
+    };
+    localStorage.setItem('ec_website_settings', JSON.stringify(seededWebsiteSettings));
+  }
+  if (!localStorage.getItem('ec_flash_sale')) {
+    const seededFlashSale = {
+      enabled: true,
+      title: 'Flash Sale',
+      subtitle: 'Incredible limited-quantity prices expiring shortly.',
+      offer_text: 'Ends Today',
+      background_banner: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=1200&auto=format&fit=crop&q=80',
+      start_date: new Date().toISOString(),
+      end_date: new Date(Date.now() + 4 * 3600 * 1000 + 19 * 60 * 1000).toISOString(),
+      cta_text: 'Buy Now',
+      cta_url: '',
+      display_order: 1,
+      product_ids: ['prod-1', 'm-phone-1', 'm-watch-1', 'm-camera-2']
+    };
+    localStorage.setItem('ec_flash_sale', JSON.stringify(seededFlashSale));
+  }
+  if (!localStorage.getItem('ec_subscribers')) {
+    localStorage.setItem('ec_subscribers', JSON.stringify([]));
+  }
+  if (!localStorage.getItem('ec_analytics')) {
+    const seededAnalytics = SEED_MOCK_ALL_PRODUCTS.map((p, idx) => ({
+      id: p.id,
+      views: 100 + (idx * 15) % 150,
+      wishlist_count: 10 + (idx * 5) % 40,
+      cart_count: 5 + (idx * 3) % 20,
+      sales_count: 2 + (idx * 2) % 15,
+      orders_count: 2 + (idx * 2) % 15,
+      ratings_sum: 5 * (4 + (idx % 2)),
+      ratings_count: 5
+    }));
+    localStorage.setItem('ec_analytics', JSON.stringify(seededAnalytics));
   }
 }
 
@@ -906,6 +1100,331 @@ export const dbService = {
     }
 
     return true;
+  },
+
+  // --- NEW ADVANCED METHODS FOR FULLY DYNAMIC E-COMMERCE CONFIGURATION ---
+
+  async getCategories(): Promise<Category[]> {
+    return getLocalStorageItem<Category>('ec_categories');
+  },
+  async createCategory(category: Omit<Category, 'id'>): Promise<Category> {
+    const categories = getLocalStorageItem<Category>('ec_categories');
+    const newCategory: Category = {
+      ...category,
+      id: `cat-${Math.random().toString(36).substr(2, 9)}`
+    };
+    categories.push(newCategory);
+    setLocalStorageItem('ec_categories', categories);
+    return newCategory;
+  },
+  async updateCategory(id: string, category: Partial<Category>): Promise<Category> {
+    const categories = getLocalStorageItem<Category>('ec_categories');
+    const idx = categories.findIndex(c => c.id === id);
+    if (idx === -1) throw new Error('Category not found');
+    categories[idx] = { ...categories[idx], ...category };
+    setLocalStorageItem('ec_categories', categories);
+    return categories[idx];
+  },
+  async deleteCategory(id: string): Promise<boolean> {
+    const categories = getLocalStorageItem<Category>('ec_categories');
+    const filtered = categories.filter(c => c.id !== id);
+    setLocalStorageItem('ec_categories', filtered);
+    return true;
+  },
+
+  async getBrands(): Promise<Brand[]> {
+    return getLocalStorageItem<Brand>('ec_brands');
+  },
+  async createBrand(brand: Omit<Brand, 'id'>): Promise<Brand> {
+    const brands = getLocalStorageItem<Brand>('ec_brands');
+    const newBrand: Brand = {
+      ...brand,
+      id: `brand-${Math.random().toString(36).substr(2, 9)}`
+    };
+    brands.push(newBrand);
+    setLocalStorageItem('ec_brands', brands);
+    return newBrand;
+  },
+  async updateBrand(id: string, brand: Partial<Brand>): Promise<Brand> {
+    const brands = getLocalStorageItem<Brand>('ec_brands');
+    const idx = brands.findIndex(b => b.id === id);
+    if (idx === -1) throw new Error('Brand not found');
+    brands[idx] = { ...brands[idx], ...brand };
+    setLocalStorageItem('ec_brands', brands);
+    return brands[idx];
+  },
+  async deleteBrand(id: string): Promise<boolean> {
+    const brands = getLocalStorageItem<Brand>('ec_brands');
+    const filtered = brands.filter(b => b.id !== id);
+    setLocalStorageItem('ec_brands', filtered);
+    return true;
+  },
+
+  async getBanners(): Promise<PromoBanner[]> {
+    return getLocalStorageItem<PromoBanner>('ec_banners');
+  },
+  async createBanner(banner: Omit<PromoBanner, 'id'>): Promise<PromoBanner> {
+    const banners = getLocalStorageItem<PromoBanner>('ec_banners');
+    const newBanner: PromoBanner = {
+      ...banner,
+      id: `banner-${Math.random().toString(36).substr(2, 9)}`
+    };
+    banners.push(newBanner);
+    setLocalStorageItem('ec_banners', banners);
+    return newBanner;
+  },
+  async updateBanner(id: string, banner: Partial<PromoBanner>): Promise<PromoBanner> {
+    const banners = getLocalStorageItem<PromoBanner>('ec_banners');
+    const idx = banners.findIndex(b => b.id === id);
+    if (idx === -1) throw new Error('Banner not found');
+    banners[idx] = { ...banners[idx], ...banner };
+    setLocalStorageItem('ec_banners', banners);
+    return banners[idx];
+  },
+  async deleteBanner(id: string): Promise<boolean> {
+    const banners = getLocalStorageItem<PromoBanner>('ec_banners');
+    const filtered = banners.filter(b => b.id !== id);
+    setLocalStorageItem('ec_banners', filtered);
+    return true;
+  },
+
+  async getReviews(): Promise<Review[]> {
+    return getLocalStorageItem<Review>('ec_reviews');
+  },
+  async addReview(review: Omit<Review, 'id' | 'date'>): Promise<Review> {
+    const reviews = getLocalStorageItem<Review>('ec_reviews');
+    const newReview: Review = {
+      ...review,
+      id: `rev-${Math.random().toString(36).substr(2, 9)}`,
+      date: 'Just now'
+    };
+    reviews.unshift(newReview);
+    setLocalStorageItem('ec_reviews', reviews);
+    return newReview;
+  },
+  async updateReviewStatus(id: string, status: Review['status']): Promise<Review> {
+    const reviews = getLocalStorageItem<Review>('ec_reviews');
+    const idx = reviews.findIndex(r => r.id === id);
+    if (idx === -1) throw new Error('Review not found');
+    reviews[idx].status = status;
+    setLocalStorageItem('ec_reviews', reviews);
+    return reviews[idx];
+  },
+  async togglePinReview(id: string): Promise<Review> {
+    const reviews = getLocalStorageItem<Review>('ec_reviews');
+    const idx = reviews.findIndex(r => r.id === id);
+    if (idx === -1) throw new Error('Review not found');
+    reviews[idx].pinned = !reviews[idx].pinned;
+    setLocalStorageItem('ec_reviews', reviews);
+    return reviews[idx];
+  },
+  async deleteReview(id: string): Promise<boolean> {
+    const reviews = getLocalStorageItem<Review>('ec_reviews');
+    const filtered = reviews.filter(r => r.id !== id);
+    setLocalStorageItem('ec_reviews', filtered);
+    return true;
+  },
+
+  async getSubscribers(): Promise<Subscriber[]> {
+    return getLocalStorageItem<Subscriber>('ec_subscribers');
+  },
+  async addSubscriber(email: string): Promise<Subscriber> {
+    const subs = getLocalStorageItem<Subscriber>('ec_subscribers');
+    if (subs.some(s => s.email.toLowerCase() === email.toLowerCase())) {
+      throw new Error('You are already subscribed to our newsletter.');
+    }
+    const newSub: Subscriber = {
+      id: `sub-${Math.random().toString(36).substr(2, 9)}`,
+      email,
+      subscribed_at: new Date().toISOString()
+    };
+    subs.unshift(newSub);
+    setLocalStorageItem('ec_subscribers', subs);
+    return newSub;
+  },
+
+  async getWebsiteSettings(): Promise<WebsiteSettings> {
+    const data = localStorage.getItem('ec_website_settings');
+    if (!data) return {} as WebsiteSettings;
+    return JSON.parse(data);
+  },
+  async updateWebsiteSettings(settings: Partial<WebsiteSettings>): Promise<WebsiteSettings> {
+    const current = await this.getWebsiteSettings();
+    const updated = { ...current, ...settings };
+    localStorage.setItem('ec_website_settings', JSON.stringify(updated));
+    return updated;
+  },
+  async getFlashSaleConfig(): Promise<FlashSaleConfig> {
+    const data = localStorage.getItem('ec_flash_sale');
+    if (!data) return {} as FlashSaleConfig;
+    return JSON.parse(data);
+  },
+  async updateFlashSaleConfig(config: Partial<FlashSaleConfig>): Promise<FlashSaleConfig> {
+    const current = await this.getFlashSaleConfig();
+    const updated = { ...current, ...config };
+    localStorage.setItem('ec_flash_sale', JSON.stringify(updated));
+    return updated;
+  },
+
+  async getAnalytics(): Promise<ProductAnalytics[]> {
+    return getLocalStorageItem<ProductAnalytics>('ec_analytics');
+  },
+  async trackProductInteraction(productId: string, action: 'views' | 'wishlist_count' | 'cart_count' | 'sales_count' | 'orders_count' | 'rating', ratingValue?: number): Promise<void> {
+    const analytics = getLocalStorageItem<ProductAnalytics>('ec_analytics');
+    let item = analytics.find(a => a.id === productId);
+    if (!item) {
+      item = {
+        id: productId,
+        views: 0,
+        wishlist_count: 0,
+        cart_count: 0,
+        sales_count: 0,
+        orders_count: 0,
+        ratings_sum: 0,
+        ratings_count: 0
+      };
+      analytics.push(item);
+    }
+    if (action === 'rating' && ratingValue !== undefined) {
+      item.ratings_sum += ratingValue;
+      item.ratings_count += 1;
+    } else if (action !== 'rating') {
+      item[action] = (item[action] || 0) + 1;
+    }
+    setLocalStorageItem('ec_analytics', analytics);
+  },
+
+  async getTrendingProducts(): Promise<Product[]> {
+    const allProducts = await this.getProducts();
+    const analytics = await this.getAnalytics();
+    
+    // Sort in-stock active products
+    const activeProducts = allProducts.filter(p => p.product_status !== 'draft');
+    
+    // We compute score for active products
+    const scored = activeProducts.map(p => {
+      const pAnalytic = analytics.find(a => a.id === p.id) || {
+        views: 0, wishlist_count: 0, cart_count: 0, sales_count: 0, orders_count: 0, ratings_sum: 0, ratings_count: 0
+      };
+      
+      const isOutOfStock = p.stock <= 0;
+      
+      // score calculation: views*1 + wishlist*2 + cart*3 + sales*5 + orders*5 + ratingAvg*4
+      const ratingAvg = pAnalytic.ratings_count > 0 ? (pAnalytic.ratings_sum / pAnalytic.ratings_count) : 4.5;
+      let score = pAnalytic.views * 1 +
+                  pAnalytic.wishlist_count * 2 +
+                  pAnalytic.cart_count * 3 +
+                  pAnalytic.sales_count * 5 +
+                  pAnalytic.orders_count * 5 +
+                  ratingAvg * 4;
+                  
+      // If product is out of stock, reduce score massively (so we automatically prefer in-stock)
+      if (isOutOfStock) {
+        score -= 10000;
+      }
+      
+      // Override boost
+      if (p.trending_override) {
+        score += 5000;
+      }
+      
+      return { product: p, score };
+    });
+    
+    // Sort descending by score
+    scored.sort((a, b) => b.score - a.score);
+    return scored.map(s => s.product);
+  },
+
+  async getBestSellers(): Promise<Product[]> {
+    const allProducts = await this.getProducts();
+    const analytics = await this.getAnalytics();
+    
+    const activeProducts = allProducts.filter(p => p.product_status !== 'draft');
+    
+    const scored = activeProducts.map(p => {
+      const pAnalytic = analytics.find(a => a.id === p.id) || {
+        sales_count: 0, orders_count: 0
+      };
+      
+      let score = pAnalytic.sales_count * 10 + pAnalytic.orders_count * 5;
+      
+      if (p.stock <= 0) {
+        score -= 10000; // Prefer in stock
+      }
+      
+      if (p.best_seller_override) {
+        score += 5000; // Override boost
+      }
+      
+      return { product: p, score };
+    });
+    
+    scored.sort((a, b) => b.score - a.score);
+    return scored.map(s => s.product);
+  },
+
+  async getNewArrivals(limit: number = 8): Promise<Product[]> {
+    const allProducts = await this.getProducts();
+    const activeProducts = allProducts.filter(p => p.product_status !== 'draft');
+    
+    // Sort active products by created_at descending (or id as fallback)
+    const sorted = [...activeProducts].sort((a, b) => {
+      if (a.new_arrival && !b.new_arrival) return -1;
+      if (!a.new_arrival && b.new_arrival) return 1;
+      
+      const dateA = a.created_at ? new Date(a.created_at).getTime() : 0;
+      const dateB = b.created_at ? new Date(b.created_at).getTime() : 0;
+      return dateB - dateA;
+    });
+    
+    return sorted.slice(0, limit);
+  },
+
+  async getRecommendedProducts(userId?: string): Promise<Product[]> {
+    const allProducts = await this.getProducts();
+    const activeProducts = allProducts.filter(p => p.product_status !== 'draft' && p.stock > 0);
+    
+    if (!userId) {
+      // Not logged in: return featured active in-stock products
+      return activeProducts.filter(p => p.featured || p.recommended).slice(0, 8);
+    }
+    
+    // Logged in: Recommend based on order history categories if any
+    const orders = getLocalStorageItem<Order>('ec_orders');
+    const userOrders = orders.filter(o => o.user_id === userId);
+    
+    const purchasedCategories = new Set<string>();
+    userOrders.forEach(o => {
+      o.items?.forEach(item => {
+        const prod = allProducts.find(p => p.id === item.product_id);
+        if (prod) {
+          purchasedCategories.add(prod.category);
+        }
+      });
+    });
+    
+    if (purchasedCategories.size === 0) {
+      return activeProducts.filter(p => p.featured || p.recommended).slice(0, 8);
+    }
+    
+    // Score based on matching category
+    const scored = activeProducts.map(p => {
+      let score = 0;
+      if (purchasedCategories.has(p.category)) {
+        score += 100;
+      }
+      if (p.recommended) {
+        score += 50;
+      }
+      if (p.featured) {
+        score += 25;
+      }
+      return { product: p, score };
+    });
+    
+    scored.sort((a, b) => b.score - a.score);
+    return scored.map(s => s.product).slice(0, 8);
   }
 };
 
