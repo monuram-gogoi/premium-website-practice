@@ -112,7 +112,7 @@ export default function AdminLogin({ onLoginSuccess, setCurrentView }: AdminLogi
         <div className="bg-amber-50 border border-amber-200/60 rounded-xl p-3 flex items-start space-x-2.5">
           <ShieldAlert className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
           <p className="text-[10px] text-amber-700 leading-normal font-medium">
-            All access attempts are cryptographically logged on sovereign servers. Unauthorized entry is strictly audited.
+            All access attempts are cryptographically logged on OGhaitong servers. Unauthorized entry is strictly audited.
           </p>
         </div>
 

@@ -317,7 +317,7 @@ export default function AdminDashboard({
       <div className="flex flex-col md:flex-row md:items-center md:justify-between border-b border-slate-200 pb-6 mb-8 gap-4">
         <div>
           <h1 className="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight flex items-center space-x-2">
-            <span>Sovereign Admin Console</span>
+            <span>OGhaitong Admin Console</span>
             <span className="px-2 py-0.5 bg-indigo-100 text-indigo-700 text-[10px] font-mono rounded font-bold uppercase tracking-wider">WooCommerce Level</span>
           </h1>
           <p className="text-xs text-slate-400 mt-1">Configure active products, inspect checkout logs, set GST values, and manage users.</p>

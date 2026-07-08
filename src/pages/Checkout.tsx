@@ -142,7 +142,7 @@ export default function Checkout({
             key: razorpayOrder.key_id,
             amount: razorpayOrder.amount,
             currency: razorpayOrder.currency,
-            name: 'Sovereign',
+            name: 'OGhaitong',
             description: 'Order Secure Gateway Checkout',
             image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=120&auto=format&fit=crop&q=80',
             order_id: razorpayOrder.id,

@@ -130,7 +130,7 @@ export default function Login({
     try {
       if (isSignUp) {
         const profile = await dbService.signUp(email, password, fullName, 'customer', phone);
-        setSuccess('Account created successfully! Welcome to Sovereign.');
+        setSuccess('Account created successfully! Welcome to OGhaitong.');
         setTimeout(() => {
           onLoginSuccess(profile);
           navigate('/', { replace: true });
@@ -248,7 +248,7 @@ export default function Login({
       <div className="flex flex-col items-center mb-8 space-y-2">
         <div className="flex items-center space-x-2">
           <ShoppingBag className="w-6 h-6 text-slate-950" />
-          <span className="font-display font-black text-xl tracking-widest text-slate-950">SOVEREIGN</span>
+          <span className="font-display font-bold text-xl tracking-widest text-slate-950">OGhaitong</span>
         </div>
         <p className="text-[10px] uppercase tracking-widest font-bold text-indigo-600/80">Premium E-Commerce</p>
       </div>
@@ -260,7 +260,7 @@ export default function Login({
 
         <div className="text-center space-y-2">
           <h1 className="font-display font-extrabold text-2xl text-slate-900 tracking-tight">
-            {isSignUp ? 'Create your Account' : 'Sign in to Sovereign'}
+            {isSignUp ? 'Create your Account' : 'Sign in to OGhaitong'}
           </h1>
           <p className="text-xs text-slate-400 font-light leading-relaxed max-w-xs mx-auto">
             {isSignUp 
@@ -507,7 +507,7 @@ export default function Login({
         {/* BOTTOM OPTION SWITCHING */}
         <div className="text-center pt-2 border-t border-slate-50">
           <p className="text-xs text-slate-400 font-light">
-            {isSignUp ? 'Already have an account?' : 'New to Sovereign?'}
+            {isSignUp ? 'Already have an account?' : 'New to OGhaitong?'}
             <button
               type="button"
               onClick={() => {

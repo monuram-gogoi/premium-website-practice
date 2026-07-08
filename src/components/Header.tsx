@@ -35,7 +35,7 @@ export default function Header({
             </div>
             <div>
               <span className="font-display font-bold text-lg tracking-tight text-slate-900 group-hover:text-indigo-600 transition-colors">
-                SOVEREIGN
+                OGhaitong
               </span>
               <span className="block text-[9px] font-mono tracking-widest text-slate-400 uppercase -mt-1">
                 Architect Edition
@@ -157,7 +157,7 @@ export default function Header({
                     </div>
                   ) : (
                     <div>
-                      <p className="text-xs font-bold text-indigo-600">Sovereign Guest</p>
+                      <p className="text-xs font-bold text-indigo-600">OGhaitong Guest</p>
                       <p className="text-[10px] text-slate-400 font-light">Sign in to manage your orders</p>
                     </div>
                   )}

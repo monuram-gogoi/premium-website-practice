@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Header from './components/Header';
+import Footer from './components/Footer';
 import StoreFront from './pages/StoreFront';
 import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
@@ -396,50 +397,8 @@ export default function App() {
 
       </main>
 
-      {/* Responsive Elegant Footer */}
-      <footer className="bg-slate-900 text-slate-400 py-10 border-t border-slate-800 mt-16 font-sans">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="space-y-4">
-              <span className="font-display font-bold text-base tracking-wider text-white">SOVEREIGN</span>
-              <p className="text-xs font-light text-slate-500 leading-relaxed">
-                Premium high-performance equipment and luxury goods. Senior engineered to ensure seamless scale and elegant utility.
-              </p>
-            </div>
-            <div>
-              <span className="font-display text-xs font-extrabold text-white tracking-widest uppercase block mb-3">Shop Categories</span>
-              <ul className="space-y-1.5 text-xs font-light text-slate-400">
-                <li className="hover:text-white cursor-pointer" onClick={() => { setCurrentView({ page: 'store' }); }}>Audio Headgear</li>
-                <li className="hover:text-white cursor-pointer" onClick={() => { setCurrentView({ page: 'store' }); }}>Chronometer Watches</li>
-                <li className="hover:text-white cursor-pointer" onClick={() => { setCurrentView({ page: 'store' }); }}>Weatherproof Travel Packs</li>
-              </ul>
-            </div>
-            <div>
-              <span className="font-display text-xs font-extrabold text-white tracking-widest uppercase block mb-3">Security & Compliance</span>
-              <ul className="space-y-1.5 text-xs font-light text-slate-400">
-                <li>SSL 256-Bit Cryptography</li>
-                <li>Secure Razorpay Verification</li>
-                <li>Supabase Row Level Security</li>
-              </ul>
-            </div>
-            <div>
-              <span className="font-display text-xs font-extrabold text-white tracking-widest uppercase block mb-3">Sovereign Concierge</span>
-              <ul className="space-y-1.5 text-xs font-light text-slate-400">
-                <li className="hover:text-white cursor-pointer">Live Chat Support</li>
-                <li className="hover:text-white cursor-pointer">Bespoke Inquiries</li>
-                <li className="hover:text-white cursor-pointer">Order Tracking Help</li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-slate-800/60 mt-8 pt-6 text-center text-[10px] text-slate-600 font-light flex flex-col sm:flex-row justify-between items-center gap-4">
-            <span>&copy; {new Date().getFullYear()} Sovereign Storefront. All rights reserved. Registered Trademark.</span>
-            <div className="flex space-x-4">
-              <span className="hover:text-slate-400 cursor-pointer">Privacy Charter</span>
-              <span className="hover:text-slate-400 cursor-pointer">Terms of Carriage</span>
-            </div>
-          </div>
-        </div>
-      </footer>
+      {/* Premium Multi-Column Footer (Section 14) */}
+      <Footer setCurrentView={setCurrentView} />
 
     </div>
   );

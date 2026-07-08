@@ -1,6 +1,6 @@
 {
-  "name": "eCommerce Web Application",
-  "description": "A feature-rich, senior-architected eCommerce web application with a WooCommerce-level admin panel, built using React, Tailwind CSS, Supabase, and Razorpay.",
+  "name": "OGhaitong Premium Storefront",
+  "description": "A feature-rich, senior-architected eCommerce web application with a WooCommerce-level admin panel, built using React, Tailwind CSS, Supabase, and Razorpay. Branded as OGhaitong.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
