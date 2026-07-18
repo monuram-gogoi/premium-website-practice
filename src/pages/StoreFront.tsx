@@ -978,92 +978,60 @@ export default function StoreFront({
         }
       `}} />
 
-      {/* Hero Banner with Premium Glassmorphism & Cyber Gradients */}
-      <div className="relative mb-12 rounded-[2rem] overflow-hidden bg-gradient-to-br from-slate-50 via-purple-50/30 to-cyan-50/20 text-slate-900 border border-violet-100/60 p-6 sm:p-12 md:p-16 flex flex-col lg:flex-row items-center justify-between gap-12 shadow-[0_20px_50px_rgba(124,58,237,0.05)] min-h-[560px] animate-slide-up">
+      {/* NEW PROFESSIONAL HERO BANNER */}
+      <div className="relative mb-12 rounded-[2.5rem] overflow-hidden bg-gradient-to-br from-[#fdfdfd] to-[#f8f9fc] text-slate-900 p-8 sm:p-12 lg:p-16 flex flex-col lg:flex-row items-center justify-between gap-12 shadow-[0_8px_30px_rgba(0,0,0,0.04)] min-h-[500px] animate-slide-up border border-white">
         
-        {/* Floating matte and glossy 3D spheres styled with pure CSS radial gradients */}
-        {/* Sphere 1 (Top Left behind text) */}
-        <div 
-          className="absolute left-[35%] top-[10%] w-24 h-24 rounded-full pointer-events-none select-none z-0 opacity-80"
-          style={{
-            background: 'radial-gradient(circle at 35% 35%, #ffffff 0%, #f3e8ff 45%, #d8b4fe 100%)',
-            boxShadow: 'inset -8px -8px 24px rgba(0,0,0,0.04), 10px 20px 40px rgba(124,58,237,0.1)'
-          }}
-        />
-        
-        {/* Sphere 2 (Bottom Right near bottom highlights) */}
-        <div 
-          className="absolute right-[12%] bottom-[15%] w-32 h-32 rounded-full pointer-events-none select-none z-0 opacity-90"
-          style={{
-            background: 'radial-gradient(circle at 35% 35%, #ffffff 0%, #e0f2fe 45%, #7dd3fc 100%)',
-            boxShadow: 'inset -12px -12px 32px rgba(0,0,0,0.04), 15px 30px 50px rgba(34,211,238,0.15)'
-          }}
-        />
+        {/* Soft floating background spheres replicating the reference image */}
+        <div className="absolute top-[10%] left-[40%] w-32 h-32 rounded-full bg-gradient-to-tr from-violet-200 to-pink-100 blur-[2px] opacity-60 animate-float-slow" />
+        <div className="absolute bottom-[20%] left-[30%] w-12 h-12 rounded-full bg-gradient-to-tr from-pink-200 to-violet-100 blur-[1px] opacity-70 animate-float-medium" />
+        <div className="absolute top-[40%] right-[10%] w-48 h-48 rounded-full bg-gradient-to-tr from-cyan-200 to-indigo-100 blur-[2px] opacity-60 animate-float-slow" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-[20%] right-[5%] w-16 h-16 rounded-full bg-gradient-to-tr from-violet-200 to-pink-100 blur-[1px] opacity-50 animate-float-medium" style={{ animationDelay: '2s' }} />
 
-        {/* Sphere 3 (Tiny matte sphere near bottom-center) */}
-        <div 
-          className="absolute left-[42%] bottom-[25%] w-8 h-8 rounded-full pointer-events-none select-none z-0 opacity-70"
-          style={{
-            background: 'radial-gradient(circle at 35% 35%, #ffffff 0%, #fae8ff 45%, #f0abfc 100%)',
-            boxShadow: 'inset -3px -3px 8px rgba(0,0,0,0.03), 4px 8px 16px rgba(192,38,211,0.1)'
-          }}
-        />
-
-        {/* Glossy Translucent Bubble 1 (Right middle) */}
-        <div 
-          className="absolute right-[8%] top-[45%] w-12 h-12 rounded-full pointer-events-none select-none z-0 border border-white/80"
-          style={{
-            background: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9) 0%, rgba(232,121,249,0.2) 40%, rgba(192,38,211,0.05) 80%, rgba(192,38,211,0.3) 100%)',
-            boxShadow: '0 8px 32px rgba(192,38,211,0.15), inset 2px 2px 4px rgba(255,255,255,0.8)'
-          }}
-        />
-
-        {/* Left Column: Premium Interactive Content & CTA Card */}
+        {/* Left Column: Clean Typography and White CTA Card */}
         <div className="relative z-10 flex-1 max-w-xl space-y-6">
-          {/* Active Status Badge */}
-          <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-violet-50/90 to-cyan-50/90 backdrop-blur-sm border border-violet-100 px-3.5 py-1.5 rounded-full text-[11px] font-bold text-violet-600 uppercase tracking-widest font-mono shadow-sm">
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-ping"></span>
-            <span>Limited Time Offer</span>
+          {/* Subtle Pill Badge */}
+          <div className="inline-flex items-center bg-violet-50/80 text-violet-500 border border-violet-100/50 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest">
+            Limited Time Offer
           </div>
 
-          <div className="space-y-3">
-            <h1 className="font-display text-4xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-violet-950 via-slate-800 to-cyan-900 tracking-tight leading-[1.08]">
+          <div className="space-y-4">
+            <h1 className="font-display text-5xl sm:text-6xl lg:text-[5.5rem] font-black text-slate-900 tracking-tight leading-[1.05]">
               Experience<br />Pure Sound.
             </h1>
-            <p className="text-base sm:text-lg font-bold text-slate-500 tracking-wide">
+            <p className="font-display text-lg lg:text-xl font-bold text-slate-600">
               Premium Wireless Headphones
             </p>
-            <p className="text-sm sm:text-base text-slate-400 font-medium max-w-sm leading-relaxed">
+            <p className="text-sm text-slate-400 font-medium leading-relaxed max-w-sm">
               Industry-leading noise cancellation, immersive audio, and all-day comfort.
             </p>
           </div>
 
-          {/* Luxury Promotional Mini-Card */}
-          <div className="bg-white/90 backdrop-blur-md border border-white p-5 rounded-2xl shadow-[0_15px_40px_rgba(124,58,237,0.08)] flex flex-col space-y-4 max-w-[340px] transform transition-transform hover:-translate-y-1 duration-300">
-            <div className="flex items-center justify-between">
+          {/* Crisp White CTA Mini-Card */}
+          <div className="bg-white/90 backdrop-blur-md border border-white/60 p-6 rounded-3xl shadow-[0_20px_40px_rgba(0,0,0,0.04)] max-w-[360px] transform transition-transform hover:-translate-y-1 duration-300">
+            <div className="flex items-center justify-between mb-5">
               {/* Left Side: 50% Promo */}
               <div className="flex flex-col">
                 <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Up To</span>
-                <span className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-cyan-500 tracking-tighter my-0.5">50%</span>
+                <span className="text-5xl font-black text-violet-600 tracking-tighter my-0.5">50%</span>
                 <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Off</span>
               </div>
 
               {/* Vertical divider */}
-              <div className="w-[1px] h-14 bg-slate-100 mx-1"></div>
+              <div className="w-[1px] h-12 bg-slate-100 mx-2"></div>
 
               {/* Right Side: Features List */}
-              <div className="flex-1 pl-4 space-y-2.5">
-                <div className="flex items-center space-x-2">
-                  <div className="w-7 h-7 rounded-lg bg-violet-50/50 flex items-center justify-center text-violet-600 border border-violet-100">
-                    <Clock className="w-3.5 h-3.5" />
+              <div className="flex-1 pl-3 space-y-3">
+                <div className="flex items-center space-x-2.5">
+                  <div className="w-6 h-6 rounded-full bg-violet-50 flex items-center justify-center text-violet-500 border border-violet-100">
+                    <Clock className="w-3 h-3" />
                   </div>
-                  <span className="text-xs font-bold text-slate-700">Limited Time</span>
+                  <span className="text-xs font-bold text-slate-800">Limited Time</span>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <div className="w-7 h-7 rounded-lg bg-cyan-50/50 flex items-center justify-center text-cyan-600 border border-cyan-100">
-                    <Truck className="w-3.5 h-3.5" />
+                <div className="flex items-center space-x-2.5">
+                  <div className="w-6 h-6 rounded-full bg-cyan-50 flex items-center justify-center text-cyan-500 border border-cyan-100">
+                    <Truck className="w-3 h-3" />
                   </div>
-                  <span className="text-xs font-bold text-slate-700">Free Shipping</span>
+                  <span className="text-xs font-bold text-slate-800">Free Shipping</span>
                 </div>
               </div>
             </div>
@@ -1077,7 +1045,7 @@ export default function StoreFront({
                   catalogElement.scrollIntoView({ behavior: 'smooth' });
                 }
               }}
-              className="w-full bg-gradient-to-r from-violet-600 to-cyan-500 hover:from-violet-500 hover:to-cyan-400 active:scale-95 text-white py-3.5 px-4 rounded-xl text-sm font-bold flex items-center justify-center space-x-2 transition-all duration-300 animate-glow-pulse cursor-pointer"
+              className="w-full bg-gradient-to-r from-violet-600 to-cyan-500 hover:from-violet-500 hover:to-cyan-400 active:scale-95 text-white py-3.5 px-4 rounded-xl text-sm font-bold flex items-center justify-center space-x-2 transition-all duration-300 shadow-[0_8px_20px_rgba(124,58,237,0.25)] hover:shadow-[0_12px_25px_rgba(34,211,238,0.35)] cursor-pointer"
             >
               <span>Shop Now</span>
               <ArrowRight className="w-4 h-4" />
@@ -1085,80 +1053,85 @@ export default function StoreFront({
           </div>
         </div>
 
-        {/* Right Column: Floating High-Quality Headphones */}
-        <div className="relative z-10 flex-1 flex items-center justify-center">
-          <div className="relative w-72 h-72 sm:w-96 sm:h-96 md:w-[420px] md:h-[420px] select-none">
-            {/* Soft Ambient shadow under headphones to match exactly the premium 3D look */}
-            <div className="absolute -bottom-8 left-[10%] right-[10%] h-8 bg-violet-900/10 blur-2xl rounded-full"></div>
+        {/* Right Column: Frosted Glass Display Area */}
+        <div className="relative z-10 flex-1 flex items-center justify-center w-full">
+          <div className="relative w-full max-w-md aspect-square bg-gradient-to-br from-indigo-50/40 to-blue-50/20 backdrop-blur-xl border border-white rounded-[2.5rem] shadow-[0_20px_40px_rgba(0,0,0,0.03)] flex flex-col items-center justify-center p-8 select-none">
+            
             {imageError ? (
-              <div className="w-full h-full flex items-center justify-center bg-gradient-to-tr from-violet-500/10 to-cyan-500/10 rounded-3xl border border-slate-200/50 shadow-inner relative group p-8">
-                <div className="relative z-10 flex flex-col items-center justify-center text-violet-600">
-                  <div className="p-8 rounded-full bg-white shadow-xl border border-violet-50 text-violet-600 mb-4 transition-transform duration-500 group-hover:scale-110">
-                    <Headphones className="w-20 h-20 sm:w-28 sm:h-28 stroke-[1.25]" />
-                  </div>
-                  <span className="text-xs font-bold text-violet-600 tracking-widest uppercase font-mono bg-violet-50/80 px-3 py-1 rounded-full border border-violet-100">Pure Sound Engine</span>
-                  <p className="text-[11px] text-slate-400 mt-2 font-medium">Pro Series Wireless</p>
+              // Fallback directly matching the image's layout (icon inside a white circle)
+              <>
+                <div className="w-40 h-40 bg-white rounded-full shadow-[0_20px_40px_rgba(0,0,0,0.06)] flex items-center justify-center mb-8 relative z-10 hover:scale-105 transition-transform duration-500">
+                  <Headphones className="w-20 h-20 text-violet-600 stroke-[1.5]" />
                 </div>
-              </div>
+                <span className="text-[10px] font-bold text-violet-600 tracking-widest uppercase font-mono mb-2">Pure Sound Engine</span>
+                <p className="text-[11px] text-slate-400 font-medium">Pro Series Wireless</p>
+              </>
             ) : (
-              <img
-                src={heroHeadphonesSrc}
-                onError={() => {
-                  setImageError(true);
-                }}
-                alt="Experience Pure Sound Premium Headphones"
-                className="w-full h-full object-contain drop-shadow-[0_25px_50px_rgba(124,58,237,0.2)] hover:scale-105 transition-transform duration-[800ms]"
-                referrerPolicy="no-referrer"
-              />
+              // If an image is successfully loaded, place it elegantly within the frosted card
+              <>
+                <div className="absolute inset-0 bg-white/30 rounded-[2.5rem] pointer-events-none" />
+                <img
+                  src={heroHeadphonesSrc}
+                  onError={() => {
+                    setImageError(true);
+                  }}
+                  alt="Experience Pure Sound Premium Headphones"
+                  className="w-4/5 h-4/5 object-contain drop-shadow-[0_25px_50px_rgba(124,58,237,0.15)] hover:scale-105 transition-transform duration-[800ms] relative z-10"
+                  referrerPolicy="no-referrer"
+                />
+              </>
             )}
+
+            {/* Front floating sphere overlapping the glass edge */}
+            <div className="absolute -bottom-6 -right-6 w-24 h-24 rounded-full bg-gradient-to-tr from-cyan-100 to-blue-50 shadow-lg border border-white/50 animate-float-medium z-20" />
           </div>
         </div>
 
       </div>
 
-      {/* Bottom Highlights Row */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+      {/* Clean Bottom Highlights Row */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-12 animate-slide-up" style={{ animationDelay: '0.1s' }}>
         {/* Card 1: Battery */}
-        <div className="bg-white/90 backdrop-blur-md border border-slate-200/60 p-4 rounded-2xl flex items-center space-x-3.5 shadow-[0_4px_20px_rgba(124,58,237,0.03)] hover:-translate-y-1 transition-transform duration-300">
-          <div className="w-11 h-11 rounded-xl bg-violet-50/80 flex items-center justify-center text-violet-600 border border-violet-100">
+        <div className="bg-white border border-slate-100/80 p-5 rounded-3xl flex items-center space-x-4 shadow-[0_8px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_25px_rgba(0,0,0,0.04)] transition-all">
+          <div className="w-10 h-10 rounded-2xl bg-violet-50/80 flex items-center justify-center text-violet-600">
             <Battery className="w-5 h-5" />
           </div>
           <div>
-            <p className="font-bold text-slate-800 text-sm">40 Hours</p>
-            <p className="text-xs text-slate-500 font-medium">Battery</p>
+            <p className="font-display font-bold text-slate-900 text-sm leading-tight">40 Hours</p>
+            <p className="text-[11px] text-slate-500 font-medium">Battery</p>
           </div>
         </div>
 
         {/* Card 2: ANC */}
-        <div className="bg-white/90 backdrop-blur-md border border-slate-200/60 p-4 rounded-2xl flex items-center space-x-3.5 shadow-[0_4px_20px_rgba(124,58,237,0.03)] hover:-translate-y-1 transition-transform duration-300">
-          <div className="w-11 h-11 rounded-xl bg-cyan-50/80 flex items-center justify-center text-cyan-600 border border-cyan-100">
+        <div className="bg-white border border-slate-100/80 p-5 rounded-3xl flex items-center space-x-4 shadow-[0_8px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_25px_rgba(0,0,0,0.04)] transition-all">
+          <div className="w-10 h-10 rounded-2xl bg-cyan-50/80 flex items-center justify-center text-cyan-600">
             <Volume2 className="w-5 h-5" />
           </div>
           <div>
-            <p className="font-bold text-slate-800 text-sm">Active Noise</p>
-            <p className="text-xs text-slate-500 font-medium">Cancellation</p>
+            <p className="font-display font-bold text-slate-900 text-sm leading-tight">Active Noise</p>
+            <p className="text-[11px] text-slate-500 font-medium">Cancellation</p>
           </div>
         </div>
 
         {/* Card 3: Hi-Res */}
-        <div className="bg-white/90 backdrop-blur-md border border-slate-200/60 p-4 rounded-2xl flex items-center space-x-3.5 shadow-[0_4px_20px_rgba(124,58,237,0.03)] hover:-translate-y-1 transition-transform duration-300">
-          <div className="w-11 h-11 rounded-xl bg-fuchsia-50/80 flex items-center justify-center text-fuchsia-600 border border-fuchsia-100">
+        <div className="bg-white border border-slate-100/80 p-5 rounded-3xl flex items-center space-x-4 shadow-[0_8px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_25px_rgba(0,0,0,0.04)] transition-all">
+          <div className="w-10 h-10 rounded-2xl bg-fuchsia-50/80 flex items-center justify-center text-fuchsia-600">
             <Music className="w-5 h-5" />
           </div>
           <div>
-            <p className="font-bold text-slate-800 text-sm">Hi-Res</p>
-            <p className="text-xs text-slate-500 font-medium">Audio</p>
+            <p className="font-display font-bold text-slate-900 text-sm leading-tight">Hi-Res</p>
+            <p className="text-[11px] text-slate-500 font-medium">Audio</p>
           </div>
         </div>
 
         {/* Card 4: Bluetooth */}
-        <div className="bg-white/90 backdrop-blur-md border border-slate-200/60 p-4 rounded-2xl flex items-center space-x-3.5 shadow-[0_4px_20px_rgba(124,58,237,0.03)] hover:-translate-y-1 transition-transform duration-300">
-          <div className="w-11 h-11 rounded-xl bg-indigo-50/80 flex items-center justify-center text-indigo-600 border border-indigo-100">
+        <div className="bg-white border border-slate-100/80 p-5 rounded-3xl flex items-center space-x-4 shadow-[0_8px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_25px_rgba(0,0,0,0.04)] transition-all">
+          <div className="w-10 h-10 rounded-2xl bg-indigo-50/80 flex items-center justify-center text-indigo-600">
             <Bluetooth className="w-5 h-5" />
           </div>
           <div>
-            <p className="font-bold text-slate-800 text-sm">Bluetooth 5.4</p>
-            <p className="text-xs text-slate-500 font-medium">Connectivity</p>
+            <p className="font-display font-bold text-slate-900 text-sm leading-tight">Bluetooth 5.4</p>
+            <p className="text-[11px] text-slate-500 font-medium">Connectivity</p>
           </div>
         </div>
       </div>
