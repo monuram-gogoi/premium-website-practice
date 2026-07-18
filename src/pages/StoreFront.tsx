@@ -229,7 +229,7 @@ export default function StoreFront({
       return discounted.slice(0, 4).map((p, i) => ({
         id: p.id,
         title: p.name,
-        badge: 'SAVE ' + Math.round(((p.compare_at_price! - p.price) / p.compare_at_price!) * 100) + '%',
+        badge: 'SAVE ' + Math.round(((p.compare_at_price! - p.price) / p.compare_at_price!) * 100) + '%' + '',
         image: p.image_url,
         price: '₹' + p.price.toLocaleString(),
         category: p.category
@@ -585,7 +585,6 @@ export default function StoreFront({
                   <Flame className="w-3 h-3 text-amber-400" />
                   <span>{weeklySales} Bought This Week</span>
                 </div>
-                {/* For dark mode, using a lighter wrapper or adjusting PremiumCard */}
                 <div className="h-full rounded-[2rem] bg-slate-900 p-2 border border-slate-800">
                   <PremiumProductCard
                     product={prod}
@@ -986,157 +985,107 @@ export default function StoreFront({
         }
       `}} />
 
-      {/* NEW PROFESSIONAL HERO BANNER (DARK THEME) */}
-      <div className="relative mb-12 rounded-[2.5rem] overflow-hidden bg-slate-950 bg-gradient-to-br from-slate-950 via-violet-950/50 to-cyan-950/20 bg-[length:200%_200%] animate-gradient-shift text-white p-8 sm:p-12 lg:p-16 flex flex-col lg:flex-row items-center justify-between gap-12 shadow-[0_20px_50px_rgba(0,0,0,0.4)] min-h-[500px] border border-slate-800/80">
+      {/* REDESIGNED PRO HERO BANNER (CANVA/ESPORTS PRO STYLE) */}
+      <div className="relative mb-12 rounded-[2.5rem] overflow-hidden bg-slate-950 flex flex-col lg:flex-row items-center justify-between gap-12 shadow-[0_30px_60px_rgba(0,0,0,0.5)] min-h-[550px] border border-white/10 group">
         
-        {/* Soft glowing neon orbs for the dark background */}
-        <div className="absolute top-[10%] left-[30%] w-64 h-64 rounded-full bg-violet-600/20 blur-[80px] opacity-80 animate-float-slow" />
-        <div className="absolute bottom-[10%] left-[40%] w-48 h-48 rounded-full bg-cyan-600/10 blur-[60px] opacity-70 animate-float-medium" />
-        <div className="absolute top-[20%] right-[10%] w-80 h-80 rounded-full bg-fuchsia-600/10 blur-[100px] opacity-60 animate-float-slow" style={{ animationDelay: '1s' }} />
+        {/* Dynamic Background Elements */}
+        <div className="absolute inset-0 bg-gradient-to-br from-violet-900/80 via-slate-900 to-cyan-900/80 z-0" />
+        <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[120%] bg-gradient-to-br from-fuchsia-600/30 via-violet-600/20 to-transparent blur-[120px] animate-pulse z-0" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[120%] bg-gradient-to-tl from-cyan-400/30 via-blue-600/20 to-transparent blur-[120px] animate-float-slow z-0" />
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20 mix-blend-overlay z-0"></div>
 
-        {/* Left Column: Clean Typography and Dark CTA Card */}
-        <div className="relative z-10 flex-1 max-w-xl space-y-6">
-          {/* Subtle Pill Badge */}
-          <div className="inline-flex items-center bg-violet-500/20 text-violet-300 border border-violet-500/30 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-[0_0_15px_rgba(139,92,246,0.2)]">
-            <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-ping mr-2.5"></span>
-            Limited Time Offer
+        {/* Left Content - Typography & CTA */}
+        <div className="relative z-10 flex-1 w-full p-8 sm:p-12 lg:p-16 space-y-8">
+          <div className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-full shadow-xl transform transition-transform hover:scale-105 cursor-default">
+            <Flame className="w-4 h-4 text-rose-400 animate-pulse" />
+            <span className="text-xs font-bold text-white tracking-widest uppercase">Pro Edition Drop</span>
           </div>
 
           <div className="space-y-4">
-            <h1 className="font-display text-5xl sm:text-6xl lg:text-[5.5rem] font-black text-white tracking-tight leading-[1.05] drop-shadow-lg">
-              Experience<br />Pure Sound.
+            <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[1.1] drop-shadow-lg">
+              Aura <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-violet-300 to-fuchsia-300 animate-gradient-shift bg-[length:200%_200%]">
+                Unleashed.
+              </span>
             </h1>
-            <p className="font-display text-lg lg:text-xl font-bold text-cyan-400">
-              Premium Wireless Headphones
-            </p>
-            <p className="text-sm text-slate-400 font-medium leading-relaxed max-w-sm">
-              Industry-leading noise cancellation, immersive audio, and all-day comfort.
+            <p className="text-lg text-slate-300 font-medium max-w-md leading-relaxed">
+              Elevate your setup with studio-grade clarity. Engineered for total immersion, crystal-clear comms, and competitive edge.
             </p>
           </div>
 
-          {/* Dark Glass CTA Mini-Card */}
-          <div className="bg-slate-900/60 backdrop-blur-xl border border-slate-700/50 p-6 rounded-3xl shadow-[0_20px_40px_rgba(0,0,0,0.5)] max-w-[360px] transform transition-transform hover:-translate-y-1 duration-300">
-            <div className="flex items-center justify-between mb-5">
-              {/* Left Side: 50% Promo */}
-              <div className="flex flex-col">
-                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest leading-none">Up To</span>
-                <span className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-cyan-400 tracking-tighter my-0.5 drop-shadow-sm">50%</span>
-                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest leading-none">Off</span>
-              </div>
-
-              {/* Vertical divider */}
-              <div className="w-[1px] h-12 bg-slate-700/50 mx-2"></div>
-
-              {/* Right Side: Features List */}
-              <div className="flex-1 pl-3 space-y-3">
-                <div className="flex items-center space-x-2.5">
-                  <div className="w-6 h-6 rounded-full bg-violet-500/20 flex items-center justify-center text-violet-400 border border-violet-500/30">
-                    <Clock className="w-3 h-3" />
-                  </div>
-                  <span className="text-xs font-bold text-slate-200">Limited Time</span>
-                </div>
-                <div className="flex items-center space-x-2.5">
-                  <div className="w-6 h-6 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400 border border-cyan-500/30">
-                    <Truck className="w-3 h-3" />
-                  </div>
-                  <span className="text-xs font-bold text-slate-200">Free Shipping</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Shop Now Action Button */}
+          <div className="flex flex-col sm:flex-row items-center gap-5 pt-2">
             <button
               onClick={() => {
                 setSelectedCategory('Audio');
-                const catalogElement = document.getElementById('catalog-section');
-                if (catalogElement) {
-                  catalogElement.scrollIntoView({ behavior: 'smooth' });
-                }
+                document.getElementById('catalog-section')?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="w-full bg-gradient-to-r from-violet-600 to-cyan-500 hover:from-violet-500 hover:to-cyan-400 active:scale-95 text-white py-3.5 px-4 rounded-xl text-sm font-bold flex items-center justify-center space-x-2 transition-all duration-300 shadow-[0_8px_20px_rgba(124,58,237,0.3)] hover:shadow-[0_12px_25px_rgba(34,211,238,0.4)] cursor-pointer"
+              className="w-full sm:w-auto bg-white text-slate-900 hover:bg-slate-100 px-8 py-4 rounded-full text-sm font-black flex items-center justify-center space-x-2 transition-transform active:scale-95 shadow-[0_10px_25px_rgba(255,255,255,0.2)]"
             >
-              <span>Shop Now</span>
+              <span>Claim Your Gear</span>
               <ArrowRight className="w-4 h-4" />
             </button>
+
+            <div className="flex items-center space-x-4 bg-slate-900/50 backdrop-blur-md rounded-full px-5 py-3 border border-white/10">
+              <div className="flex flex-col">
+                <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Limited Time</span>
+                <span className="text-2xl font-black text-rose-400 tracking-tighter drop-shadow-sm">50% OFF</span>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Right Column: Dark Frosted Glass Display Area */}
-        <div className="relative z-10 flex-1 flex items-center justify-center w-full">
-          <div className="relative w-full max-w-md aspect-square bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex flex-col items-center justify-center p-8 select-none overflow-hidden">
-            
-            {imageError ? (
-              // Fallback dark UI matching the layout
-              <>
-                <div className="w-40 h-40 bg-slate-800/80 border border-slate-700/50 rounded-full shadow-[0_0_40px_rgba(124,58,237,0.15)] flex items-center justify-center mb-8 relative z-10 hover:scale-105 transition-transform duration-500">
-                  <Headphones className="w-20 h-20 text-violet-400 stroke-[1.5]" />
-                </div>
-                <span className="text-[10px] font-bold text-violet-400 tracking-widest uppercase font-mono mb-2">Pure Sound Engine</span>
-                <p className="text-[11px] text-slate-400 font-medium">Pro Series Wireless</p>
-              </>
-            ) : (
-              // If an image is successfully loaded, place it elegantly within the dark frosted card
-              <>
-                <div className="absolute inset-0 bg-gradient-to-t from-violet-600/10 to-transparent pointer-events-none rounded-[2.5rem]" />
-                <img
-                  src={heroHeadphonesSrc}
-                  onError={() => {
-                    setImageError(true);
-                  }}
-                  alt="Experience Pure Sound Premium Headphones"
-                  className="w-4/5 h-4/5 object-contain drop-shadow-[0_25px_50px_rgba(0,0,0,0.6)] hover:scale-105 transition-transform duration-[800ms] relative z-10"
-                  referrerPolicy="no-referrer"
-                />
-              </>
-            )}
+        {/* Right Showcase - Floating Glass & Elements */}
+        <div className="relative z-10 flex-1 flex justify-center items-center p-8 lg:p-16 w-full min-h-[400px]">
+           <div className="relative w-full max-w-md aspect-square">
+             {/* Center Glass Display Sphere */}
+             <div className="absolute inset-4 rounded-full bg-gradient-to-tr from-white/10 to-transparent backdrop-blur-2xl border border-white/20 shadow-[0_0_60px_rgba(0,0,0,0.4)] flex items-center justify-center overflow-hidden z-10 animate-float-medium">
+               {imageError ? (
+                  <div className="flex flex-col items-center">
+                    <Headphones className="w-24 h-24 text-white/50 mb-4" />
+                    <span className="text-white/50 font-mono text-sm tracking-widest">PRO SERIES</span>
+                  </div>
+               ) : (
+                  <img
+                    src={heroHeadphonesSrc}
+                    onError={() => setImageError(true)}
+                    alt="Premium Headphones"
+                    className="w-3/4 h-3/4 object-contain filter drop-shadow-[0_20px_30px_rgba(0,0,0,0.8)] group-hover:scale-110 transition-transform duration-[800ms]"
+                    referrerPolicy="no-referrer"
+                  />
+               )}
+             </div>
 
-            {/* Front floating neon sphere overlapping the glass edge */}
-            <div className="absolute -bottom-6 -right-6 w-24 h-24 rounded-full bg-gradient-to-tr from-violet-500/30 to-cyan-400/30 backdrop-blur-md shadow-[0_0_30px_rgba(34,211,238,0.2)] border border-white/10 animate-float-medium z-20" />
-          </div>
-        </div>
+             {/* Orbiting / Floating Badges */}
+             <div className="absolute top-[10%] right-[-5%] bg-slate-800/80 backdrop-blur-md border border-white/10 text-white px-4 py-3 rounded-2xl shadow-2xl animate-float-slow z-20 flex items-center gap-3">
+               <div className="w-8 h-8 rounded-full bg-violet-500/20 flex items-center justify-center">
+                  <Volume2 className="w-4 h-4 text-violet-400" />
+               </div>
+               <div>
+                 <p className="text-xs font-black leading-none">Active ANC</p>
+                 <p className="text-[9px] text-slate-400 font-bold uppercase mt-1 tracking-wider">Zero Distractions</p>
+               </div>
+             </div>
 
-      </div>
-
-      {/* Clean Bottom Highlights Row (Floating Pills) */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-16 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-        <div className="bg-white border border-slate-100 p-5 rounded-full flex items-center space-x-4 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
-          <div className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-white">
-            <Battery className="w-4 h-4" />
-          </div>
-          <div>
-            <p className="font-display font-black text-slate-900 text-sm leading-none">40 Hours</p>
-            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">Battery</p>
-          </div>
-        </div>
-
-        <div className="bg-white border border-slate-100 p-5 rounded-full flex items-center space-x-4 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
-          <div className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-white">
-            <Volume2 className="w-4 h-4" />
-          </div>
-          <div>
-            <p className="font-display font-black text-slate-900 text-sm leading-none">Active Noise</p>
-            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">Cancel</p>
-          </div>
-        </div>
-
-        <div className="bg-white border border-slate-100 p-5 rounded-full flex items-center space-x-4 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
-          <div className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-white">
-            <Music className="w-4 h-4" />
-          </div>
-          <div>
-            <p className="font-display font-black text-slate-900 text-sm leading-none">Hi-Res</p>
-            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">Audio</p>
-          </div>
-        </div>
-
-        <div className="bg-white border border-slate-100 p-5 rounded-full flex items-center space-x-4 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
-          <div className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-white">
-            <Bluetooth className="w-4 h-4" />
-          </div>
-          <div>
-            <p className="font-display font-black text-slate-900 text-sm leading-none">Bluetooth</p>
-            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">5.4 Connect</p>
-          </div>
+             <div className="absolute bottom-[10%] left-[-5%] bg-slate-800/80 backdrop-blur-md border border-white/10 text-white px-4 py-3 rounded-2xl shadow-2xl animate-float-medium z-20 flex items-center gap-3" style={{ animationDelay: '1s' }}>
+               <div className="w-8 h-8 rounded-full bg-cyan-500/20 flex items-center justify-center">
+                  <Battery className="w-4 h-4 text-cyan-400" />
+               </div>
+               <div>
+                 <p className="text-xs font-black leading-none">40H Life</p>
+                 <p className="text-[9px] text-slate-400 font-bold uppercase mt-1 tracking-wider">Tournament Ready</p>
+               </div>
+             </div>
+             
+             <div className="absolute top-[60%] right-[-10%] bg-slate-800/80 backdrop-blur-md border border-white/10 text-white px-4 py-3 rounded-2xl shadow-2xl animate-float-slow z-20 flex items-center gap-3" style={{ animationDelay: '2s' }}>
+               <div className="w-8 h-8 rounded-full bg-fuchsia-500/20 flex items-center justify-center">
+                  <Bluetooth className="w-4 h-4 text-fuchsia-400" />
+               </div>
+               <div>
+                 <p className="text-xs font-black leading-none">Zero Latency</p>
+                 <p className="text-[9px] text-slate-400 font-bold uppercase mt-1 tracking-wider">BT 5.4 Connect</p>
+               </div>
+             </div>
+           </div>
         </div>
       </div>
 
