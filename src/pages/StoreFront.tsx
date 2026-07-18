@@ -978,27 +978,27 @@ export default function StoreFront({
         }
       `}} />
 
-      {/* NEW PROFESSIONAL HERO BANNER */}
-      <div className="relative mb-12 rounded-[2.5rem] overflow-hidden bg-gradient-to-br from-[#fdfdfd] to-[#f8f9fc] text-slate-900 p-8 sm:p-12 lg:p-16 flex flex-col lg:flex-row items-center justify-between gap-12 shadow-[0_8px_30px_rgba(0,0,0,0.04)] min-h-[500px] animate-slide-up border border-white">
+      {/* NEW PROFESSIONAL HERO BANNER (DARK THEME) */}
+      <div className="relative mb-12 rounded-[2.5rem] overflow-hidden bg-slate-950 bg-gradient-to-br from-slate-950 via-violet-950/50 to-cyan-950/20 bg-[length:200%_200%] animate-gradient-shift text-white p-8 sm:p-12 lg:p-16 flex flex-col lg:flex-row items-center justify-between gap-12 shadow-[0_20px_50px_rgba(0,0,0,0.4)] min-h-[500px] border border-slate-800/80">
         
-        {/* Soft floating background spheres replicating the reference image */}
-        <div className="absolute top-[10%] left-[40%] w-32 h-32 rounded-full bg-gradient-to-tr from-violet-200 to-pink-100 blur-[2px] opacity-60 animate-float-slow" />
-        <div className="absolute bottom-[20%] left-[30%] w-12 h-12 rounded-full bg-gradient-to-tr from-pink-200 to-violet-100 blur-[1px] opacity-70 animate-float-medium" />
-        <div className="absolute top-[40%] right-[10%] w-48 h-48 rounded-full bg-gradient-to-tr from-cyan-200 to-indigo-100 blur-[2px] opacity-60 animate-float-slow" style={{ animationDelay: '1s' }} />
-        <div className="absolute top-[20%] right-[5%] w-16 h-16 rounded-full bg-gradient-to-tr from-violet-200 to-pink-100 blur-[1px] opacity-50 animate-float-medium" style={{ animationDelay: '2s' }} />
+        {/* Soft glowing neon orbs for the dark background */}
+        <div className="absolute top-[10%] left-[30%] w-64 h-64 rounded-full bg-violet-600/20 blur-[80px] opacity-80 animate-float-slow" />
+        <div className="absolute bottom-[10%] left-[40%] w-48 h-48 rounded-full bg-cyan-600/10 blur-[60px] opacity-70 animate-float-medium" />
+        <div className="absolute top-[20%] right-[10%] w-80 h-80 rounded-full bg-fuchsia-600/10 blur-[100px] opacity-60 animate-float-slow" style={{ animationDelay: '1s' }} />
 
-        {/* Left Column: Clean Typography and White CTA Card */}
+        {/* Left Column: Clean Typography and Dark CTA Card */}
         <div className="relative z-10 flex-1 max-w-xl space-y-6">
           {/* Subtle Pill Badge */}
-          <div className="inline-flex items-center bg-violet-50/80 text-violet-500 border border-violet-100/50 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest">
+          <div className="inline-flex items-center bg-violet-500/20 text-violet-300 border border-violet-500/30 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-[0_0_15px_rgba(139,92,246,0.2)]">
+            <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-ping mr-2.5"></span>
             Limited Time Offer
           </div>
 
           <div className="space-y-4">
-            <h1 className="font-display text-5xl sm:text-6xl lg:text-[5.5rem] font-black text-slate-900 tracking-tight leading-[1.05]">
+            <h1 className="font-display text-5xl sm:text-6xl lg:text-[5.5rem] font-black text-white tracking-tight leading-[1.05] drop-shadow-lg">
               Experience<br />Pure Sound.
             </h1>
-            <p className="font-display text-lg lg:text-xl font-bold text-slate-600">
+            <p className="font-display text-lg lg:text-xl font-bold text-cyan-400">
               Premium Wireless Headphones
             </p>
             <p className="text-sm text-slate-400 font-medium leading-relaxed max-w-sm">
@@ -1006,32 +1006,32 @@ export default function StoreFront({
             </p>
           </div>
 
-          {/* Crisp White CTA Mini-Card */}
-          <div className="bg-white/90 backdrop-blur-md border border-white/60 p-6 rounded-3xl shadow-[0_20px_40px_rgba(0,0,0,0.04)] max-w-[360px] transform transition-transform hover:-translate-y-1 duration-300">
+          {/* Dark Glass CTA Mini-Card */}
+          <div className="bg-slate-900/60 backdrop-blur-xl border border-slate-700/50 p-6 rounded-3xl shadow-[0_20px_40px_rgba(0,0,0,0.5)] max-w-[360px] transform transition-transform hover:-translate-y-1 duration-300">
             <div className="flex items-center justify-between mb-5">
               {/* Left Side: 50% Promo */}
               <div className="flex flex-col">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Up To</span>
-                <span className="text-5xl font-black text-violet-600 tracking-tighter my-0.5">50%</span>
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Off</span>
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest leading-none">Up To</span>
+                <span className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-cyan-400 tracking-tighter my-0.5 drop-shadow-sm">50%</span>
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest leading-none">Off</span>
               </div>
 
               {/* Vertical divider */}
-              <div className="w-[1px] h-12 bg-slate-100 mx-2"></div>
+              <div className="w-[1px] h-12 bg-slate-700/50 mx-2"></div>
 
               {/* Right Side: Features List */}
               <div className="flex-1 pl-3 space-y-3">
                 <div className="flex items-center space-x-2.5">
-                  <div className="w-6 h-6 rounded-full bg-violet-50 flex items-center justify-center text-violet-500 border border-violet-100">
+                  <div className="w-6 h-6 rounded-full bg-violet-500/20 flex items-center justify-center text-violet-400 border border-violet-500/30">
                     <Clock className="w-3 h-3" />
                   </div>
-                  <span className="text-xs font-bold text-slate-800">Limited Time</span>
+                  <span className="text-xs font-bold text-slate-200">Limited Time</span>
                 </div>
                 <div className="flex items-center space-x-2.5">
-                  <div className="w-6 h-6 rounded-full bg-cyan-50 flex items-center justify-center text-cyan-500 border border-cyan-100">
+                  <div className="w-6 h-6 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400 border border-cyan-500/30">
                     <Truck className="w-3 h-3" />
                   </div>
-                  <span className="text-xs font-bold text-slate-800">Free Shipping</span>
+                  <span className="text-xs font-bold text-slate-200">Free Shipping</span>
                 </div>
               </div>
             </div>
@@ -1045,7 +1045,7 @@ export default function StoreFront({
                   catalogElement.scrollIntoView({ behavior: 'smooth' });
                 }
               }}
-              className="w-full bg-gradient-to-r from-violet-600 to-cyan-500 hover:from-violet-500 hover:to-cyan-400 active:scale-95 text-white py-3.5 px-4 rounded-xl text-sm font-bold flex items-center justify-center space-x-2 transition-all duration-300 shadow-[0_8px_20px_rgba(124,58,237,0.25)] hover:shadow-[0_12px_25px_rgba(34,211,238,0.35)] cursor-pointer"
+              className="w-full bg-gradient-to-r from-violet-600 to-cyan-500 hover:from-violet-500 hover:to-cyan-400 active:scale-95 text-white py-3.5 px-4 rounded-xl text-sm font-bold flex items-center justify-center space-x-2 transition-all duration-300 shadow-[0_8px_20px_rgba(124,58,237,0.3)] hover:shadow-[0_12px_25px_rgba(34,211,238,0.4)] cursor-pointer"
             >
               <span>Shop Now</span>
               <ArrowRight className="w-4 h-4" />
@@ -1053,37 +1053,37 @@ export default function StoreFront({
           </div>
         </div>
 
-        {/* Right Column: Frosted Glass Display Area */}
+        {/* Right Column: Dark Frosted Glass Display Area */}
         <div className="relative z-10 flex-1 flex items-center justify-center w-full">
-          <div className="relative w-full max-w-md aspect-square bg-gradient-to-br from-indigo-50/40 to-blue-50/20 backdrop-blur-xl border border-white rounded-[2.5rem] shadow-[0_20px_40px_rgba(0,0,0,0.03)] flex flex-col items-center justify-center p-8 select-none">
+          <div className="relative w-full max-w-md aspect-square bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex flex-col items-center justify-center p-8 select-none overflow-hidden">
             
             {imageError ? (
-              // Fallback directly matching the image's layout (icon inside a white circle)
+              // Fallback dark UI matching the layout
               <>
-                <div className="w-40 h-40 bg-white rounded-full shadow-[0_20px_40px_rgba(0,0,0,0.06)] flex items-center justify-center mb-8 relative z-10 hover:scale-105 transition-transform duration-500">
-                  <Headphones className="w-20 h-20 text-violet-600 stroke-[1.5]" />
+                <div className="w-40 h-40 bg-slate-800/80 border border-slate-700/50 rounded-full shadow-[0_0_40px_rgba(124,58,237,0.15)] flex items-center justify-center mb-8 relative z-10 hover:scale-105 transition-transform duration-500">
+                  <Headphones className="w-20 h-20 text-violet-400 stroke-[1.5]" />
                 </div>
-                <span className="text-[10px] font-bold text-violet-600 tracking-widest uppercase font-mono mb-2">Pure Sound Engine</span>
+                <span className="text-[10px] font-bold text-violet-400 tracking-widest uppercase font-mono mb-2">Pure Sound Engine</span>
                 <p className="text-[11px] text-slate-400 font-medium">Pro Series Wireless</p>
               </>
             ) : (
-              // If an image is successfully loaded, place it elegantly within the frosted card
+              // If an image is successfully loaded, place it elegantly within the dark frosted card
               <>
-                <div className="absolute inset-0 bg-white/30 rounded-[2.5rem] pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-violet-600/10 to-transparent pointer-events-none rounded-[2.5rem]" />
                 <img
                   src={heroHeadphonesSrc}
                   onError={() => {
                     setImageError(true);
                   }}
                   alt="Experience Pure Sound Premium Headphones"
-                  className="w-4/5 h-4/5 object-contain drop-shadow-[0_25px_50px_rgba(124,58,237,0.15)] hover:scale-105 transition-transform duration-[800ms] relative z-10"
+                  className="w-4/5 h-4/5 object-contain drop-shadow-[0_25px_50px_rgba(0,0,0,0.6)] hover:scale-105 transition-transform duration-[800ms] relative z-10"
                   referrerPolicy="no-referrer"
                 />
               </>
             )}
 
-            {/* Front floating sphere overlapping the glass edge */}
-            <div className="absolute -bottom-6 -right-6 w-24 h-24 rounded-full bg-gradient-to-tr from-cyan-100 to-blue-50 shadow-lg border border-white/50 animate-float-medium z-20" />
+            {/* Front floating neon sphere overlapping the glass edge */}
+            <div className="absolute -bottom-6 -right-6 w-24 h-24 rounded-full bg-gradient-to-tr from-violet-500/30 to-cyan-400/30 backdrop-blur-md shadow-[0_0_30px_rgba(34,211,238,0.2)] border border-white/10 animate-float-medium z-20" />
           </div>
         </div>
 
