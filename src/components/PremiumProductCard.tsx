@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heart, Star, Eye, GitCompare, Plus, Check } from 'lucide-react';
+import { Heart, Star, Eye, Plus, Check } from 'lucide-react';
 import { Product } from '../types';
 
 interface PremiumProductCardProps {
@@ -16,13 +16,11 @@ export default function PremiumProductCard({
   inCartQty = 0
 }: PremiumProductCardProps) {
   const [isWishlisted, setIsWishlisted] = useState(false);
-  const [isComparing, setIsComparing] = useState(false);
 
   const discountPercentage = product.compare_at_price
     ? Math.round(((product.compare_at_price - product.price) / product.compare_at_price) * 100)
     : 0;
 
-  // Generate deterministic premium brand name
   const getBrand = (prod: Product) => {
     if (prod.name.toLowerCase().includes('apple') || prod.name.toLowerCase().includes('iphone') || prod.name.toLowerCase().includes('macbook') || prod.name.toLowerCase().includes('ipad')) return 'Apple';
     if (prod.name.toLowerCase().includes('sony')) return 'Sony';
@@ -32,164 +30,148 @@ export default function PremiumProductCard({
     if (prod.name.toLowerCase().includes('dell')) return 'Dell';
     if (prod.name.toLowerCase().includes('lenovo')) return 'Lenovo';
     if (prod.name.toLowerCase().includes('boat')) return 'boAt';
-    
-    // Otherwise, associate with the main category or premium
     return 'OGhaitong Signature';
   };
 
-  // Generate deterministic rating & reviews
   const rating = parseFloat(((product.name.length % 5) * 0.2 + 4.2).toFixed(1));
   const reviewsCount = (product.name.length * 13) % 240 + 15;
 
   return (
-    <div className="group relative bg-white/60 backdrop-blur-md border border-slate-200/50 rounded-[24px] p-4 flex flex-col justify-between transition-all duration-500 hover:shadow-[0_20px_50px_rgba(15,23,42,0.06)] hover:-translate-y-1.5 h-full">
+    <div className="group relative bg-white border border-neutral-200 flex flex-col justify-between transition-all duration-300 hover:border-neutral-900 h-full font-sans">
+      
       {/* Upper Section */}
       <div className="relative">
+        
         {/* Badges Overlay */}
-        <div className="absolute top-2 left-2 z-20 flex flex-col gap-1.5">
+        <div className="absolute top-0 left-0 z-20 flex flex-col">
           {discountPercentage > 0 && (
-            <span className="px-2.5 py-1 bg-rose-600 text-[10px] font-bold text-white rounded-full tracking-wider shadow-sm animate-pulse">
-              {discountPercentage}% OFF
+            <span className="px-3 py-1.5 bg-black text-[9px] font-bold text-white uppercase tracking-widest">
+              {discountPercentage}% Off
             </span>
           )}
           {product.stock <= 3 && product.stock > 0 && (
-            <span className="px-2.5 py-1 bg-amber-500 text-[10px] font-bold text-white rounded-full tracking-wider shadow-sm">
-              Only {product.stock} Left
+            <span className="px-3 py-1.5 bg-neutral-200 text-[9px] font-bold text-neutral-900 uppercase tracking-widest border-b border-r border-neutral-200">
+              Low Stock
             </span>
           )}
           {product.stock === 0 && (
-            <span className="px-2.5 py-1 bg-slate-500 text-[10px] font-bold text-white rounded-full tracking-wider shadow-sm">
+            <span className="px-3 py-1.5 bg-neutral-100 text-[9px] font-bold text-neutral-500 uppercase tracking-widest border-b border-r border-neutral-200">
               Sold Out
             </span>
           )}
         </div>
 
-        {/* Action icons row (Wishlist & Compare) */}
+        {/* Action Icons (Wishlist) */}
         <div className="absolute top-2 right-2 z-20 flex flex-col gap-2">
           <button
             onClick={(e) => {
               e.stopPropagation();
               setIsWishlisted(!isWishlisted);
             }}
-            className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 shadow-sm border ${
+            className={`w-8 h-8 flex items-center justify-center transition-colors border ${
               isWishlisted
-                ? 'bg-rose-50 border-rose-100 text-rose-500'
-                : 'bg-white/80 backdrop-blur-xs border-slate-100 text-slate-400 hover:text-rose-500 hover:bg-rose-50'
+                ? 'bg-black border-black text-white'
+                : 'bg-white border-neutral-200 text-neutral-400 hover:text-black hover:border-black'
             } cursor-pointer`}
             title={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
           >
-            <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-current' : ''}`} />
-          </button>
-
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsComparing(!isComparing);
-            }}
-            className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 shadow-sm border ${
-              isComparing
-                ? 'bg-indigo-50 border-indigo-100 text-indigo-600 font-bold'
-                : 'bg-white/80 backdrop-blur-xs border-slate-100 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50'
-            } cursor-pointer`}
-            title={isComparing ? 'Comparing Product' : 'Compare Product'}
-          >
-            <GitCompare className="w-4 h-4" />
+            <Heart className={`w-3.5 h-3.5 ${isWishlisted ? 'fill-current' : ''}`} />
           </button>
         </div>
 
-        {/* Product Image Stage with smooth zoom hover */}
+        {/* Product Image Stage */}
         <div 
           onClick={() => onQuickView(product.id)}
-          className="relative aspect-square w-full rounded-2xl overflow-hidden bg-slate-50 border border-slate-100 flex items-center justify-center p-4 cursor-pointer mb-4 group-hover:bg-slate-100/50 transition-colors"
+          className="relative aspect-square w-full overflow-hidden bg-neutral-50 flex items-center justify-center p-6 cursor-pointer mb-5"
         >
           <img
             src={product.image_url}
             alt={product.name}
             loading="lazy"
             referrerPolicy="no-referrer"
-            className="max-h-full max-w-full object-contain transition-transform duration-700 ease-out group-hover:scale-110"
+            className="max-h-full max-w-full object-contain transition-transform duration-700 ease-out group-hover:scale-105 mix-blend-multiply"
           />
 
-          {/* Quick View Interactive overlay (Desktop only) */}
-          <div className="absolute inset-0 bg-slate-950/5 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center backdrop-blur-[2px]">
+          {/* Quick View Button overlay */}
+          <div className="absolute inset-0 bg-white/40 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center backdrop-blur-[1px]">
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 onQuickView(product.id);
               }}
-              className="px-4 py-2 bg-white hover:bg-slate-950 hover:text-white text-slate-800 text-xs font-semibold rounded-full shadow-lg border border-slate-200/50 flex items-center space-x-1.5 transition-all transform translate-y-3 group-hover:translate-y-0 duration-300 cursor-pointer"
+              className="px-6 py-3 bg-black hover:bg-neutral-800 text-white text-[10px] font-bold uppercase tracking-widest flex items-center space-x-2 transition-all transform translate-y-2 group-hover:translate-y-0 duration-300 cursor-pointer"
             >
-              <Eye className="w-3.5 h-3.5" />
+              <Eye className="w-4 h-4" />
               <span>Quick View</span>
             </button>
           </div>
         </div>
 
         {/* Product Metadata */}
-        <div className="space-y-1">
-          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">
+        <div className="px-5 space-y-2">
+          <p className="text-[9px] font-bold text-neutral-500 uppercase tracking-[0.2em] leading-none">
             {getBrand(product)}
           </p>
           <h4
             onClick={() => onQuickView(product.id)}
-            className="font-display font-bold text-sm text-slate-900 group-hover:text-indigo-600 transition-colors cursor-pointer line-clamp-1"
+            className="font-display font-bold text-sm text-neutral-900 group-hover:text-neutral-500 transition-colors cursor-pointer line-clamp-2 leading-snug"
           >
             {product.name}
           </h4>
 
-          {/* Rating */}
-          <div className="flex items-center space-x-1.5">
-            <div className="flex text-amber-400">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  className={`w-3 h-3 ${
-                    i < Math.floor(rating) ? 'fill-current' : 'text-slate-200'
-                  }`}
-                />
-              ))}
+          {/* Minimalist Rating */}
+          <div className="flex items-center space-x-2">
+            <div className="flex text-black">
+              <Star className="w-3 h-3 fill-current" />
             </div>
-            <span className="text-[10px] font-bold text-slate-400 font-mono">
-              {rating} ({reviewsCount})
+            <span className="text-[10px] font-bold text-neutral-900 font-mono">
+              {rating} <span className="text-neutral-400 font-sans font-normal">({reviewsCount})</span>
             </span>
           </div>
         </div>
       </div>
 
       {/* Pricing and Action row */}
-      <div className="pt-3 mt-3 border-t border-slate-100/60 flex items-center justify-between">
-        <div className="flex flex-col">
-          {product.compare_at_price && (
-            <span className="text-[10px] sm:text-xs text-slate-400 line-through">
-              ₹{product.compare_at_price.toLocaleString('en-IN')}
+      <div className="mt-5 flex items-stretch border-t border-neutral-200 h-12">
+        
+        {/* Price Block */}
+        <div className="flex-1 px-5 flex flex-col justify-center border-r border-neutral-200 bg-neutral-50">
+          <div className="flex items-baseline space-x-2">
+            <span className="text-sm font-black text-neutral-900">
+              ₹{product.price.toLocaleString('en-IN')}
             </span>
-          )}
-          <span className="text-sm sm:text-base font-extrabold text-slate-900 font-mono">
-            ₹{product.price.toLocaleString('en-IN')}
-          </span>
+            {product.compare_at_price && (
+              <span className="text-[10px] text-neutral-400 line-through">
+                ₹{product.compare_at_price.toLocaleString('en-IN')}
+              </span>
+            )}
+          </div>
         </div>
 
+        {/* Add to Cart Button */}
         {product.stock === 0 ? (
-          <button
-            disabled
-            className="p-2.5 bg-slate-100 text-slate-400 rounded-xl text-xs font-semibold cursor-not-allowed"
-          >
-            Sold Out
-          </button>
+          <div className="w-16 flex items-center justify-center bg-neutral-100 text-neutral-400 cursor-not-allowed">
+            <span className="text-[9px] font-bold uppercase tracking-widest">Out</span>
+          </div>
         ) : (
           <button
             onClick={() => onAddToCart(product)}
-            className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${
+            className={`w-16 flex items-center justify-center transition-colors ${
               inCartQty > 0
-                ? 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100 border border-emerald-200'
-                : 'bg-slate-900 text-white hover:bg-indigo-600 shadow-md shadow-slate-900/10'
-            } hover:scale-105 active:scale-95 cursor-pointer`}
+                ? 'bg-black text-white'
+                : 'bg-white text-black hover:bg-neutral-100'
+            } cursor-pointer group/add`}
             title={inCartQty > 0 ? `In Cart (${inCartQty})` : 'Add to Cart'}
           >
-            {inCartQty > 0 ? <Check className="w-4 h-4 stroke-[2.5]" /> : <Plus className="w-4 h-4 stroke-[2.5]" />}
+            {inCartQty > 0 ? (
+              <Check className="w-5 h-5 stroke-[2]" />
+            ) : (
+              <Plus className="w-5 h-5 stroke-[2] group-hover/add:scale-110 transition-transform" />
+            )}
           </button>
         )}
       </div>
+      
     </div>
   );
 }
