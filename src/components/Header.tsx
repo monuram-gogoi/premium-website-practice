@@ -38,7 +38,7 @@ export default function Header({
   }, [currentView.page]);
 
   return (
-    <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-xs">
+    <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-lg border-b border-violet-100/50 shadow-[0_4px_30px_rgba(124,58,237,0.03)] transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           
@@ -47,14 +47,14 @@ export default function Header({
             onClick={() => setCurrentView({ page: 'store' })}
             className="flex items-center space-x-3 cursor-pointer group"
           >
-            <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center transition-transform group-hover:scale-105">
-              <div className="w-4 h-4 border-2 border-white"></div>
+            <div className="w-8 h-8 bg-gradient-to-br from-violet-600 to-cyan-500 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(124,58,237,0.4)] active:scale-95">
+              <div className="w-4 h-4 border-2 border-white rounded-[2px] transform group-hover:rotate-12 transition-transform duration-300"></div>
             </div>
             <div>
-              <span className="font-display font-bold text-lg tracking-tight text-slate-900 group-hover:text-indigo-600 transition-colors">
+              <span className="font-display font-bold text-lg tracking-tight text-slate-900 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-violet-600 group-hover:to-cyan-500 transition-all duration-300">
                 {settings?.branding_name || 'OGhaitong'}
               </span>
-              <span className="block text-[9px] font-mono tracking-widest text-slate-400 uppercase -mt-1">
+              <span className="block text-[9px] font-mono tracking-widest text-slate-400 uppercase -mt-1 group-hover:text-violet-400 transition-colors">
                 Architect Edition
               </span>
             </div>
@@ -66,10 +66,10 @@ export default function Header({
             {/* Store Button */}
             <button
               onClick={() => setCurrentView({ page: 'store' })}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+              className={`px-3 py-1.5 rounded-lg text-sm font-bold transition-all duration-300 active:scale-95 ${
                 currentView.page === 'store'
-                  ? 'text-indigo-600 bg-indigo-50/50'
-                  : 'text-slate-600 hover:text-indigo-600 hover:bg-slate-50'
+                  ? 'text-violet-700 bg-violet-50 border border-violet-100 shadow-sm'
+                  : 'text-slate-600 hover:text-violet-600 hover:bg-violet-50/50'
               }`}
             >
               Shop
@@ -82,10 +82,10 @@ export default function Header({
                   <button
                     id="nav-item-account"
                     onClick={() => setCurrentView({ page: 'dashboard', tab: 'profile' })}
-                    className={`px-2.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
+                    className={`px-2.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all duration-300 active:scale-95 ${
                       currentView.page === 'dashboard' && currentView.tab === 'profile'
-                        ? 'text-indigo-600 bg-indigo-50/50'
-                        : 'text-slate-600 hover:text-indigo-600 hover:bg-slate-50'
+                        ? 'text-violet-700 bg-violet-50 border border-violet-100 shadow-sm'
+                        : 'text-slate-600 hover:text-violet-600 hover:bg-violet-50/50'
                     }`}
                   >
                     My Account
@@ -93,10 +93,10 @@ export default function Header({
                   <button
                     id="nav-item-orders"
                     onClick={() => setCurrentView({ page: 'dashboard', tab: 'orders' })}
-                    className={`px-2.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
+                    className={`px-2.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all duration-300 active:scale-95 ${
                       currentView.page === 'dashboard' && currentView.tab === 'orders'
-                        ? 'text-indigo-600 bg-indigo-50/50'
-                        : 'text-slate-600 hover:text-indigo-600 hover:bg-slate-50'
+                        ? 'text-violet-700 bg-violet-50 border border-violet-100 shadow-sm'
+                        : 'text-slate-600 hover:text-violet-600 hover:bg-violet-50/50'
                     }`}
                   >
                     Orders
@@ -104,7 +104,7 @@ export default function Header({
                   <button
                     id="nav-item-logout"
                     onClick={onLogout}
-                    className="px-2.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium text-rose-600 hover:bg-rose-50 transition-colors"
+                    className="px-2.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold text-rose-500 hover:text-rose-600 hover:bg-rose-50 transition-all duration-300 active:scale-95"
                   >
                     Logout
                   </button>
@@ -114,10 +114,10 @@ export default function Header({
                   <button
                     id="nav-item-login"
                     onClick={() => setCurrentView({ page: 'login' })}
-                    className={`px-2.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
+                    className={`px-2.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all duration-300 active:scale-95 ${
                       currentView.page === 'login'
-                        ? 'text-indigo-600 bg-indigo-50/50'
-                        : 'text-slate-600 hover:text-indigo-600 hover:bg-slate-50'
+                        ? 'text-violet-700 bg-violet-50 border border-violet-100 shadow-sm'
+                        : 'text-slate-600 hover:text-violet-600 hover:bg-violet-50/50'
                     }`}
                   >
                     Login
@@ -125,10 +125,10 @@ export default function Header({
                   <button
                     id="nav-item-signup"
                     onClick={() => setCurrentView({ page: 'signup' })}
-                    className={`px-2.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
+                    className={`px-2.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all duration-300 active:scale-95 ${
                       currentView.page === 'signup'
-                        ? 'text-indigo-600 bg-indigo-50/50'
-                        : 'text-slate-600 hover:text-indigo-600 hover:bg-slate-50'
+                        ? 'text-violet-700 bg-violet-50 border border-violet-100 shadow-sm'
+                        : 'text-slate-600 hover:text-violet-600 hover:bg-violet-50/50'
                     }`}
                   >
                     Sign Up
@@ -140,11 +140,11 @@ export default function Header({
             {/* Cart Button */}
             <button
               onClick={() => setCurrentView({ page: 'cart' })}
-              className="relative p-2 text-slate-600 hover:text-indigo-600 hover:bg-slate-50 rounded-lg transition-colors"
+              className="relative p-2 text-slate-600 hover:text-violet-600 hover:bg-violet-50 rounded-lg transition-all duration-300 active:scale-95 group"
             >
-              <ShoppingBag className="w-5 h-5" />
+              <ShoppingBag className="w-5 h-5 transform group-hover:scale-110 transition-transform duration-300" />
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-indigo-600 text-[10px] font-bold text-white shadow-sm ring-2 ring-white animate-bounce">
+                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-r from-violet-600 to-cyan-500 text-[10px] font-bold text-white shadow-md ring-2 ring-white animate-bounce">
                   {cartCount}
                 </span>
               )}
@@ -154,7 +154,7 @@ export default function Header({
             <button
               id="hamburger-menu-btn"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 text-slate-600 hover:text-indigo-600 hover:bg-slate-50 rounded-lg transition-colors focus:outline-none cursor-pointer"
+              className="p-2 text-slate-600 hover:text-cyan-600 hover:bg-cyan-50 rounded-lg transition-all duration-300 active:scale-95 focus:outline-none cursor-pointer"
               aria-label="Toggle Menu"
             >
               {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -164,18 +164,18 @@ export default function Header({
             {isMenuOpen && (
               <div 
                 id="hamburger-menu-dropdown"
-                className="absolute right-0 top-12 w-64 bg-white border border-slate-200 rounded-xl shadow-lg py-3 z-50 animate-fade-in"
+                className="absolute right-0 top-12 w-64 bg-white/95 backdrop-blur-xl border border-violet-100/60 rounded-2xl shadow-[0_15px_40px_rgba(124,58,237,0.15)] py-3 z-50 animate-fade-in origin-top-right transform transition-all"
               >
-                <div className="px-4 py-2 border-b border-slate-100 mb-2">
+                <div className="px-4 py-3 border-b border-slate-100 mb-2 bg-slate-50/50">
                   {currentUser ? (
                     <div>
-                      <p className="text-xs font-semibold text-slate-800 truncate">{currentUser.full_name || 'Customer'}</p>
-                      <p className="text-[10px] font-mono text-slate-400 truncate">{currentUser.email}</p>
+                      <p className="text-xs font-bold text-slate-800 truncate">{currentUser.full_name || 'Customer'}</p>
+                      <p className="text-[10px] font-mono text-slate-500 truncate">{currentUser.email}</p>
                     </div>
                   ) : (
                     <div>
-                      <p className="text-xs font-bold text-indigo-600">{(settings?.branding_name || 'OGhaitong')} Guest</p>
-                      <p className="text-[10px] text-slate-400 font-light">Sign in to manage your orders</p>
+                      <p className="text-xs font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-cyan-500">{(settings?.branding_name || 'OGhaitong')} Guest</p>
+                      <p className="text-[10px] text-slate-400 font-medium mt-0.5">Sign in to manage your orders</p>
                     </div>
                   )}
                 </div>
@@ -190,9 +190,9 @@ export default function Header({
                           setCurrentView({ page: 'dashboard', tab: 'profile' });
                           setIsMenuOpen(false);
                         }}
-                        className="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-slate-700 hover:text-indigo-600 hover:bg-indigo-50/50 transition-colors flex items-center space-x-2 cursor-pointer"
+                        className="w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold text-slate-700 hover:text-violet-700 hover:bg-violet-50 transition-all duration-300 flex items-center space-x-2.5 cursor-pointer active:scale-95 group"
                       >
-                        <User className="w-4 h-4 text-slate-400" />
+                        <User className="w-4 h-4 text-slate-400 group-hover:text-violet-500 transition-colors" />
                         <span>My Account</span>
                       </button>
 
@@ -203,14 +203,14 @@ export default function Header({
                           setCurrentView({ page: 'dashboard', tab: 'orders' });
                           setIsMenuOpen(false);
                         }}
-                        className="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-slate-700 hover:text-indigo-600 hover:bg-indigo-50/50 transition-colors flex items-center space-x-2 cursor-pointer"
+                        className="w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold text-slate-700 hover:text-cyan-700 hover:bg-cyan-50 transition-all duration-300 flex items-center space-x-2.5 cursor-pointer active:scale-95 group"
                       >
-                        <ClipboardList className="w-4 h-4 text-slate-400" />
+                        <ClipboardList className="w-4 h-4 text-slate-400 group-hover:text-cyan-500 transition-colors" />
                         <span>Orders</span>
                       </button>
 
                       {/* Separator */}
-                      <div className="h-px bg-slate-100 my-1" />
+                      <div className="h-px bg-slate-100 my-2 mx-2" />
 
                       {/* Logout */}
                       <button
@@ -219,14 +219,14 @@ export default function Header({
                           onLogout();
                           setIsMenuOpen(false);
                         }}
-                        className="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-rose-600 hover:bg-rose-50 transition-colors flex items-center space-x-2 cursor-pointer"
+                        className="w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold text-rose-600 hover:bg-rose-50 transition-all duration-300 flex items-center space-x-2.5 cursor-pointer active:scale-95 group"
                       >
-                        <LogOut className="w-4 h-4 text-rose-400" />
+                        <LogOut className="w-4 h-4 text-rose-400 group-hover:text-rose-500 transition-colors" />
                         <span>Logout</span>
                       </button>
                     </>
                   ) : (
-                    <div className="grid grid-cols-2 gap-2 p-1">
+                    <div className="grid grid-cols-2 gap-2 p-1 pt-1.5">
                       {/* Login */}
                       <button
                         id="menu-item-login"
@@ -234,7 +234,7 @@ export default function Header({
                           setCurrentView({ page: 'login' });
                           setIsMenuOpen(false);
                         }}
-                        className="py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-800 text-center text-xs font-bold rounded-lg transition-colors flex items-center justify-center space-x-1 cursor-pointer"
+                        className="py-2.5 px-3 bg-slate-100 hover:bg-slate-200 text-slate-800 text-center text-xs font-bold rounded-xl transition-all duration-300 flex items-center justify-center space-x-1.5 cursor-pointer active:scale-95"
                       >
                         <LogIn className="w-3.5 h-3.5 shrink-0 text-slate-500" />
                         <span>Login</span>
@@ -247,9 +247,9 @@ export default function Header({
                           setCurrentView({ page: 'signup' });
                           setIsMenuOpen(false);
                         }}
-                        className="py-2 px-3 bg-indigo-600 hover:bg-indigo-700 text-white text-center text-xs font-bold rounded-lg transition-colors flex items-center justify-center space-x-1 cursor-pointer"
+                        className="py-2.5 px-3 bg-gradient-to-r from-violet-600 to-cyan-500 hover:from-violet-500 hover:to-cyan-400 text-white text-center text-xs font-bold rounded-xl transition-all duration-300 flex items-center justify-center space-x-1.5 cursor-pointer shadow-[0_4px_15px_rgba(124,58,237,0.3)] active:scale-95"
                       >
-                        <UserPlus className="w-3.5 h-3.5 shrink-0 text-indigo-200" />
+                        <UserPlus className="w-3.5 h-3.5 shrink-0 text-violet-100" />
                         <span>Sign Up</span>
                       </button>
                     </div>
