@@ -103,10 +103,14 @@ export default function PromoCarousel({ onCategorySelect }: PromoCarouselProps) 
   return (
     <div
       id="promo-banner-carousel"
-      className="relative w-full h-[600px] lg:h-[700px] bg-neutral-100 overflow-hidden group font-sans"
+      className="relative w-full h-[600px] lg:h-[700px] bg-gradient-to-br from-slate-50 via-violet-50/40 to-cyan-50/30 overflow-hidden group font-sans border-b border-violet-100/50"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
+      {/* Ambient Cyber Glows */}
+      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-violet-400/10 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-cyan-400/10 rounded-full blur-[100px] pointer-events-none" />
+
       <AnimatePresence mode="wait">
         <motion.div
           key={activeSlide.id}
@@ -119,26 +123,27 @@ export default function PromoCarousel({ onCategorySelect }: PromoCarouselProps) 
           
           {/* Left Text Content */}
           <div className="z-20 max-w-xl text-center lg:text-left mt-12 lg:mt-0">
-            <div className="mb-4">
-              <span className="text-[10px] sm:text-xs font-bold tracking-[0.2em] text-neutral-500 uppercase">
-                {activeSlide.eyebrow}
+            <div className="mb-6 inline-block">
+              <span className="text-[10px] sm:text-xs font-bold tracking-[0.2em] text-violet-600 uppercase bg-white/60 backdrop-blur-sm px-4 py-1.5 rounded-full border border-violet-100 shadow-sm inline-flex items-center space-x-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
+                <span>{activeSlide.eyebrow}</span>
               </span>
             </div>
             
-            <h2 className="font-display text-4xl sm:text-5xl lg:text-7xl font-black text-neutral-900 tracking-tighter uppercase leading-[0.9] mb-6">
+            <h2 className="font-display text-4xl sm:text-5xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-br from-violet-950 via-slate-800 to-cyan-900 tracking-tighter uppercase leading-[0.9] mb-6 drop-shadow-sm">
               {activeSlide.title}
             </h2>
             
-            <p className="text-sm sm:text-base text-neutral-600 mb-8 max-w-sm mx-auto lg:mx-0">
+            <p className="text-sm sm:text-base text-slate-600 font-medium mb-8 max-w-sm mx-auto lg:mx-0 leading-relaxed">
               {activeSlide.tagline}
             </p>
             
             <button
               onClick={(e) => handleCtaClick(activeSlide.category, e)}
-              className="group/btn inline-flex items-center justify-center px-8 py-4 bg-neutral-900 text-white text-xs font-bold uppercase tracking-widest hover:bg-neutral-800 transition-colors cursor-pointer"
+              className="group/btn inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-violet-600 to-cyan-500 hover:from-violet-500 hover:to-cyan-400 text-white text-xs font-bold uppercase tracking-widest rounded-2xl transition-all duration-300 cursor-pointer active:scale-95 shadow-[0_10px_30px_rgba(124,58,237,0.3)] hover:shadow-[0_15px_40px_rgba(34,211,238,0.4)]"
             >
               <span>{activeSlide.ctaText}</span>
-              <ArrowRight className="w-4 h-4 ml-3 group-hover/btn:translate-x-1 transition-transform" />
+              <ArrowRight className="w-4 h-4 ml-3 group-hover/btn:translate-x-1.5 transition-transform duration-300" />
             </button>
           </div>
 
@@ -148,7 +153,7 @@ export default function PromoCarousel({ onCategorySelect }: PromoCarouselProps) 
               src={getSlideImage(activeSlide)}
               onError={() => setImageFailures(prev => ({ ...prev, [activeSlide.id]: true }))}
               alt={activeSlide.title}
-              className="w-[150%] lg:w-full h-full object-cover lg:object-contain mix-blend-multiply"
+              className="w-[150%] lg:w-full h-full object-cover lg:object-contain mix-blend-multiply drop-shadow-[0_20px_40px_rgba(124,58,237,0.15)] transform transition-transform duration-[2s] group-hover:scale-105"
               referrerPolicy="no-referrer"
             />
           </div>
@@ -160,20 +165,20 @@ export default function PromoCarousel({ onCategorySelect }: PromoCarouselProps) 
       <div className="absolute bottom-8 left-6 lg:left-24 z-30 flex items-center space-x-6">
         
         {/* Navigation Arrows */}
-        <div className="flex space-x-2 hidden sm:flex">
+        <div className="flex space-x-3 hidden sm:flex">
           <button
             onClick={handlePrev}
-            className="w-10 h-10 flex items-center justify-center border border-neutral-300 text-neutral-500 hover:text-neutral-900 hover:border-neutral-900 transition-colors cursor-pointer"
+            className="w-11 h-11 flex items-center justify-center rounded-xl bg-white/80 backdrop-blur-md border border-violet-100 text-violet-500 hover:text-cyan-600 hover:border-cyan-300 hover:bg-cyan-50 shadow-sm hover:shadow-[0_4px_15px_rgba(34,211,238,0.2)] transition-all duration-300 cursor-pointer active:scale-95"
             aria-label="Previous"
           >
-            <ChevronLeft className="w-4 h-4" />
+            <ChevronLeft className="w-5 h-5" />
           </button>
           <button
             onClick={handleNext}
-            className="w-10 h-10 flex items-center justify-center border border-neutral-300 text-neutral-500 hover:text-neutral-900 hover:border-neutral-900 transition-colors cursor-pointer"
+            className="w-11 h-11 flex items-center justify-center rounded-xl bg-white/80 backdrop-blur-md border border-violet-100 text-violet-500 hover:text-cyan-600 hover:border-cyan-300 hover:bg-cyan-50 shadow-sm hover:shadow-[0_4px_15px_rgba(34,211,238,0.2)] transition-all duration-300 cursor-pointer active:scale-95"
             aria-label="Next"
           >
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-5 h-5" />
           </button>
         </div>
 
@@ -183,13 +188,13 @@ export default function PromoCarousel({ onCategorySelect }: PromoCarouselProps) 
             <button
               key={slide.id}
               onClick={(e) => selectSlide(index, e)}
-              className="py-2 cursor-pointer group/dot"
+              className="py-2 cursor-pointer group/dot active:scale-95 transition-transform"
               aria-label={`Go to slide ${index + 1}`}
             >
-              <div className={`h-[2px] transition-all duration-500 ${
+              <div className={`h-[3px] rounded-full transition-all duration-500 ease-out ${
                 index === currentSlide 
-                  ? 'w-12 bg-neutral-900' 
-                  : 'w-6 bg-neutral-300 group-hover/dot:bg-neutral-500 group-hover/dot:w-8'
+                  ? 'w-14 bg-gradient-to-r from-violet-600 to-cyan-500 shadow-[0_0_10px_rgba(124,58,237,0.4)]' 
+                  : 'w-6 bg-violet-200 group-hover/dot:bg-violet-400 group-hover/dot:w-10'
               }`} />
             </button>
           ))}
