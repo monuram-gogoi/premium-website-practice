@@ -270,17 +270,17 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-between">
+    <div className="min-h-screen bg-slate-50 flex flex-col justify-between font-sans selection:bg-violet-200 selection:text-violet-900">
       <RouteFix />
       <Analytics />
       
       {/* Toast Alert System */}
       {toast && (
-        <div className="fixed bottom-6 right-6 z-50 animate-bounce">
-          <div className={`px-4 py-3 rounded-2xl shadow-xl text-xs font-semibold flex items-center space-x-2 border text-white ${
-            toast.type === 'error' ? 'bg-rose-600 border-rose-500 shadow-rose-200' :
-            toast.type === 'info' ? 'bg-slate-900 border-slate-800 shadow-slate-300' :
-            'bg-indigo-600 border-indigo-500 shadow-indigo-200'
+        <div className="fixed bottom-6 right-6 z-50 animate-bounce transition-all duration-300 ease-in-out">
+          <div className={`px-4 py-3.5 rounded-2xl shadow-2xl text-xs font-bold flex items-center space-x-2 border border-white/20 text-white backdrop-blur-md ${
+            toast.type === 'error' ? 'bg-gradient-to-r from-rose-600 to-pink-600 shadow-[0_10px_25px_rgba(225,29,72,0.4)]' :
+            toast.type === 'info' ? 'bg-gradient-to-r from-slate-900 to-slate-800 shadow-[0_10px_25px_rgba(15,23,42,0.4)]' :
+            'bg-gradient-to-r from-violet-600 to-cyan-500 shadow-[0_10px_25px_rgba(124,58,237,0.4)]'
           }`}>
             <span>{toast.message}</span>
           </div>
