@@ -1,7 +1,53 @@
 @import "tailwindcss";
 
 @theme {
+  /* Fonts */
   --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Syne", sans-serif;
   --font-mono: "Fira Code", ui-monospace, SFMono-Regular, monospace;
+
+  /* Premium Violet/Cyan Aesthetic Animations */
+  --animate-fade-in: fade-in 0.5s ease-out forwards;
+  --animate-slide-up: slide-up-fade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-gradient-shift: gradient-shift 8s ease infinite;
+  --animate-glow-pulse: glow-pulse 2.5s infinite;
+  --animate-float-slow: float-slow 7s ease-in-out infinite;
+  --animate-float-medium: float-medium 5s ease-in-out infinite;
+
+  /* Custom Keyframes */
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slide-up-fade {
+    from { 
+      opacity: 0; 
+      transform: translateY(40px); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
+  }
+
+  @keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% { box-shadow: 0 0 15px rgba(124,58,237,0.4); }
+    50% { box-shadow: 0 0 30px rgba(34,211,238,0.6); }
+  }
+
+  @keyframes float-slow {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(2deg); }
+  }
+
+  @keyframes float-medium {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-22px) rotate(-3deg); }
+  }
 }
