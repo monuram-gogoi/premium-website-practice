@@ -72,9 +72,16 @@ export default function PublicAdminRoute({ children }: PublicAdminRouteProps) {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-4">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
-        <span className="text-xs text-slate-400 font-mono tracking-wider uppercase">Syncing Security Credentials...</span>
+      <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-6">
+        <div className="relative flex items-center justify-center">
+          {/* Ambient Cyber Glow */}
+          <div className="absolute inset-0 rounded-full blur-md bg-gradient-to-r from-violet-600 to-cyan-500 opacity-40 animate-pulse"></div>
+          {/* Premium Animated Spinner */}
+          <div className="animate-spin rounded-full h-12 w-12 border-[3px] border-slate-100 border-t-violet-600 border-r-cyan-500 relative z-10"></div>
+        </div>
+        <span className="text-[10px] text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-cyan-500 font-mono font-bold tracking-[0.2em] uppercase drop-shadow-sm">
+          Syncing Security Credentials...
+        </span>
       </div>
     );
   }
