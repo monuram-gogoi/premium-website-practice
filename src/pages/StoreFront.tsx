@@ -284,41 +284,38 @@ export default function StoreFront({
     const offerBadge = flashSaleConfig?.offer_badge || "Ends Today";
 
     return (
-      <section className="mt-24 border-t border-slate-100 pt-16 animate-slide-up" style={{ animationDelay: '0.1s' }} id="section-flash-sale">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-          <div className="space-y-1">
-            <div className="flex items-center space-x-2">
-              <span className="px-2.5 py-0.5 bg-gradient-to-r from-rose-500 to-pink-600 text-[10px] font-bold text-white rounded-full tracking-wider uppercase shadow-lg shadow-rose-500/30 animate-pulse">
-                {offerBadge}
-              </span>
-              <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight flex items-center space-x-2">
-                <Clock className="w-5 h-5 text-rose-500" />
-                <span>{title}</span>
-              </h2>
-            </div>
-            <p className="text-xs text-slate-500 font-medium">{subtitle}</p>
+      <section className="mt-32 animate-slide-up" style={{ animationDelay: '0.1s' }} id="section-flash-sale">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-10">
+          <div className="space-y-3">
+            <span className="px-3 py-1 bg-gradient-to-r from-rose-500 to-pink-600 text-[10px] font-extrabold text-white rounded-full tracking-widest uppercase shadow-[0_4px_10px_rgba(225,29,72,0.3)] animate-pulse inline-flex items-center space-x-1.5">
+              <Clock className="w-3 h-3" />
+              <span>{offerBadge}</span>
+            </span>
+            <h2 className="font-display text-4xl sm:text-5xl font-black text-slate-900 tracking-tight">
+              {title}
+            </h2>
           </div>
 
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-1 bg-white border border-slate-200/60 py-2 px-3.5 rounded-2xl font-mono text-sm font-bold text-slate-800 shadow-[0_4px_15px_rgba(0,0,0,0.03)]">
-              <span className="text-slate-400 font-sans text-[10px] font-bold uppercase tracking-wider mr-2">Ends In</span>
-              <span className="w-6 text-center text-violet-600">{timeLeft.hours.toString().padStart(2, '0')}</span>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center space-x-1.5 bg-slate-900 px-4 py-2.5 rounded-full text-white shadow-xl">
+              <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400 mr-2">Ends In</span>
+              <span className="w-7 text-center font-mono font-bold text-base">{timeLeft.hours.toString().padStart(2, '0')}</span>
               <span className="text-rose-500 animate-pulse">:</span>
-              <span className="w-6 text-center text-violet-600">{timeLeft.minutes.toString().padStart(2, '0')}</span>
+              <span className="w-7 text-center font-mono font-bold text-base">{timeLeft.minutes.toString().padStart(2, '0')}</span>
               <span className="text-rose-500 animate-pulse">:</span>
-              <span className="w-6 text-center text-rose-600">{timeLeft.seconds.toString().padStart(2, '0')}</span>
+              <span className="w-7 text-center font-mono font-bold text-base text-rose-400">{timeLeft.seconds.toString().padStart(2, '0')}</span>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className="flex space-x-2 hidden sm:flex">
               <button
                 onClick={() => scrollContainer(flashSaleRef, 'left')}
-                className="w-10 h-10 rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-violet-600 hover:border-violet-200 shadow-sm flex items-center justify-center transition-all cursor-pointer active:scale-95"
+                className="w-12 h-12 rounded-full border border-slate-200 flex items-center justify-center hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all duration-300 active:scale-95"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
               <button
                 onClick={() => scrollContainer(flashSaleRef, 'right')}
-                className="w-10 h-10 rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-violet-600 hover:border-violet-200 shadow-sm flex items-center justify-center transition-all cursor-pointer active:scale-95"
+                className="w-12 h-12 rounded-full border border-slate-200 flex items-center justify-center hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all duration-300 active:scale-95"
               >
                 <ChevronRight className="w-5 h-5" />
               </button>
@@ -328,10 +325,10 @@ export default function StoreFront({
 
         <div 
           ref={flashSaleRef}
-          className="flex overflow-x-auto gap-6 pb-6 scrollbar-none snap-x snap-mandatory px-1"
+          className="flex overflow-x-auto gap-6 pb-8 scrollbar-none snap-x snap-mandatory px-2"
         >
           {flashSaleProductsToUse.map((prod) => (
-            <div key={prod.id} className="min-w-[280px] sm:min-w-[320px] max-w-[320px] snap-start shrink-0 transform transition-all duration-300 hover:-translate-y-2">
+            <div key={prod.id} className="min-w-[300px] sm:min-w-[340px] max-w-[340px] snap-start shrink-0 transform transition-all duration-300">
               <PremiumProductCard
                 product={prod}
                 onAddToCart={onAddToCart}
@@ -347,40 +344,65 @@ export default function StoreFront({
 
   const renderCategories = () => {
     return (
-      <section className="mt-24 bg-gradient-to-br from-[#f8fafc] via-[#f1f5f9] to-violet-50/40 rounded-[2.5rem] border border-slate-200/50 p-8 sm:p-12 relative overflow-hidden animate-slide-up" style={{ animationDelay: '0.2s' }} id="section-categories">
-        <div className="absolute -right-16 -top-16 w-48 h-48 rounded-full pointer-events-none bg-cyan-500/10 blur-[80px]" />
-        
-        <div className="space-y-1 mb-10 text-center max-w-md mx-auto">
-          <span className="text-[10px] uppercase tracking-widest font-bold text-violet-600">Curated Architecture</span>
-          <h2 className="font-display text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 to-slate-700 tracking-tight">Shop by Category</h2>
-          <p className="text-sm text-slate-500 font-medium">Explore premium grade components structured by domain.</p>
+      <section className="mt-32 animate-slide-up" style={{ animationDelay: '0.2s' }} id="section-categories">
+        <div className="flex items-end justify-between mb-10">
+          <div>
+            <h2 className="font-display text-4xl sm:text-5xl font-black text-slate-900 tracking-tight">Explore Categories</h2>
+            <p className="text-sm text-slate-500 font-medium mt-3">Curated tech architectures tailored for specific use cases.</p>
+          </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-          {categoriesToUse.map((cat) => (
-            <div
-              key={cat.id}
-              onClick={() => handleCategorySelect(cat.name)}
-              className="group relative bg-white/70 backdrop-blur-md border border-white/60 rounded-3xl p-5 flex flex-col justify-between hover:bg-white hover:border-violet-200 hover:shadow-[0_20px_40px_rgba(124,58,237,0.08)] hover:-translate-y-2 active:scale-95 transition-all duration-500 cursor-pointer min-h-[160px]"
-            >
-              <div className="flex items-start justify-between">
-                <span className="text-3xl transform group-hover:scale-110 transition-transform duration-300">{cat.icon}</span>
-                <span className="text-[10px] font-mono font-bold text-violet-500 bg-violet-50/80 px-2 py-0.5 rounded-md border border-violet-100">
-                  {cat.count} items
-                </span>
-              </div>
+        {/* BENTO BOX GRID LAYOUT */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 auto-rows-[180px]">
+          {categoriesToUse.slice(0, 5).map((cat, idx) => {
+            // First item spans 2x2
+            const isHero = idx === 0;
+            // Second item spans 2 columns horizontally
+            const isWide = idx === 1;
 
-              <div>
-                <h4 className="font-display font-extrabold text-sm sm:text-base text-slate-800 group-hover:text-violet-600 transition-colors">
-                  {cat.name}
-                </h4>
-                <p className="text-[10px] text-slate-400 font-semibold flex items-center space-x-1 mt-1 group-hover:text-cyan-600 transition-colors">
-                  <span>Browse Vault</span>
-                  <ArrowRight className="w-3 h-3 transform group-hover:translate-x-1 transition-transform" />
-                </p>
+            return (
+              <div
+                key={cat.id}
+                onClick={() => handleCategorySelect(cat.name)}
+                className={`group relative overflow-hidden rounded-[2rem] flex flex-col justify-between p-6 sm:p-8 cursor-pointer active:scale-[0.98] transition-all duration-500 ${
+                  isHero 
+                    ? 'col-span-2 row-span-2 bg-gradient-to-br from-violet-600 to-cyan-500 text-white' 
+                    : isWide
+                      ? 'col-span-2 row-span-1 bg-slate-900 text-white'
+                      : 'col-span-1 row-span-1 bg-slate-100/50 hover:bg-slate-100 text-slate-900'
+                }`}
+              >
+                {/* Background ambient elements for Hero */}
+                {isHero && (
+                  <>
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-[60px] pointer-events-none transform translate-x-1/2 -translate-y-1/2" />
+                    <div className="absolute bottom-0 left-0 w-64 h-64 bg-cyan-400/20 rounded-full blur-[60px] pointer-events-none transform -translate-x-1/2 translate-y-1/2" />
+                  </>
+                )}
+
+                <div className="flex items-start justify-between relative z-10">
+                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-3xl transform group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500 ${isHero || isWide ? 'bg-white/20 backdrop-blur-md' : 'bg-white shadow-sm'}`}>
+                    {cat.icon}
+                  </div>
+                  <span className={`text-[10px] font-mono font-bold px-3 py-1 rounded-full border ${
+                    isHero || isWide ? 'bg-white/10 border-white/20 text-white' : 'bg-white border-slate-200 text-slate-500'
+                  }`}>
+                    {cat.count} Items
+                  </span>
+                </div>
+
+                <div className="relative z-10">
+                  <h4 className={`font-display font-black tracking-tight ${isHero ? 'text-3xl' : 'text-xl'}`}>
+                    {cat.name}
+                  </h4>
+                  <div className="flex items-center space-x-2 mt-2 opacity-80 group-hover:opacity-100 transition-opacity">
+                    <span className="text-xs font-bold uppercase tracking-widest">Browse Vault</span>
+                    <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1.5 transition-transform" />
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
     );
@@ -388,76 +410,82 @@ export default function StoreFront({
 
   const renderTodaysDeals = () => {
     return (
-      <section className="mt-24 animate-slide-up" style={{ animationDelay: '0.1s' }} id="section-todays-deals">
-        <div className="space-y-1 mb-8">
-          <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Today's Deals</h2>
-          <p className="text-xs text-slate-500 font-medium">Uncompromising high-performance hardware at bespoke rates.</p>
+      <section className="mt-32 animate-slide-up" style={{ animationDelay: '0.1s' }} id="section-todays-deals">
+        <div className="flex items-end justify-between mb-10">
+          <div>
+            <h2 className="font-display text-4xl sm:text-5xl font-black text-slate-900 tracking-tight">Today's Deals</h2>
+          </div>
+          <button
+            onClick={() => handleCategorySelect('All')}
+            className="hidden sm:flex items-center space-x-2 px-6 py-3 rounded-full border border-slate-200 text-sm font-bold text-slate-700 hover:bg-slate-900 hover:text-white transition-all active:scale-95"
+          >
+            <span>View All Deals</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="relative rounded-[2rem] overflow-hidden bg-gradient-to-br from-slate-900 via-slate-950 to-violet-950 p-8 sm:p-10 flex flex-col justify-between text-white border border-slate-800 shadow-[0_15px_40px_rgba(124,58,237,0.15)] lg:col-span-1 min-h-[380px] group">
-            <div className="absolute right-0 bottom-0 w-64 h-64 bg-cyan-500/20 rounded-full blur-[80px] pointer-events-none group-hover:bg-violet-500/20 transition-colors duration-700" />
-            
-            <div className="space-y-4 relative z-10">
-              <span className="px-3 py-1 bg-white/10 backdrop-blur-md text-[10px] font-bold text-white tracking-widest rounded-full uppercase border border-white/10 inline-block">
-                Exclusive Campaign
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {/* Magazine Hero Feature */}
+          <div className="relative rounded-[2.5rem] overflow-hidden bg-slate-100 p-8 sm:p-12 lg:col-span-5 min-h-[460px] group cursor-pointer flex flex-col">
+            <div className="absolute top-0 right-0 p-8 w-full flex justify-end z-10">
+              <span className="px-4 py-2 bg-rose-500 text-[10px] font-black text-white tracking-widest rounded-full uppercase shadow-[0_4px_15px_rgba(225,29,72,0.3)]">
+                Feature Deal
               </span>
-              <h3 className="font-display text-3xl font-extrabold tracking-tight leading-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-violet-200">
-                Summer Gadgets Fest
-              </h3>
-              <p className="text-xs text-slate-300 font-medium leading-relaxed max-w-xs">
-                Unlock top-tier audio equipment, certified hardware accessories, and smart wear with full product warranty coverage.
-              </p>
+            </div>
+            
+            <div className="flex-1 flex items-center justify-center relative z-0 mt-8 mb-4">
+              <img 
+                src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=500&auto=format&fit=crop&q=80" 
+                alt="Headphones" 
+                className="w-full max-h-64 object-contain mix-blend-multiply drop-shadow-2xl group-hover:scale-105 transition-transform duration-700" 
+              />
             </div>
 
-            <div className="relative z-10">
-              <div className="text-sm font-mono font-bold text-cyan-400 mb-4 drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]">Starts at just ₹1,999</div>
-              <button
-                onClick={() => handleCategorySelect('All')}
-                className="bg-white text-slate-900 hover:bg-gradient-to-r hover:from-violet-600 hover:to-cyan-500 hover:text-white font-bold text-xs py-3 px-6 rounded-xl flex items-center space-x-2 transition-all duration-300 cursor-pointer shadow-lg active:scale-95"
-              >
-                <span>Explore Deals</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
+            <div className="relative z-10 bg-white/80 backdrop-blur-xl p-6 rounded-3xl border border-white shadow-[0_10px_30px_rgba(0,0,0,0.05)]">
+              <h3 className="font-display text-2xl font-black text-slate-900 leading-tight">Pro Studio Wireless ANC</h3>
+              <div className="flex items-center gap-3 mt-3">
+                <span className="text-xl font-mono font-black text-violet-600">₹8,999</span>
+                <span className="text-sm text-slate-400 line-through">₹14,999</span>
+              </div>
             </div>
           </div>
 
-          <div className="lg:col-span-2 grid grid-cols-2 gap-4 sm:gap-6">
+          {/* Grid of Deals */}
+          <div className="lg:col-span-7 grid grid-cols-2 gap-4 sm:gap-6">
             {dealsToUse.map((deal) => (
               <div
                 key={deal.id}
                 onClick={() => handleCategorySelect(deal.category)}
-                className="group relative bg-white border border-slate-100 rounded-[2rem] p-5 flex flex-col justify-between hover:shadow-[0_15px_30px_rgba(15,23,42,0.06)] hover:border-violet-100 hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden active:scale-[0.98]"
+                className="group relative bg-white border border-slate-100 rounded-[2rem] p-5 flex flex-col justify-between hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden active:scale-[0.98]"
               >
                 <div className="absolute top-4 left-4 z-10">
-                  <span className="px-2.5 py-0.5 bg-rose-50 text-[10px] font-bold text-rose-600 rounded-full tracking-wider border border-rose-100 shadow-sm">
+                  <span className="px-3 py-1 bg-slate-900 text-[9px] font-black text-white rounded-full tracking-widest shadow-sm uppercase">
                     {deal.badge}
                   </span>
                 </div>
 
-                <div className="aspect-square w-full rounded-2xl bg-slate-50/50 flex items-center justify-center p-3 mb-4 overflow-hidden relative group-hover:bg-violet-50/30 transition-colors">
+                <div className="aspect-square w-full rounded-2xl bg-slate-50 flex items-center justify-center p-6 mb-4 overflow-hidden relative transition-colors">
                   <img
                     src={deal.image}
                     alt={deal.title}
                     loading="lazy"
                     referrerPolicy="no-referrer"
-                    className="max-h-full max-w-full object-contain transition-transform duration-700 group-hover:scale-110"
+                    className="max-h-full max-w-full object-contain mix-blend-multiply transition-transform duration-700 group-hover:scale-110"
                   />
                 </div>
 
                 <div className="flex items-end justify-between gap-2 mt-auto">
                   <div>
-                    <h4 className="font-display font-extrabold text-xs sm:text-sm text-slate-800 truncate group-hover:text-violet-600 transition-colors">
+                    <h4 className="font-display font-bold text-sm text-slate-900 truncate group-hover:text-violet-600 transition-colors">
                       {deal.title}
                     </h4>
-                    <p className="text-[10px] text-slate-400 font-semibold mt-0.5">
-                      Starting <span className="font-mono font-bold text-slate-700">{deal.price}</span>
+                    <p className="text-[11px] text-slate-500 font-medium mt-1">
+                      <span className="font-mono font-bold text-slate-800">{deal.price}</span>
                     </p>
                   </div>
-
-                  <span className="w-8 h-8 rounded-lg bg-slate-50 group-hover:bg-gradient-to-br group-hover:from-violet-600 group-hover:to-cyan-500 group-hover:text-white flex items-center justify-center text-slate-400 transition-all shadow-sm">
-                    <ArrowRight className="w-4 h-4 transform group-hover:translate-x-0.5" />
-                  </span>
+                  <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-slate-900 group-hover:text-white transition-colors">
+                    <ArrowRight className="w-4 h-4" />
+                  </div>
                 </div>
               </div>
             ))}
@@ -469,29 +497,17 @@ export default function StoreFront({
 
   const renderNewArrivals = () => {
     return (
-      <section className="mt-24 bg-gradient-to-br from-slate-50 to-cyan-50/20 rounded-[2.5rem] border border-slate-100 p-8 sm:p-12 animate-slide-up" style={{ animationDelay: '0.1s' }} id="section-new-arrivals">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-10">
-          <div className="space-y-1">
-            <div className="flex items-center space-x-2">
-              <span className="px-2.5 py-0.5 bg-gradient-to-r from-violet-600 to-cyan-500 text-[10px] font-bold text-white rounded-full tracking-wider uppercase shadow-md shadow-violet-500/20">
-                New
-              </span>
-              <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">New Arrivals</h2>
-            </div>
-            <p className="text-xs text-slate-500 font-medium">Freshly added premium catalog items, in stock and ready to ship.</p>
+      <section className="mt-32 animate-slide-up" style={{ animationDelay: '0.1s' }} id="section-new-arrivals">
+        <div className="flex items-end justify-between mb-10">
+          <div>
+            <h2 className="font-display text-4xl sm:text-5xl font-black text-slate-900 tracking-tight">New Arrivals</h2>
+            <p className="text-sm text-slate-500 font-medium mt-3">The latest drops in premium technology.</p>
           </div>
-          <button
-            onClick={() => handleCategorySelect('All')}
-            className="text-xs font-bold text-violet-600 hover:text-cyan-600 flex items-center space-x-1.5 self-start sm:self-center cursor-pointer transition-colors active:scale-95"
-          >
-            <span>View All Vault</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
           {newArrivalsToUse.map((prod) => (
-            <div key={prod.id} className="h-full transform transition-all duration-300 hover:-translate-y-2">
+            <div key={prod.id} className="h-full">
               <PremiumProductCard
                 product={prod}
                 onAddToCart={onAddToCart}
@@ -507,20 +523,16 @@ export default function StoreFront({
 
   const renderBestSellers = () => {
     return (
-      <section className="mt-24 animate-slide-up" id="section-best-sellers">
-        <div className="space-y-1 mb-8">
-          <div className="flex items-center space-x-2">
-            <span className="px-2.5 py-0.5 bg-slate-900 text-[10px] font-bold text-white rounded-full tracking-wider uppercase shadow-md">
-              Top Seller
-            </span>
-            <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Best Sellers</h2>
+      <section className="mt-32 animate-slide-up" id="section-best-sellers">
+        <div className="flex items-end justify-between mb-10">
+          <div>
+            <h2 className="font-display text-4xl sm:text-5xl font-black text-slate-900 tracking-tight">Best Sellers</h2>
           </div>
-          <p className="text-xs text-slate-500 font-medium">The most demanded products according to global client volume.</p>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
           {bestSellersToUse.map((prod) => (
-            <div key={prod.id} className="h-full transform transition-all duration-300 hover:-translate-y-2">
+            <div key={prod.id} className="h-full">
               <PremiumProductCard
                 product={prod}
                 onAddToCart={onAddToCart}
@@ -536,28 +548,25 @@ export default function StoreFront({
 
   const renderTrendingNow = () => {
     return (
-      <section className="mt-24 bg-slate-50/80 border border-slate-100 rounded-[2.5rem] p-8 sm:p-12 animate-slide-up" id="section-trending">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-          <div className="space-y-1">
-            <div className="flex items-center space-x-2">
-              <span className="px-2.5 py-0.5 bg-gradient-to-r from-amber-500 to-orange-500 text-[10px] font-bold text-white rounded-full tracking-wider uppercase shadow-lg shadow-orange-500/20">
-                🔥 Hot
-              </span>
-              <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Trending Now</h2>
-            </div>
-            <p className="text-xs text-slate-500 font-medium">Top momentum electronics with exceptional review profiles.</p>
+      <section className="mt-32 bg-slate-950 rounded-[3rem] p-8 sm:p-12 lg:p-16 animate-slide-up text-white" id="section-trending">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-12">
+          <div className="space-y-3">
+            <span className="px-3 py-1 bg-amber-500/20 text-[10px] font-bold text-amber-400 border border-amber-500/30 rounded-full tracking-widest uppercase">
+              🔥 Trending
+            </span>
+            <h2 className="font-display text-4xl sm:text-5xl font-black tracking-tight">Trending Now</h2>
           </div>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex space-x-3">
             <button
               onClick={() => scrollContainer(trendingRef, 'left')}
-              className="w-10 h-10 rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-violet-600 hover:border-violet-200 shadow-sm flex items-center justify-center transition-all cursor-pointer active:scale-95"
+              className="w-12 h-12 rounded-full border border-slate-800 bg-slate-900 flex items-center justify-center hover:bg-white hover:text-slate-900 hover:border-white transition-all duration-300 active:scale-95"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
             <button
               onClick={() => scrollContainer(trendingRef, 'right')}
-              className="w-10 h-10 rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-violet-600 hover:border-violet-200 shadow-sm flex items-center justify-center transition-all cursor-pointer active:scale-95"
+              className="w-12 h-12 rounded-full border border-slate-800 bg-slate-900 flex items-center justify-center hover:bg-white hover:text-slate-900 hover:border-white transition-all duration-300 active:scale-95"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
@@ -566,17 +575,18 @@ export default function StoreFront({
 
         <div 
           ref={trendingRef}
-          className="flex overflow-x-auto gap-6 pb-6 scrollbar-none snap-x snap-mandatory px-1"
+          className="flex overflow-x-auto gap-6 pb-6 scrollbar-none snap-x snap-mandatory"
         >
           {trendingToUse.map((prod) => {
             const weeklySales = (prod.name.length * 11) % 40 + 65;
             return (
-              <div key={prod.id} className="min-w-[280px] sm:min-w-[320px] max-w-[320px] snap-start shrink-0 relative group">
-                <div className="absolute top-20 left-6 z-10 flex items-center space-x-1.5 bg-amber-500/90 backdrop-blur-xs text-[9px] text-white font-bold px-2 py-0.5 rounded-full shadow-sm pointer-events-none uppercase">
-                  <Flame className="w-3 h-3 fill-current" />
-                  <span>{weeklySales} Sold This Week</span>
+              <div key={prod.id} className="min-w-[300px] sm:min-w-[340px] max-w-[340px] snap-start shrink-0 relative">
+                <div className="absolute top-4 left-4 z-20 flex items-center space-x-1.5 bg-slate-900/80 backdrop-blur-md border border-slate-700/50 text-[9px] text-white font-bold px-3 py-1.5 rounded-full shadow-lg pointer-events-none uppercase tracking-wider">
+                  <Flame className="w-3 h-3 text-amber-400" />
+                  <span>{weeklySales} Bought This Week</span>
                 </div>
-                <div className="h-full transform transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-[0_0_20px_rgba(245,158,11,0.15)] rounded-2xl">
+                {/* For dark mode, using a lighter wrapper or adjusting PremiumCard */}
+                <div className="h-full rounded-[2rem] bg-slate-900 p-2 border border-slate-800">
                   <PremiumProductCard
                     product={prod}
                     onAddToCart={onAddToCart}
@@ -600,55 +610,56 @@ export default function StoreFront({
     const bannerImgSrc = activeBanner?.image_url || "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=150&auto=format&fit=crop&q=80";
 
     return (
-      <section className="mt-24 relative rounded-[3rem] overflow-hidden bg-gradient-to-br from-violet-700 via-fuchsia-700 to-cyan-900 bg-[length:200%_200%] animate-gradient-shift p-12 sm:p-20 text-white border border-violet-900/50 shadow-[0_20px_50px_rgba(124,58,237,0.3)] animate-slide-up" id="section-promo-banner">
-        <div className="absolute -left-10 -bottom-10 w-80 h-80 bg-cyan-400/20 rounded-full blur-[80px] pointer-events-none" />
-        <div className="absolute -right-10 -top-10 w-80 h-80 bg-fuchsia-500/20 rounded-full blur-[80px] pointer-events-none" />
-
-        <div className="absolute left-[8%] top-[20%] hidden xl:block w-32 h-32 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 p-3 shadow-2xl animate-float-slow pointer-events-none select-none">
-          <img 
-            src={bannerImgSrc} 
-            alt="Audio Float" 
-            referrerPolicy="no-referrer"
-            className="w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.3)]" 
-          />
+      <section className="mt-32 relative rounded-[3rem] overflow-hidden animate-slide-up bg-gradient-to-br from-violet-600 to-cyan-500" id="section-promo-banner">
+        {/* Abstract shapes overlay */}
+        <div className="absolute inset-0 opacity-20">
+          <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path fill="white" d="M0,100 C30,70 70,30 100,0 L100,100 Z" />
+          </svg>
         </div>
 
-        <div className="absolute right-[8%] bottom-[20%] hidden xl:block w-36 h-36 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 p-3 shadow-2xl animate-float-medium pointer-events-none select-none">
-          <img 
-            src="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=150&auto=format&fit=crop&q=80" 
-            alt="Camera Float" 
-            referrerPolicy="no-referrer"
-            className="w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.3)]" 
-          />
-        </div>
-
-        <div className="relative z-10 max-w-2xl mx-auto text-center space-y-6">
-          <span className="px-4 py-1.5 bg-white/15 backdrop-blur-md text-xs font-bold text-white tracking-widest rounded-full uppercase border border-white/20 inline-block shadow-lg">
-            Limited Time Offer
-          </span>
+        <div className="relative p-12 sm:p-20 text-white flex flex-col md:flex-row items-center justify-between gap-12 z-10">
           
-          <div className="space-y-3">
-            <h2 className="font-display text-4xl sm:text-6xl font-black tracking-tight leading-none text-white drop-shadow-md">
-              {bannerTitle}
-            </h2>
-            <p className="font-display text-lg sm:text-2xl font-bold text-cyan-200">
-              {bannerSubtitle}
+          <div className="flex-1 max-w-xl space-y-6">
+            <span className="px-4 py-1.5 bg-white/20 backdrop-blur-md text-xs font-bold text-white tracking-widest rounded-full uppercase border border-white/30 inline-block shadow-lg">
+              Limited Time Offer
+            </span>
+            
+            <div className="space-y-2">
+              <h2 className="font-display text-5xl sm:text-7xl font-black tracking-tight leading-[0.95]">
+                {bannerTitle}
+              </h2>
+              <p className="font-display text-xl sm:text-2xl font-bold text-cyan-100">
+                {bannerSubtitle}
+              </p>
+            </div>
+
+            <p className="text-sm text-white/80 font-medium leading-relaxed max-w-md">
+              {bannerDesc}
             </p>
+
+            <div className="pt-4">
+              <button
+                onClick={() => handleCategorySelect('All')}
+                className="bg-white text-violet-900 active:scale-95 transition-all duration-300 font-black text-sm py-4 px-10 rounded-full flex items-center space-x-3 shadow-xl hover:shadow-2xl cursor-pointer"
+              >
+                <span>{bannerButtonText}</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
           </div>
 
-          <p className="text-xs sm:text-sm text-fuchsia-100 font-medium leading-relaxed max-w-md mx-auto">
-            {bannerDesc}
-          </p>
-
-          <div className="pt-4">
-            <button
-              onClick={() => handleCategorySelect('All')}
-              className="bg-white hover:bg-slate-50 text-violet-900 active:scale-95 transition-all duration-300 font-bold text-sm py-4 px-10 rounded-2xl flex items-center space-x-2.5 mx-auto shadow-[0_10px_25px_rgba(0,0,0,0.2)] hover:shadow-[0_15px_35px_rgba(0,0,0,0.3)] cursor-pointer animate-glow-pulse"
-            >
-              <span>{bannerButtonText}</span>
-              <ArrowRight className="w-4 h-4 text-violet-900" />
-            </button>
+          <div className="flex-1 flex justify-center lg:justify-end relative">
+            <div className="w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 p-8 shadow-[0_20px_50px_rgba(0,0,0,0.2)] relative animate-float-medium">
+              <img 
+                src={bannerImgSrc} 
+                alt="Promo" 
+                referrerPolicy="no-referrer"
+                className="w-full h-full object-contain filter drop-shadow-2xl" 
+              />
+            </div>
           </div>
+
         </div>
       </section>
     );
@@ -656,10 +667,9 @@ export default function StoreFront({
 
   const renderPopularBrands = () => {
     return (
-      <section className="mt-24 animate-slide-up" id="section-popular-brands">
-        <div className="space-y-1 mb-8 text-center">
-          <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Popular Brands</h2>
-          <p className="text-xs text-slate-500 font-medium">Direct collaboration with global leading high-end hardware manufacturers.</p>
+      <section className="mt-32 animate-slide-up" id="section-popular-brands">
+        <div className="text-center mb-10">
+          <h2 className="font-display text-3xl font-black text-slate-900 tracking-tight">Partner Brands</h2>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4">
@@ -667,12 +677,12 @@ export default function StoreFront({
             <div
               key={b.name}
               onClick={() => handleCategorySelect('All')}
-              className="group bg-white/80 backdrop-blur-md border border-slate-200/60 rounded-2xl p-4 flex flex-col items-center justify-center transition-all duration-300 hover:shadow-[0_15px_30px_rgba(124,58,237,0.08)] hover:border-violet-200 hover:-translate-y-2 active:scale-95 cursor-pointer h-24"
+              className="group bg-slate-50 border border-slate-100 rounded-3xl p-6 flex flex-col items-center justify-center transition-all duration-300 hover:bg-white hover:shadow-[0_15px_30px_rgba(0,0,0,0.06)] hover:-translate-y-1 active:scale-95 cursor-pointer h-32"
             >
-              <div className="w-10 h-10 rounded-full overflow-hidden bg-slate-50 flex items-center justify-center p-1 mb-2 group-hover:scale-110 transition-transform duration-500">
-                <img src={b.logo} alt={b.name} referrerPolicy="no-referrer" className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-500" />
+              <div className="w-12 h-12 flex items-center justify-center mb-3">
+                <img src={b.logo} alt={b.name} referrerPolicy="no-referrer" className="w-full h-full object-contain filter grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500" />
               </div>
-              <span className="text-[11px] font-bold text-slate-600 group-hover:text-violet-600 transition-colors">
+              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest group-hover:text-slate-900 transition-colors">
                 {b.name}
               </span>
             </div>
@@ -684,15 +694,17 @@ export default function StoreFront({
 
   const renderRecommended = () => {
     return (
-      <section className="mt-24 bg-gradient-to-br from-slate-50 to-fuchsia-50/20 rounded-[2.5rem] border border-slate-100 p-8 sm:p-12 animate-slide-up" id="section-recommended">
-        <div className="space-y-1 mb-10">
-          <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Recommended For You</h2>
-          <p className="text-sm text-slate-500 font-medium">Personalized picks you'll love.</p>
+      <section className="mt-32 animate-slide-up" id="section-recommended">
+        <div className="flex items-end justify-between mb-10">
+          <div>
+            <h2 className="font-display text-4xl sm:text-5xl font-black text-slate-900 tracking-tight">For You</h2>
+            <p className="text-sm text-slate-500 font-medium mt-3">Personalized curations based on your taste.</p>
+          </div>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
           {recommendedToUse.map((prod) => (
-            <div key={prod.id} className="h-full transform transition-all duration-300 hover:-translate-y-2">
+            <div key={prod.id} className="h-full">
               <PremiumProductCard
                 product={prod}
                 onAddToCart={onAddToCart}
@@ -708,23 +720,22 @@ export default function StoreFront({
 
   const renderRecentlyViewed = () => {
     return (
-      <section className="mt-24 animate-slide-up" id="section-recently-viewed">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-          <div className="space-y-1">
-            <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Recently Viewed</h2>
-            <p className="text-xs text-slate-500 font-medium">Jump back into your recently inspected tech hardware.</p>
+      <section className="mt-32 animate-slide-up" id="section-recently-viewed">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-10">
+          <div>
+            <h2 className="font-display text-4xl sm:text-5xl font-black text-slate-900 tracking-tight">Recently Viewed</h2>
           </div>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-3">
             <button
               onClick={() => scrollContainer(recentlyViewedRef, 'left')}
-              className="w-10 h-10 rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-violet-600 hover:border-violet-200 flex items-center justify-center transition-all cursor-pointer active:scale-95 shadow-sm"
+              className="w-12 h-12 rounded-full border border-slate-200 bg-white flex items-center justify-center hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all duration-300 active:scale-95 shadow-sm"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
             <button
               onClick={() => scrollContainer(recentlyViewedRef, 'right')}
-              className="w-10 h-10 rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-violet-600 hover:border-violet-200 flex items-center justify-center transition-all cursor-pointer active:scale-95 shadow-sm"
+              className="w-12 h-12 rounded-full border border-slate-200 bg-white flex items-center justify-center hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all duration-300 active:scale-95 shadow-sm"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
@@ -733,10 +744,10 @@ export default function StoreFront({
 
         <div 
           ref={recentlyViewedRef}
-          className="flex overflow-x-auto gap-6 pb-6 scrollbar-none snap-x snap-mandatory px-1"
+          className="flex overflow-x-auto gap-6 pb-6 scrollbar-none snap-x snap-mandatory px-2"
         >
           {recentlyViewedToUse.map((prod) => (
-            <div key={prod.id} className="min-w-[280px] sm:min-w-[320px] max-w-[320px] snap-start shrink-0 transform transition-all duration-300 hover:-translate-y-2">
+            <div key={prod.id} className="min-w-[300px] sm:min-w-[340px] max-w-[340px] snap-start shrink-0 transform transition-all duration-300">
               <PremiumProductCard
                 product={prod}
                 onAddToCart={onAddToCart}
@@ -752,26 +763,25 @@ export default function StoreFront({
 
   const renderWhyShop = () => {
     return (
-      <section className="mt-24 bg-gradient-to-br from-[#f8fafc] via-[#f1f5f9] to-violet-50/30 rounded-[2.5rem] border border-slate-200/50 p-8 sm:p-12 animate-slide-up" id="section-why-shop">
-        <div className="space-y-1 mb-10 text-center max-w-sm mx-auto">
-          <span className="text-[10px] uppercase tracking-widest font-bold text-violet-600">Pure Craftsmanship</span>
-          <h2 className="font-display text-3xl font-extrabold text-slate-900 tracking-tight">Why Shop with OGhaitong</h2>
-          <p className="text-sm text-slate-500 font-medium">Our core promises ensuring pristine customer satisfaction.</p>
+      <section className="mt-32 bg-slate-50 rounded-[3rem] p-8 sm:p-16 animate-slide-up" id="section-why-shop">
+        <div className="text-center max-w-xl mx-auto mb-16">
+          <h2 className="font-display text-4xl font-black text-slate-900 tracking-tight">The OGhaitong Promise</h2>
+          <p className="text-base text-slate-500 font-medium mt-4">Uncompromising quality and pristine customer satisfaction from checkout to delivery.</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {featuresList.map((f, i) => (
             <div
               key={i}
-              className="group bg-white/70 backdrop-blur-md border border-white/60 rounded-3xl p-6 hover:bg-white hover:border-violet-100 hover:shadow-[0_20px_40px_rgba(124,58,237,0.06)] hover:-translate-y-2 transition-all duration-500"
+              className="text-center group"
             >
-              <div className="w-12 h-12 rounded-2xl bg-violet-50/80 border border-violet-100 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 group-hover:bg-violet-100 transition-all duration-300">
+              <div className="w-20 h-20 mx-auto rounded-full bg-white shadow-[0_10px_30px_rgba(0,0,0,0.05)] border border-slate-100 flex items-center justify-center text-3xl mb-6 group-hover:scale-110 group-hover:bg-slate-900 group-hover:text-white transition-all duration-500">
                 {f.icon}
               </div>
-              <h4 className="font-display font-extrabold text-base text-slate-900 group-hover:text-violet-600 transition-colors mb-2">
+              <h4 className="font-display font-black text-xl text-slate-900 mb-3">
                 {f.title}
               </h4>
-              <p className="text-xs text-slate-500 font-medium leading-relaxed">
+              <p className="text-sm text-slate-500 font-medium leading-relaxed max-w-xs mx-auto">
                 {f.desc}
               </p>
             </div>
@@ -783,24 +793,22 @@ export default function StoreFront({
 
   const renderCustomerReviews = () => {
     return (
-      <section className="mt-24 animate-slide-up" id="section-reviews">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-          <div className="space-y-1">
-            <span className="text-[10px] uppercase tracking-widest font-bold text-cyan-600">Client Opinions</span>
-            <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Customer Reviews</h2>
-            <p className="text-xs text-slate-500 font-medium">Verified purchase feedback from our international technology patrons.</p>
+      <section className="mt-32 animate-slide-up" id="section-reviews">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-10">
+          <div>
+            <h2 className="font-display text-4xl sm:text-5xl font-black text-slate-900 tracking-tight">Real Feedback</h2>
           </div>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-3">
             <button
               onClick={() => scrollContainer(reviewsRef, 'left')}
-              className="w-10 h-10 rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-cyan-600 hover:border-cyan-200 shadow-sm flex items-center justify-center transition-all cursor-pointer active:scale-95"
+              className="w-12 h-12 rounded-full border border-slate-200 bg-white flex items-center justify-center hover:bg-slate-900 hover:text-white transition-all duration-300 active:scale-95 shadow-sm"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
             <button
               onClick={() => scrollContainer(reviewsRef, 'right')}
-              className="w-10 h-10 rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-cyan-600 hover:border-cyan-200 shadow-sm flex items-center justify-center transition-all cursor-pointer active:scale-95"
+              className="w-12 h-12 rounded-full border border-slate-200 bg-white flex items-center justify-center hover:bg-slate-900 hover:text-white transition-all duration-300 active:scale-95 shadow-sm"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
@@ -809,40 +817,40 @@ export default function StoreFront({
 
         <div 
           ref={reviewsRef}
-          className="flex overflow-x-auto gap-6 pb-6 scrollbar-none snap-x snap-mandatory px-1"
+          className="flex overflow-x-auto gap-6 pb-8 scrollbar-none snap-x snap-mandatory px-2"
         >
           {reviewsToUse.map((rev) => (
             <div 
               key={rev.id} 
-              className="min-w-[280px] sm:min-w-[380px] max-w-[380px] snap-start shrink-0 bg-white border border-slate-100 rounded-3xl p-6 flex flex-col justify-between hover:shadow-[0_15px_30px_rgba(34,211,238,0.08)] hover:-translate-y-2 hover:border-cyan-100 transition-all duration-500"
+              className="min-w-[320px] sm:min-w-[420px] max-w-[420px] snap-start shrink-0 bg-white border border-slate-100 rounded-[2rem] p-8 flex flex-col justify-between hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] hover:-translate-y-2 transition-all duration-500"
             >
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                  <div className="flex text-amber-400">
+                  <div className="flex space-x-1 text-slate-900">
                     {[...Array(rev.rating)].map((_, i) => (
-                      <Star key={i} className="w-3.5 h-3.5 fill-current" />
+                      <Star key={i} className="w-4 h-4 fill-current" />
                     ))}
                   </div>
                   {rev.verified && (
-                    <span className="flex items-center space-x-1 text-[9px] text-emerald-600 bg-emerald-50 border border-emerald-100 font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
-                      <CheckCircle className="w-3 h-3 text-emerald-600 fill-current" />
-                      <span>Verified Purchase</span>
+                    <span className="flex items-center space-x-1 text-[10px] text-slate-900 bg-slate-100 font-bold px-3 py-1 rounded-full uppercase tracking-widest">
+                      <CheckCircle className="w-3 h-3" />
+                      <span>Verified</span>
                     </span>
                   )}
                 </div>
 
-                <p className="text-xs text-slate-600 leading-relaxed font-medium italic">
+                <p className="text-sm text-slate-600 leading-relaxed font-medium">
                   "{rev.text}"
                 </p>
               </div>
 
-              <div className="flex items-center space-x-3 mt-6 pt-4 border-t border-slate-50">
-                <div className="w-10 h-10 rounded-full overflow-hidden bg-slate-50 border border-slate-100 shrink-0">
-                  <img src={rev.avatar} alt={rev.name} referrerPolicy="no-referrer" className="w-full h-full object-cover" />
+              <div className="flex items-center space-x-4 mt-8">
+                <div className="w-12 h-12 rounded-full overflow-hidden bg-slate-100">
+                  <img src={rev.avatar} alt={rev.name} referrerPolicy="no-referrer" className="w-full h-full object-cover grayscale" />
                 </div>
                 <div>
-                  <h5 className="text-xs font-bold text-slate-800">{rev.name}</h5>
-                  <p className="text-[9px] text-slate-400 font-medium">{rev.date}</p>
+                  <h5 className="text-sm font-black text-slate-900">{rev.name}</h5>
+                  <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">{rev.date}</p>
                 </div>
               </div>
             </div>
@@ -854,64 +862,64 @@ export default function StoreFront({
 
   const renderNewsletter = () => {
     return (
-      <section className="mt-24 mb-16 relative animate-slide-up" id="section-newsletter">
-        <div className="max-w-4xl mx-auto">
-          <div className="relative rounded-[3rem] overflow-hidden bg-gradient-to-br from-slate-900 via-violet-950/40 to-cyan-950/20 p-8 sm:p-14 text-white border border-slate-800 shadow-[0_20px_50px_rgba(0,0,0,0.3)] text-center space-y-6">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-violet-600/20 rounded-full blur-[100px] pointer-events-none" />
-
-            <div className="relative z-10 space-y-3">
-              <span className="text-[10px] uppercase tracking-widest font-bold text-cyan-400 font-mono">Stay Synchronized</span>
-              <h2 className="font-display text-2xl sm:text-4xl font-extrabold tracking-tight">Stay Updated with OGhaitong</h2>
-              <p className="text-xs sm:text-sm text-slate-300 font-medium max-w-lg mx-auto leading-relaxed">
-                Get exclusive offers, new arrivals, and limited-time discounts delivered directly to your inbox.
+      <section className="mt-32 mb-16 relative animate-slide-up" id="section-newsletter">
+        <div className="max-w-5xl mx-auto">
+          <div className="rounded-[3rem] overflow-hidden bg-slate-900 p-10 sm:p-20 text-white flex flex-col md:flex-row items-center justify-between gap-12 shadow-[0_20px_60px_rgba(0,0,0,0.2)]">
+            
+            <div className="flex-1 space-y-4 text-center md:text-left">
+              <h2 className="font-display text-4xl sm:text-5xl font-black tracking-tight">Stay in the Loop</h2>
+              <p className="text-sm sm:text-base text-slate-400 font-medium leading-relaxed max-w-sm mx-auto md:mx-0">
+                Get exclusive offers, new arrivals, and tech insights delivered directly to your inbox.
               </p>
             </div>
 
-            {subscribed ? (
-              <div className="relative z-10 py-4 max-w-md mx-auto bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs font-semibold px-6 rounded-2xl flex items-center justify-center space-x-2 animate-fade-in">
-                <CheckCircle className="w-4 h-4 text-emerald-400" />
-                <span>Secure Connection Established. Welcome to OGhaitong updates!</span>
-              </div>
-            ) : (
-              <form 
-                onSubmit={async (e) => {
-                  e.preventDefault();
-                  if (newsletterEmail.trim()) {
-                    try {
-                      await dbService.addSubscriber(newsletterEmail);
-                      setSubscribed(true);
-                      setNewsletterEmail('');
-                    } catch (err: any) {
-                      alert(err.message || 'Subscription failed');
-                    }
-                  }
-                }}
-                className="relative z-10 max-w-md mx-auto flex flex-col sm:flex-row gap-2.5 pt-2"
-              >
-                <div className="relative flex-1">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-slate-400" />
-                  <input
-                    type="email"
-                    required
-                    value={newsletterEmail}
-                    onChange={(e) => setNewsletterEmail(e.target.value)}
-                    placeholder="Enter your email address"
-                    className="w-full bg-slate-900/60 border border-slate-700/80 rounded-2xl py-3.5 pl-12 pr-4 text-xs focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none text-slate-100 placeholder-slate-400 transition-all backdrop-blur-md shadow-inner"
-                  />
+            <div className="flex-1 w-full max-w-md">
+              {subscribed ? (
+                <div className="py-4 bg-white/10 border border-white/20 text-white text-sm font-bold px-6 rounded-2xl flex items-center justify-center space-x-2 animate-fade-in backdrop-blur-md">
+                  <CheckCircle className="w-5 h-5" />
+                  <span>Welcome to the club.</span>
                 </div>
-                <button
-                  type="submit"
-                  className="bg-gradient-to-r from-violet-600 to-cyan-500 hover:from-violet-500 hover:to-cyan-400 text-white font-bold text-xs py-3.5 px-6 rounded-2xl active:scale-95 transition-all flex items-center justify-center space-x-1.5 cursor-pointer shadow-[0_0_15px_rgba(124,58,237,0.3)] hover:shadow-[0_0_25px_rgba(34,211,238,0.4)]"
+              ) : (
+                <form 
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+                    if (newsletterEmail.trim()) {
+                      try {
+                        await dbService.addSubscriber(newsletterEmail);
+                        setSubscribed(true);
+                        setNewsletterEmail('');
+                      } catch (err: any) {
+                        alert(err.message || 'Subscription failed');
+                      }
+                    }
+                  }}
+                  className="flex flex-col space-y-3"
                 >
-                  <span>Subscribe</span>
-                  <Send className="w-3.5 h-3.5" />
-                </button>
-              </form>
-            )}
-
-            <p className="relative z-10 text-[10px] text-slate-500 font-medium">
-              We value your privacy. Unsubscribe securely with one-click links in footer dispatches.
-            </p>
+                  <div className="relative">
+                    <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                    <input
+                      type="email"
+                      required
+                      value={newsletterEmail}
+                      onChange={(e) => setNewsletterEmail(e.target.value)}
+                      placeholder="Enter your email address"
+                      className="w-full bg-white/5 border border-white/10 rounded-full py-4 pl-14 pr-6 text-sm focus:border-white focus:ring-1 focus:ring-white outline-none text-white placeholder-slate-500 transition-all backdrop-blur-md"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full bg-white hover:bg-slate-200 text-slate-900 font-black text-sm py-4 rounded-full active:scale-95 transition-all flex items-center justify-center space-x-2 cursor-pointer"
+                  >
+                    <span>Subscribe Now</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                  <p className="text-[10px] text-slate-500 font-medium text-center mt-2">
+                    You can unsubscribe at any time.
+                  </p>
+                </form>
+              )}
+            </div>
+            
           </div>
         </div>
       </section>
@@ -935,7 +943,7 @@ export default function StoreFront({
   };
 
   return (
-    <div className="py-8 animate-fade-in overflow-hidden">
+    <div className="py-8 animate-fade-in overflow-hidden max-w-[1400px] mx-auto">
       
       {/* Global CSS injected for enhanced animations */}
       <style dangerouslySetInnerHTML={{__html: `
@@ -1089,83 +1097,81 @@ export default function StoreFront({
 
       </div>
 
-      {/* Clean Bottom Highlights Row */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-12 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-        {/* Card 1: Battery */}
-        <div className="bg-white border border-slate-100/80 p-5 rounded-3xl flex items-center space-x-4 shadow-[0_8px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_25px_rgba(0,0,0,0.04)] transition-all">
-          <div className="w-10 h-10 rounded-2xl bg-violet-50/80 flex items-center justify-center text-violet-600">
-            <Battery className="w-5 h-5" />
+      {/* Clean Bottom Highlights Row (Floating Pills) */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-16 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+        <div className="bg-white border border-slate-100 p-5 rounded-full flex items-center space-x-4 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+          <div className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-white">
+            <Battery className="w-4 h-4" />
           </div>
           <div>
-            <p className="font-display font-bold text-slate-900 text-sm leading-tight">40 Hours</p>
-            <p className="text-[11px] text-slate-500 font-medium">Battery</p>
+            <p className="font-display font-black text-slate-900 text-sm leading-none">40 Hours</p>
+            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">Battery</p>
           </div>
         </div>
 
-        {/* Card 2: ANC */}
-        <div className="bg-white border border-slate-100/80 p-5 rounded-3xl flex items-center space-x-4 shadow-[0_8px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_25px_rgba(0,0,0,0.04)] transition-all">
-          <div className="w-10 h-10 rounded-2xl bg-cyan-50/80 flex items-center justify-center text-cyan-600">
-            <Volume2 className="w-5 h-5" />
+        <div className="bg-white border border-slate-100 p-5 rounded-full flex items-center space-x-4 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+          <div className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-white">
+            <Volume2 className="w-4 h-4" />
           </div>
           <div>
-            <p className="font-display font-bold text-slate-900 text-sm leading-tight">Active Noise</p>
-            <p className="text-[11px] text-slate-500 font-medium">Cancellation</p>
+            <p className="font-display font-black text-slate-900 text-sm leading-none">Active Noise</p>
+            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">Cancel</p>
           </div>
         </div>
 
-        {/* Card 3: Hi-Res */}
-        <div className="bg-white border border-slate-100/80 p-5 rounded-3xl flex items-center space-x-4 shadow-[0_8px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_25px_rgba(0,0,0,0.04)] transition-all">
-          <div className="w-10 h-10 rounded-2xl bg-fuchsia-50/80 flex items-center justify-center text-fuchsia-600">
-            <Music className="w-5 h-5" />
+        <div className="bg-white border border-slate-100 p-5 rounded-full flex items-center space-x-4 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+          <div className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-white">
+            <Music className="w-4 h-4" />
           </div>
           <div>
-            <p className="font-display font-bold text-slate-900 text-sm leading-tight">Hi-Res</p>
-            <p className="text-[11px] text-slate-500 font-medium">Audio</p>
+            <p className="font-display font-black text-slate-900 text-sm leading-none">Hi-Res</p>
+            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">Audio</p>
           </div>
         </div>
 
-        {/* Card 4: Bluetooth */}
-        <div className="bg-white border border-slate-100/80 p-5 rounded-3xl flex items-center space-x-4 shadow-[0_8px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_25px_rgba(0,0,0,0.04)] transition-all">
-          <div className="w-10 h-10 rounded-2xl bg-indigo-50/80 flex items-center justify-center text-indigo-600">
-            <Bluetooth className="w-5 h-5" />
+        <div className="bg-white border border-slate-100 p-5 rounded-full flex items-center space-x-4 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+          <div className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-white">
+            <Bluetooth className="w-4 h-4" />
           </div>
           <div>
-            <p className="font-display font-bold text-slate-900 text-sm leading-tight">Bluetooth 5.4</p>
-            <p className="text-[11px] text-slate-500 font-medium">Connectivity</p>
+            <p className="font-display font-black text-slate-900 text-sm leading-none">Bluetooth</p>
+            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">5.4 Connect</p>
           </div>
         </div>
       </div>
 
       {/* Catalog Filters Bar */}
-      <div id="catalog-section" className="mb-8 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b border-slate-200">
+      <div id="catalog-section" className="mb-10 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 pb-6">
           <div>
-            <h2 className="font-display text-2xl font-extrabold text-slate-900 tracking-tight">Featured Products</h2>
-            <p className="text-xs text-slate-500 mt-1 font-medium">Showing {filteredProducts.length} Premium Essentials</p>
+            <h2 className="font-display text-4xl sm:text-5xl font-black text-slate-900 tracking-tight">The Vault</h2>
+            <p className="text-sm text-slate-500 font-medium mt-2">Showing {filteredProducts.length} Premium Essentials</p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3 bg-white p-2 rounded-full border border-slate-200 shadow-sm">
             {/* Search Input */}
-            <div className="relative w-full sm:w-64 group">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-violet-500 transition-colors" />
+            <div className="relative w-full sm:w-56 group">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-slate-900 transition-colors" />
               <input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search premium products..."
-                className="w-full pl-9 pr-4 py-2.5 text-sm bg-white border border-slate-200 rounded-lg focus:border-violet-500 focus:ring-1 focus:ring-violet-500 outline-none transition-all shadow-sm"
+                placeholder="Search..."
+                className="w-full pl-10 pr-4 py-2 text-sm bg-transparent outline-none transition-all text-slate-900 font-medium placeholder:font-normal"
               />
             </div>
 
+            <div className="w-[1px] h-6 bg-slate-200 mx-1 hidden sm:block"></div>
+
             {/* Sort Dropdown */}
-            <div className="flex items-center space-x-2 bg-white px-3 py-2.5 border border-slate-200 rounded-lg shadow-sm focus-within:border-violet-500 transition-colors">
+            <div className="flex items-center space-x-2 px-3 py-2 transition-colors">
               <SlidersHorizontal className="w-4 h-4 text-slate-500" />
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="text-sm font-medium bg-transparent outline-none text-slate-700 cursor-pointer"
+                className="text-sm font-bold bg-transparent outline-none text-slate-900 cursor-pointer"
               >
-                <option value="featured">Featured Essentials</option>
+                <option value="featured">Featured</option>
                 <option value="price-low">Price: Low to High</option>
                 <option value="price-high">Price: High to Low</option>
               </select>
@@ -1174,15 +1180,15 @@ export default function StoreFront({
         </div>
 
         {/* Categories Pills */}
-        <div className="flex overflow-x-auto py-4 scrollbar-none gap-2 px-1">
+        <div className="flex overflow-x-auto py-2 scrollbar-none gap-2 px-1">
           {categories.map((category) => (
             <button
               key={category}
               onClick={() => setSelectedCategory(category)}
-              className={`px-4 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all duration-300 active:scale-95 ${
+              className={`px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap transition-all duration-300 active:scale-95 ${
                 selectedCategory === category
-                  ? 'bg-gradient-to-r from-violet-600 to-cyan-500 text-white shadow-[0_4px_15px_rgba(124,58,237,0.3)]'
-                  : 'bg-white text-slate-600 hover:text-violet-600 border border-slate-200 hover:border-violet-200 shadow-sm'
+                  ? 'bg-slate-900 text-white shadow-md'
+                  : 'bg-white text-slate-600 hover:text-slate-900 border border-slate-200 hover:border-slate-400 hover:bg-slate-50'
               }`}
             >
               {category}
@@ -1193,131 +1199,31 @@ export default function StoreFront({
 
       {/* Catalog Grid */}
       {filteredProducts.length === 0 ? (
-        <div className="text-center py-16 bg-white rounded-xl border border-slate-200 shadow-sm animate-slide-up">
-          <p className="text-slate-500 font-medium">No premium products match your parameters.</p>
+        <div className="text-center py-20 bg-white rounded-3xl border border-slate-200 shadow-sm animate-slide-up">
+          <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Search className="w-8 h-8 text-slate-400" />
+          </div>
+          <h3 className="text-xl font-black text-slate-900">No matches found</h3>
+          <p className="text-slate-500 font-medium mt-2">Adjust your filters to discover more items.</p>
           <button
             onClick={() => { setSearch(''); setSelectedCategory('All'); }}
-            className="mt-3 text-violet-600 text-sm font-semibold hover:underline"
+            className="mt-6 px-6 py-2.5 bg-slate-900 text-white text-sm font-bold rounded-full hover:bg-slate-800 transition-colors"
           >
             Clear all filters
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 lg:gap-8 animate-slide-up" style={{ animationDelay: '0.3s' }}>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 animate-slide-up" style={{ animationDelay: '0.3s' }}>
           {filteredProducts.map((product) => {
             const inCartQty = getCartQuantity(product.id);
-            const isOutOfStock = product.stock <= 0;
-            const discountPercentage = product.compare_at_price
-              ? Math.round(((product.compare_at_price - product.price) / product.compare_at_price) * 100)
-              : 0;
-
             return (
-              <div
-                key={product.id}
-                className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-[0_15px_30px_rgba(124,58,237,0.08)] hover:-translate-y-2 transition-all duration-500 flex flex-col group"
-              >
-                {/* Product Image Stage */}
-                <div className="relative aspect-[4/3] bg-slate-50/50 overflow-hidden cursor-pointer group-hover:bg-violet-50/30 transition-colors" onClick={() => setCurrentView({ page: 'detail', productId: product.id })}>
-                  <img
-                    src={product.image_url}
-                    alt={product.name}
-                    referrerPolicy="no-referrer"
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  
-                  {/* Category Pill */}
-                  <span className="absolute top-2 left-2 sm:top-3 sm:left-3 px-1.5 py-0.5 bg-white/95 backdrop-blur-md border border-slate-200 text-[8px] sm:text-[10px] font-bold text-slate-700 rounded-md shadow-sm uppercase tracking-wider font-mono">
-                    {product.category}
-                  </span>
-
-                  {/* Discount Badge */}
-                  {discountPercentage > 0 && (
-                    <span className="absolute top-2 right-2 sm:top-3 sm:right-3 px-1.5 py-0.5 bg-gradient-to-r from-rose-500 to-pink-600 text-[8px] sm:text-[10px] font-bold text-white rounded-md shadow-md tracking-wider">
-                      -{discountPercentage}%
-                    </span>
-                  )}
-
-                  {/* Out of stock cover */}
-                  {isOutOfStock && (
-                    <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center">
-                      <span className="px-2 py-1 sm:px-4 sm:py-1.5 bg-white text-slate-900 font-bold text-[9px] sm:text-xs uppercase tracking-widest rounded-lg shadow-md">
-                        Sold Out
-                      </span>
-                    </div>
-                  )}
-
-                  {/* Quick look action sheet (Desktop only) */}
-                  <div className="hidden sm:flex absolute inset-0 bg-violet-900/10 opacity-0 group-hover:opacity-100 transition-opacity items-end justify-center pb-4 backdrop-blur-[2px]">
-                    <button 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setCurrentView({ page: 'detail', productId: product.id });
-                      }}
-                      className="px-3.5 py-1.5 bg-white/95 backdrop-blur-md border border-white text-slate-800 font-semibold text-xs rounded-lg shadow-[0_10px_25px_rgba(0,0,0,0.15)] flex items-center space-x-1.5 hover:bg-violet-600 hover:text-white hover:border-violet-600 transition-all transform translate-y-4 group-hover:translate-y-0 duration-300"
-                    >
-                      <Eye className="w-3.5 h-3.5" />
-                      <span>Configure Options</span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* Card Info Box */}
-                <div className="p-3 sm:p-5 flex-1 flex flex-col">
-                  {/* Rating / Review placeholder */}
-                  <div className="flex items-center space-x-1 mb-1 sm:mb-2">
-                    <div className="flex text-amber-400">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-current" />
-                      ))}
-                    </div>
-                    <span className="text-[9px] sm:text-[10px] font-bold text-slate-400 font-mono">5.0</span>
-                  </div>
-
-                  <h3 
-                    onClick={() => setCurrentView({ page: 'detail', productId: product.id })}
-                    className="font-display font-bold text-xs sm:text-base text-slate-900 group-hover:text-violet-600 transition-colors cursor-pointer line-clamp-1"
-                  >
-                    {product.name}
-                  </h3>
-                  
-                  <p className="text-slate-500 text-[10px] sm:text-xs font-medium mt-1 mb-2 sm:mb-4 line-clamp-1 sm:line-clamp-2 leading-relaxed">
-                    {product.description}
-                  </p>
-
-                  <div className="mt-auto pt-2 sm:pt-4 border-t border-slate-100 flex flex-col xs:flex-row xs:items-center justify-between gap-1.5 sm:gap-2">
-                    <div className="flex items-baseline space-x-1.5 xs:block">
-                      {product.compare_at_price && (
-                        <span className="block text-[9px] sm:text-[11px] text-slate-400 line-through font-medium">
-                          ₹{product.compare_at_price.toLocaleString('en-IN')}
-                        </span>
-                      )}
-                      <span className="text-xs sm:text-base font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 to-slate-700 font-mono">
-                        ₹{product.price.toLocaleString('en-IN')}
-                      </span>
-                    </div>
-
-                    {isOutOfStock ? (
-                      <button
-                        disabled
-                        className="w-full xs:w-auto px-2 py-1 sm:px-3 sm:py-1.5 bg-slate-100 text-slate-400 text-[10px] sm:text-xs font-semibold rounded-lg cursor-not-allowed text-center"
-                      >
-                        Out of Stock
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => onAddToCart(product)}
-                        className={`w-full xs:w-auto px-2 py-1 sm:px-3 sm:py-1.5 text-[10px] sm:text-xs font-semibold rounded-lg transition-all duration-300 active:scale-95 flex items-center justify-center space-x-1 ${
-                          inCartQty > 0
-                            ? 'bg-violet-50 text-violet-700 hover:bg-violet-100 border border-violet-200 shadow-sm'
-                            : 'bg-slate-900 text-white hover:bg-gradient-to-r hover:from-violet-600 hover:to-cyan-500 shadow-md hover:shadow-[0_8px_20px_rgba(124,58,237,0.3)]'
-                        }`}
-                      >
-                        <Plus className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                        <span>{inCartQty > 0 ? `In Cart (${inCartQty})` : 'Add'}</span>
-                      </button>
-                    )}
-                  </div>
-                </div>
+              <div key={product.id} className="h-full transform transition-all duration-300 hover:-translate-y-2">
+                <PremiumProductCard
+                  product={product}
+                  onAddToCart={onAddToCart}
+                  onQuickView={(id) => setCurrentView({ page: 'detail', productId: id })}
+                  inCartQty={inCartQty}
+                />
               </div>
             );
           })}
