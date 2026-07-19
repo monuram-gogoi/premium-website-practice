@@ -989,8 +989,8 @@ export default function StoreFront({
         .animate-gradient-shift { animation: gradient-shift 8s ease infinite; }
       `}} />
 
-      {/* DYNAMIC PRO HERO CAROUSEL */}
-      <div className="relative mb-12 rounded-[2.5rem] overflow-hidden bg-slate-950 flex flex-col lg:flex-row items-center justify-between gap-12 shadow-[0_30px_60px_rgba(0,0,0,0.5)] min-h-[550px] border border-white/10 group">
+      {/* DYNAMIC PRO HERO CAROUSEL - UPDATED SHADOW */}
+      <div className="relative mb-12 rounded-[2.5rem] overflow-hidden bg-slate-950 flex flex-col lg:flex-row items-center justify-between gap-12 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.12)] min-h-[550px] border border-white/10 group">
         
         {/* Dynamic Background Elements */}
         <div className="absolute inset-0 bg-gradient-to-br from-violet-900/80 via-slate-900 to-cyan-900/80 z-0 transition-colors duration-1000" />
