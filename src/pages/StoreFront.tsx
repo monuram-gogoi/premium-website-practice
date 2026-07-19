@@ -56,7 +56,7 @@ export default function StoreFront({
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 
-  // Chatbot States
+  // Chatbot States (Phase 2 Integration)
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [chatInput, setChatInput] = useState('');
   const [chatMessages, setChatMessages] = useState([
@@ -215,49 +215,32 @@ export default function StoreFront({
     return () => clearInterval(timer);
   }, [flashSaleConfig?.end_date]);
 
-
-  // =======================================================================
-  // LOCAL SIMULATED CHATBOT LOGIC
-  // =======================================================================
+  // Chatbot Send Message Handler
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!chatInput.trim()) return;
 
-    const userMsg = chatInput.trim();
-    const lowerMsg = userMsg.toLowerCase();
-    
-    // 1. Add user message to UI immediately
+    const userMsg = chatInput;
     setChatMessages(prev => [...prev, { role: 'user', text: userMsg }]);
     setChatInput('');
-    setIsBotTyping(true); // Show typing indicator
+    setIsBotTyping(true);
 
-    // 2. Simulate server delay and calculate response
-    setTimeout(() => {
-      let botReply = "Thanks for reaching out! I couldn't find an exact match for that question. For orders, specific shipping tracking, or custom inquiries, please contact our human team directly at support@oghaitong.com.";
-
-      if (lowerMsg.includes("shipping") || lowerMsg.includes("delivery")) {
-        botReply = "We offer free standard global shipping on all premium vault items! Delivery usually takes 3-5 business days depending on your region.";
-      } else if (lowerMsg.includes("return") || lowerMsg.includes("refund")) {
-        botReply = "Our policy allows returns within 30 days of delivery. Items must be in pristine condition with their original packaging.";
-      } else if (lowerMsg.includes("warranty")) {
-        botReply = "All OGhaitong gear comes with a 1-year limited hardware warranty covering manufacturing defects.";
-      } else if (lowerMsg.includes("contact") || lowerMsg.includes("human")) {
-        botReply = "You can reach our human support squad at support@oghaitong.com or open a priority ticket in your account console.";
-      } else if (lowerMsg.includes("esports") || lowerMsg.includes("gaming") || lowerMsg.includes("mobile legends")) {
-        botReply = "Looking to gear up for the FAI8 Pro League or AuraHILLS community scrims? Check out our Gaming section for tournament-grade tactical mobile triggers and active cryo-cooling accessories perfect for Mobile Legends: Bang Bang!";
-      } else if (lowerMsg.includes("audio") || lowerMsg.includes("headphone") || lowerMsg.includes("latency")) {
-        botReply = "Our Aura Unleashed Pro series headphones feature dynamic hybrid ANC, 40-hour battery life, and Bluetooth 5.4 zero-latency connection.";
-      } else if (lowerMsg.includes("hello") || lowerMsg.includes("hi ") || lowerMsg.includes("hey")) {
-        botReply = "Hello there! I'm your digital support assistant. Feel free to ask me about shipping, returns, warranty, or gear specifications!";
-      }
-
-      // 3. Add bot reply to UI and remove typing indicator
-      setChatMessages(prev => [...prev, { role: 'bot', text: botReply }]);
-      setIsBotTyping(false);
+    try {
+      // Replace with your actual live Python backend URL when deployed
+      const response = await fetch('https://your-python-bot.onrender.com/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: userMsg })
+      });
       
-    }, 1500); // 1.5 seconds delay makes it feel natural
+      const data = await response.json();
+      setChatMessages(prev => [...prev, { role: 'bot', text: data.reply }]);
+    } catch (error) {
+      setChatMessages(prev => [...prev, { role: 'bot', text: 'Sorry, our support systems are currently offline. Please try again later.' }]);
+    } finally {
+      setIsBotTyping(false);
+    }
   };
-
 
   const scrollContainer = (ref: React.RefObject<HTMLDivElement>, direction: 'left' | 'right') => {
     if (ref.current) {
