@@ -4,7 +4,7 @@ import {
   Volume2, Music, Bluetooth, Headphones, ChevronLeft, ChevronRight, Sparkles, 
   Flame, ShoppingBag, ArrowUp, Send, CheckCircle, Smartphone, Laptop, Gamepad2, 
   Watch, Camera, Heart, HelpCircle, Gift, Users, RotateCcw, ShieldCheck, Mail,
-  Mic, Radio, Monitor
+  Mic, Radio, Monitor, MessageSquare
 } from 'lucide-react';
 import { Product, CartItem, Category, Brand, PromoBanner, Review } from '../types';
 import { dbService } from '../services/db';
@@ -56,6 +56,14 @@ export default function StoreFront({
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 
+  // Chatbot States (Phase 2 Integration)
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [chatInput, setChatInput] = useState('');
+  const [chatMessages, setChatMessages] = useState([
+    { role: 'bot', text: 'Welcome to Support. How can I help you today?' }
+  ]);
+  const [isBotTyping, setIsBotTyping] = useState(false);
+
   // Carousel Refs
   const flashSaleRef = useRef<HTMLDivElement>(null);
   const trendingRef = useRef<HTMLDivElement>(null);
@@ -89,7 +97,7 @@ export default function StoreFront({
       desc: 'Tournament-grade mobile accessories. Ultra-responsive triggers and advanced thermal cooling for extended competitive scrims.',
       category: 'Gaming',
       priceLabel: 'NEW DROP',
-      imageSrc: 'https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?w=500&auto=format&fit=crop&q=80', // Gamepad/Mobile placeholder
+      imageSrc: 'https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?w=500&auto=format&fit=crop&q=80',
       fallbackIcon: <Smartphone className="w-24 h-24 text-white/50 mb-4" />,
       features: [
         { icon: <Gamepad2 className="w-4 h-4 text-emerald-400" />, title: '1ms Input', sub: 'Hyper-Fast', color: 'bg-emerald-500/20' },
@@ -106,7 +114,7 @@ export default function StoreFront({
       desc: 'Professional capture cards, dynamic mics, and stream controllers for seamless live broadcast integration and audience engagement.',
       category: 'Electronics',
       priceLabel: 'SAVE 20%',
-      imageSrc: 'https://images.unsplash.com/photo-1598550476439-6847785fcea6?w=500&auto=format&fit=crop&q=80', // Mic/Studio placeholder
+      imageSrc: 'https://images.unsplash.com/photo-1598550476439-6847785fcea6?w=500&auto=format&fit=crop&q=80',
       fallbackIcon: <Mic className="w-24 h-24 text-white/50 mb-4" />,
       features: [
         { icon: <Monitor className="w-4 h-4 text-rose-400" />, title: '4K Capture', sub: '60FPS Passthrough', color: 'bg-rose-500/20' },
@@ -164,7 +172,7 @@ export default function StoreFront({
   useEffect(() => {
     const slideTimer = setInterval(() => {
       setCurrentHeroSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 6000); // 6 seconds per slide
+    }, 6000); 
     return () => clearInterval(slideTimer);
   }, [heroSlides.length]);
 
@@ -206,6 +214,33 @@ export default function StoreFront({
 
     return () => clearInterval(timer);
   }, [flashSaleConfig?.end_date]);
+
+  // Chatbot Send Message Handler
+  const handleSendMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!chatInput.trim()) return;
+
+    const userMsg = chatInput;
+    setChatMessages(prev => [...prev, { role: 'user', text: userMsg }]);
+    setChatInput('');
+    setIsBotTyping(true);
+
+    try {
+      // Replace with your actual live Python backend URL when deployed
+      const response = await fetch('https://your-python-bot.onrender.com/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: userMsg })
+      });
+      
+      const data = await response.json();
+      setChatMessages(prev => [...prev, { role: 'bot', text: data.reply }]);
+    } catch (error) {
+      setChatMessages(prev => [...prev, { role: 'bot', text: 'Sorry, our support systems are currently offline. Please try again later.' }]);
+    } finally {
+      setIsBotTyping(false);
+    }
+  };
 
   const scrollContainer = (ref: React.RefObject<HTMLDivElement>, direction: 'left' | 'right') => {
     if (ref.current) {
@@ -974,7 +1009,7 @@ export default function StoreFront({
   };
 
   return (
-    <div className="py-8 animate-fade-in overflow-hidden max-w-[1400px] mx-auto">
+    <div className="py-8 animate-fade-in overflow-hidden max-w-[1400px] mx-auto relative">
       
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes float-slow { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-15px) rotate(2deg); } }
@@ -989,7 +1024,7 @@ export default function StoreFront({
         .animate-gradient-shift { animation: gradient-shift 8s ease infinite; }
       `}} />
 
-      {/* DYNAMIC PRO HERO CAROUSEL - UPDATED SHADOW */}
+      {/* DYNAMIC PRO HERO CAROUSEL */}
       <div className="relative mb-12 rounded-[2.5rem] overflow-hidden bg-slate-950 flex flex-col lg:flex-row items-center justify-between gap-12 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.12)] min-h-[550px] border border-white/10 group">
         
         {/* Dynamic Background Elements */}
@@ -1242,6 +1277,63 @@ export default function StoreFront({
           {renderNewsletter()}
         </>
       )}
+
+      {/* GLOBAL CHATBOT WIDGET */}
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+        {/* Chat Window */}
+        {isChatOpen && (
+          <div className="mb-4 w-80 sm:w-96 bg-slate-950 border border-white/10 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col animate-slide-up origin-bottom-right">
+            {/* Header */}
+            <div className="bg-gradient-to-r from-violet-600 to-cyan-500 p-4 flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <HelpCircle className="w-5 h-5 text-white" />
+                <span className="font-bold text-white text-sm">Support</span>
+              </div>
+              <button onClick={() => setIsChatOpen(false)} className="text-white/80 hover:text-white transition-colors">
+                <Plus className="w-5 h-5 transform rotate-45" />
+              </button>
+            </div>
+
+            {/* Message Area */}
+            <div className="h-80 p-4 overflow-y-auto bg-slate-900/50 flex flex-col space-y-3 scrollbar-thin scrollbar-thumb-slate-700">
+              {chatMessages.map((msg, idx) => (
+                <div key={idx} className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm ${msg.role === 'user' ? 'bg-cyan-500 text-slate-950 self-end rounded-tr-sm' : 'bg-slate-800 text-slate-200 self-start border border-slate-700 rounded-tl-sm'}`}>
+                  {msg.text}
+                </div>
+              ))}
+              {isBotTyping && (
+                <div className="bg-slate-800 text-slate-400 self-start border border-slate-700 rounded-2xl rounded-tl-sm px-4 py-2 text-xs flex space-x-1 items-center">
+                  <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></span>
+                  <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></span>
+                  <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></span>
+                </div>
+              )}
+            </div>
+
+            {/* Input Area */}
+            <form onSubmit={handleSendMessage} className="p-3 bg-slate-950 border-t border-white/10 flex items-center space-x-2">
+              <input
+                type="text"
+                value={chatInput}
+                onChange={(e) => setChatInput(e.target.value)}
+                placeholder="Ask a question..."
+                className="flex-1 bg-slate-900 border border-slate-800 text-white text-sm rounded-full px-4 py-2 focus:outline-none focus:border-cyan-500 transition-colors placeholder:text-slate-500"
+              />
+              <button type="submit" disabled={isBotTyping || !chatInput.trim()} className="w-9 h-9 rounded-full bg-cyan-500 text-slate-950 flex items-center justify-center hover:bg-cyan-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shrink-0">
+                <Send className="w-4 h-4 ml-0.5" />
+              </button>
+            </form>
+          </div>
+        )}
+
+        {/* Floating Action Button */}
+        <button
+          onClick={() => setIsChatOpen(!isChatOpen)}
+          className="w-14 h-14 rounded-full bg-gradient-to-r from-violet-600 to-cyan-500 text-white shadow-[0_10px_25px_rgba(34,211,238,0.4)] hover:shadow-[0_15px_35px_rgba(139,92,246,0.5)] flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95"
+        >
+          {isChatOpen ? <Plus className="w-6 h-6 transform rotate-45" /> : <MessageSquare className="w-6 h-6" />}
+        </button>
+      </div>
 
     </div>
   );
