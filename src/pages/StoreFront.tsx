@@ -60,7 +60,10 @@ export default function StoreFront({
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [chatInput, setChatInput] = useState('');
   const [chatMessages, setChatMessages] = useState([
-    { role: 'bot', text: 'Welcome to Support. How can I help you today?' }
+    { 
+      role: 'bot', 
+      text: "Hello! Welcome to our store. How can I help you today? Please type one of the following numbers:\n1. Order Status\n2. Returns & Refunds\n3. Shipping Information\n4. Talk to a Human" 
+    }
   ]);
   const [isBotTyping, setIsBotTyping] = useState(false);
 
@@ -226,8 +229,9 @@ export default function StoreFront({
     setIsBotTyping(true);
 
     try {
-      // Replace with your actual live Python backend URL when deployed
-      const response = await fetch('https://your-python-bot.onrender.com/api/chat', {
+      // Use your local Flask URL for testing. 
+      // Change this back to your Render/Vercel URL when deploying to production.
+      const response = await fetch('http://127.0.0.1:5000/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: userMsg })
@@ -1297,7 +1301,7 @@ export default function StoreFront({
             {/* Message Area */}
             <div className="h-80 p-4 overflow-y-auto bg-slate-900/50 flex flex-col space-y-3 scrollbar-thin scrollbar-thumb-slate-700">
               {chatMessages.map((msg, idx) => (
-                <div key={idx} className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm ${msg.role === 'user' ? 'bg-cyan-500 text-slate-950 self-end rounded-tr-sm' : 'bg-slate-800 text-slate-200 self-start border border-slate-700 rounded-tl-sm'}`}>
+                <div key={idx} className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm whitespace-pre-line ${msg.role === 'user' ? 'bg-cyan-500 text-slate-950 self-end rounded-tr-sm' : 'bg-slate-800 text-slate-200 self-start border border-slate-700 rounded-tl-sm'}`}>
                   {msg.text}
                 </div>
               ))}
