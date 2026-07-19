@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ShoppingBag, Menu, X, User, ClipboardList, LogOut, LogIn, UserPlus } from 'lucide-react';
+import { ShoppingBag, Menu, X, User, ClipboardList, LogOut, LogIn, UserPlus, Sparkles } from 'lucide-react';
 import { Profile, CartItem } from '../types';
 import { dbService } from '../services/db';
 
@@ -47,14 +47,27 @@ export default function Header({
             onClick={() => setCurrentView({ page: 'store' })}
             className="flex items-center space-x-3 cursor-pointer group"
           >
-            <div className="w-8 h-8 bg-gradient-to-br from-violet-600 to-cyan-500 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(124,58,237,0.4)] active:scale-95">
-              <div className="w-4 h-4 border-2 border-white rounded-[2px] transform group-hover:rotate-12 transition-transform duration-300"></div>
+            {/* Custom E-Commerce Premium Logo */}
+            <div className="relative w-10 h-10 flex items-center justify-center transition-all duration-500 group-hover:scale-105 active:scale-95">
+              {/* Background glowing blur */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-violet-600 to-cyan-400 rounded-[10px] blur-md opacity-40 group-hover:opacity-80 transition-opacity duration-500"></div>
+              
+              {/* Main solid shape */}
+              <div className="relative w-full h-full bg-slate-900 border border-white/20 rounded-[10px] shadow-xl flex items-center justify-center overflow-hidden">
+                {/* Gradient overlay inside */}
+                <div className="absolute inset-0 bg-gradient-to-br from-violet-600/30 to-cyan-500/30"></div>
+                
+                {/* Icons */}
+                <ShoppingBag className="w-5 h-5 text-cyan-400 transform group-hover:-translate-y-0.5 transition-transform duration-300 z-10" />
+                <Sparkles className="absolute top-1 right-1 w-3 h-3 text-violet-300 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 z-10" />
+              </div>
             </div>
+
             <div>
-              <span className="font-display font-bold text-lg tracking-tight text-slate-900 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-violet-600 group-hover:to-cyan-500 transition-all duration-300">
+              <span className="font-display font-black text-xl tracking-tight text-slate-900 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-violet-600 group-hover:to-cyan-500 transition-all duration-300">
                 {settings?.branding_name || 'OGhaitong'}
               </span>
-              <span className="block text-[9px] font-mono tracking-widest text-slate-400 uppercase -mt-1 group-hover:text-violet-400 transition-colors">
+              <span className="block text-[9px] font-mono font-bold tracking-widest text-slate-400 uppercase -mt-1 group-hover:text-violet-500 transition-colors">
                 Architect Edition
               </span>
             </div>
